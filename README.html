@@ -1,0 +1,150 @@
+<h1>regbits_stm: regbits implementations for STM MCUs</h1>
+
+<p><strong>stm_regbits</strong> is a work-in-progress set of <a href="https://github.com/thanks4opensource/regbits">regbits</a> implementations for ST Microelectronics MCUs. <a href="https://github.com/thanks4opensource/regbits">Regbits</a> provides easy to use, type-safe, compile-time verified C++ methods, operators, and constants for low-level programming of microcontroller registers with equal or better performance (code size and speed) compared to other techniques.</p>
+
+<h2>Contents  <a name="contents"></a></h2>
+
+<ul>
+<li><a href="#license">License</a></li>
+<li><a href="#usage_and_features">Usage and features</a>
+
+<ul>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#named_constants">Named constants</a></li>
+<li><a href="#Compile-time_range_checking">Compile-time range checking</a></li>
+<li><a href="#timers">Timers</a></li>
+</ul>
+</li>
+<li><a href="#compilation">Compilation</a></li>
+<li><a href="#unittests">Unit tests</a></li>
+<li><a href="#future_work">Future work</a></li>
+</ul>
+
+
+<h2>License  <a name="license"></a></h2>
+
+<p>regbits_stm: regbits implementations for STM MCUs</p>
+
+<p>Copyright &copy; 2019 Mark R. Rubin</p>
+
+<p>This file is part of regbits_stm.</p>
+
+<p>The regbits_stm program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
+
+<p>The regbits_stm program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p>
+
+<p>You should have received a copy of the <a href="LICENSE.txt">GNU General Public License</a> along with the regbits_stm program.  If not, see <a href="https://www.gnu.org/licenses/gpl.html">https://www.gnu.org/licenses/gpl.html</a></p>
+
+<h2>Usage and features <a name="usage_and_features"></a></h2>
+
+<h3>Usage <a name="usage"></a></h3>
+
+<p>See <a href="https://github.com/thanks4opensource/regbits#how_is_regbits_used">&ldquo;How is regbits used&rdquo;</a> for a full set of regbits usage examples based on a fictitious microcontroller. Some examples using regbits_stm are:</p>
+
+<pre><code>    rcc-&gt;ahb1enr |= Rcc::Ahb1enr::GPIOB | Rcc::Ahb1enr::GPIOE;  // set bits
+
+    gpiob-&gt;moder /= Gpio::Moder::OUTPUT_0 | Gpio::Moder::OUTPUT_7;  // set multiple-bit fields without affecting other bits
+
+    gpiob-&gt;ospeedr /= Gpio::Ospeedr::HIGH_0 | Gpio::Ospeedr::EXTREME_7;
+
+    gpiob-&gt;bsrr = Gpio::Bsrr::BS0 | Gpio::Bsrr::BS7;  // overwrite all bits
+
+    bsctim6-&gt;cr1 = Bsctim_6_7::Cr1::OPM | Bsctim_6_7::Cr1::CEN;
+</code></pre>
+
+<h3>Named constants <a name="named_constants"></a></h3>
+
+<p>Regbits_stm provides meaningfully-named constants for all multiple-bit register values:</p>
+
+<pre><code>    // regbits
+    gpioa-&gt;moder = Gpio::Moder::ALTFUNC_2 | Gpio::Moder::OUTPUT_5 | Gpio::Moder::ANALOG_7;
+
+    // CMSIS Cortex-M7 Device Peripheral Access Layer Header File
+    GPIOA-&gt;MODER = GPIO_MODER_MODER2_1 | GPIO_MODER_MODER5_0 | GPIO_MODER_MODER7_0 | GPIO_MODER_MODER7_1;
+</code></pre>
+
+<h3>Compile-time range checking <a name="Compile-time_range_checking"></a></h3>
+
+<pre><code>       i2c1-&gt;cr2 = I2c::Cr2::NBYTES&lt;255&gt;();  // good
+    // i2c2-&gt;cr2 = I2c::Cr2::NBYTES&lt;256&gt;();  // won't compile, value out of range
+</code></pre>
+
+<p>(See <a href="https://github.com/thanks4opensource/regbits#ugly_indexing_syntax">here</a> for why C++ requires the above syntax.)</p>
+
+<p>Note again that this compile-time checking has no run-time performance penalty, either in compiled code speed or size, and produces object code identical to:</p>
+
+<pre><code>    // CMSIS Cortex-M7 Device Peripheral Access Layer Header File
+    I2C1-&gt;CR2 = 255 &lt;&lt; I2C_CR2_NBYTES_Pos;
+</code></pre>
+
+<h3>Timers <a name="timers"></a></h3>
+
+<p>Regbits_stm attempts to provide a consistent system for accessing the large, complex set of STM timers.</p>
+
+<h4>Compile-time check of features / register sets:</h4>
+
+<pre><code>       gentim9-&gt;arr = 1500;  // good
+       advtim8-&gt;arr = 1500;  // good
+       advtim8-&gt;rcr = 1500;  // good
+    // gentim9-&gt;rcr = 1500;  // won't compile, only advanced timers 1 and 8 have RCR register
+</code></pre>
+
+<h4>Compile-time check of timer type hierarchy:</h4>
+
+<pre><code>    void init_timer(Tim* const timer);
+
+    void init_timer_10_13_14(GenTim_10_13_14* const timer);
+
+    void init_timers()
+    {
+        init_timer(gentim9 );  // good
+        init_timer(gentim10);  // good
+        init_timer(advtim8 );  // good
+        init_timer(bsctim6 );  // good
+
+        init_timer_10_13_14(gentim13);  // good
+     // init_timer_10_13_14(gentim11);  // won't compile, not timer 10, 13, or 14
+    }
+</code></pre>
+
+<h4>Compile-time check of timer by feature:</h4>
+
+<pre><code>    void init_timer(TimDmar* const timer);
+
+    void init_timers()
+    {
+        init_timer(gentim3);  // good
+        init_timer(gentim5);  // good
+        init_timer(advtim1);  // good
+     // init_timer(gentim9);  // won't compile, only general timers 2,3,4,5 and advanced timers 1,8 have DMAR register
+    }
+</code></pre>
+
+<p>Note once again that no run-time code is generated for these checks. Contrast with STM LL and HAL library macros and functions such as:</p>
+
+<pre><code>    IS_TIM_INSTANCE
+    assert_param
+    assert_failed
+</code></pre>
+
+<p>which either cause performance degradation if implemented, or don&rsquo;t perform checking if turned off. (Plus, how does an <code>assert_failed()</code> implementation in an embedded system handle an <code>IS_TIM_INSTANCE</code> error?  Display an error message?  <em>&ldquo;An incorrect timer instance has been detected at line 387 of file turbulence_avoidance.c. The autopilot computer will now reboot. Please wait 30 to 60 seconds during which time all aircraft controls will be inoperative.&rdquo;</em>)</p>
+
+<p>It is this author&rsquo;s opinion that it is better to handle such errors at compile time rather than at 35,000 feet. ;)</p>
+
+<h2>Compilation <a name="compilation"></a></h2>
+
+<p>Both <a href="https://github.com/thanks4opensource/regbits">Regbits</a> and this repository have only been tested with ARM GCC compilers. Unit test makefiles and build environment (see <a href="#unittests">Unit tests</a> directly below), and possibly code, may need to be modified for other compilers and development environments.</p>
+
+<p>All regbits code requires C++11 or higher compilation. At least with ARM GCC, optimization level <code>-O1</code> or higher is required to prevent storage from being allocated for constant values, and <code>-mabi=apcs-gnu</code> or <code>-mabi=atpcs</code> specified to force efficient passing regbits <code>mskd_t</code> parameters in registers. See the regbits repository for more  <a href="https://github.com/thanks4opensource/regbits#requirements_limitations_problems">details</a>.</p>
+
+<h2>Unit tests <a name="unittests"></a></h2>
+
+<p>A reasonably extensive unit test suite is included in the <a href="https://github.com/thanks4opensource/regbits">regbits</a> repository. See <a href="https://github.com/thanks4opensource/regbits#unit_test">documentation</a> and <a href="https://github.com/thanks4opensource/regbits/tree/master/unittest">code</a>.</p>
+
+<p>Small sets of unit tests for specific features of the STM regbits implementations in this repository are included here, for example in the <a href="stm32f767xx/unittest">stm32f767xx/unittest</a> subdirectory.</p>
+
+<p>To run, <code>cd</code> to a unittest directory, and type <code>make</code> and optionally <code>make GOOD=-DGOOD</code>. Nothing will be output if all tests pass, Note that an environment variable, <code>GCC_ARM_ROOT</code>, must point to an installed development environment.</p>
+
+<h2>Future work <a name="future_work"></a></h2>
+
+<p>This initial release of regbits_stm contains a single, incomplete, implementation, specifically for the STM32F76xx family of MCUs. At this time, <a href="stm32f767xx/stm32f767xx.hxx">stm32f767xx.hxx</a> only provides access to  approximately half of the extremely complex chip&rsquo;s capabilities. (Each of the  peripherals that are implemented, however, should be complete.)  The author may add to this implementation, and/or provide regbits for other STM and non-STM MCUs in the future. Any help in doing so would be appreciated.</p>
