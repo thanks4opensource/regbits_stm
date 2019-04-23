@@ -53,6 +53,9 @@ See ["How is regbits used"](https://github.com/thanks4opensource/regbits#how_is_
 
         bsctim6->cr1 = Bsctim_6_7::Cr1::OPM | Bsctim_6_7::Cr1::CEN;
 
+Also see [blink.cxx](stm32f767xx/example/blink.cxx) for a regbits_stm implementation of the canonical embedded software demo program.
+
+
 
 
 ### Named constants <a name="named_constants"></a>
