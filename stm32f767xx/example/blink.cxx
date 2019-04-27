@@ -22,7 +22,6 @@ uint32_t    milliseconds)
     // initialize
     bsctim6->sr  = 0;
     bsctim6->arr = milliseconds;
-    bsctim6->cnt = 0;
 
     // enable and start one-pulse timer
     bsctim6->cr1 = Bsctim_6_7::Cr1::OPM | Bsctim_6_7::Cr1::CEN;
@@ -42,8 +41,8 @@ int main()
 
     // reset peripherals
     rcc->ahb1rstr = Rcc::Ahb1rstr::GPIOB;
-    rcc->ahb1rstr = 0;
     rcc->apb1rstr = Rcc::Apb1rstr::TIM6;
+    rcc->ahb1rstr = 0;
     rcc->apb1rstr = 0;
 
     // set on-board green LED port to output
@@ -51,19 +50,26 @@ int main()
 
     // set basic timer 6 prescaler to 1 count per millisecond
     bsctim6->psc = Bsctim_6_7::Psc::PSC<MAIN_CLOCK_KHZ + 1>();
+    // generate "update event" to load PSC register into actual
+    //   prescaler counter shadow register
+    bsctim6->egr = Bsctim_6_7::Egr::UG;
+
+    // turn LED on for 4 seconds
+    gpiob->bsrr = Gpio::Bsrr::BS0;
+    delay(4000);
+
+    // turn LED off for 2 second
+    gpiob->bsrr = Gpio::Bsrr::BR0;
+    delay(2000);
 
     // infinite loop, blink LED at 1 Hz
     while (true) {
-        // turn LED on
+        // turn LED on for 0.1 seconds
         gpiob->bsrr = Gpio::Bsrr::BS0;
-
-        // leave on for 0.1 seconds
         delay(100);
 
-        // turn LED off
+        // turn LED off for 0.9 seconds
         gpiob->bsrr = Gpio::Bsrr::BR0;
-
-        // leave off for 0.9 seconds
         delay(900);
     }
 }

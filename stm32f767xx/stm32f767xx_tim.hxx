@@ -61,8 +61,8 @@
           cr1_t   cr1;
 
 
-#if    defined(STM32F767XX_ADV_TIM_1_8) \
-    || defined(GENTIM_2_3_4_5) \
+#if    defined(STM32F767XX_ADVTIM_1_8) \
+    || defined(STM32F767XX_GENTIM_2_3_4_5) \
     || defined( STM32F767XX_BAS_TIM_6_7)
     struct Cr2 {
         using            pos_t = Pos<uint32_t, Cr2>;
@@ -93,8 +93,8 @@
 #endif
 
 
-#if    defined(STM32F767XX_ADV_TIM_1_8) \
-    || defined(GENTIM_2_3_4_5)
+#if    defined(STM32F767XX_ADVTIM_1_8) \
+    || defined(STM32F767XX_GENTIM_2_3_4_5)
     struct Smcr {
         using              pos_t = Pos<uint32_t, Smcr>;
         static constexpr   pos_t
@@ -252,35 +252,87 @@
     struct Egr {
         using              pos_t = Pos<uint32_t, Egr>;
         static constexpr   pos_t
-                  UG_POS = pos_t( 0),
-                CC1G_POS = pos_t( 1),
-                CC2G_POS = pos_t( 2),
+                  UG_POS = pos_t( 0)
+#if    defined(STM32F767XX_GENTIM_9_10_11_12_13_14) \
+    || defined(STM32F767XX_GENTIM_2_3_4_5) \
+    || defined(STM32F767XX_ADVTIM_1_8)
+                                    ,
+                CC1G_POS = pos_t( 1)
+#endif
+#if    defined(STM32F767XX_GENTIM_9_12) \
+    || defined(STM32F767XX_GENTIM_2_3_4_5) \
+    || defined(STM32F767XX_ADVTIM_1_8)
+                                    ,
+                CC2G_POS = pos_t( 2)
+#endif
+#if    defined(STM32F767XX_GENTIM_2_3_4_5) \
+    || defined(STM32F767XX_ADVTIM_1_8)
+                                    ,
                 CC3G_POS = pos_t( 3),
-                CC4G_POS = pos_t( 4),
-                COMG_POS = pos_t( 5),
-                  TG_POS = pos_t( 6),
+                CC4G_POS = pos_t( 4)
+#endif
+#if    defined(STM32F767XX_ADVTIM_1_8)
+                                    ,
+                COMG_POS = pos_t( 5)
+#endif
+#if    defined(STM32F767XX_GENTIM_9_12) \
+    || defined(STM32F767XX_GENTIM_2_3_4_5) \
+    || defined(STM32F767XX_ADVTIM_1_8)
+                                    ,
+                  TG_POS = pos_t( 6)
+#endif
+#if    defined(STM32F767XX_ADVTIM_1_8)
+                                    ,
                   BG_POS = pos_t( 7),
-                 B2G_POS = pos_t( 8);
+                 B2G_POS = pos_t( 8)
+#endif
+                                    ;
 
         using              bits_t = Bits<uint32_t, Egr>;
         static constexpr   bits_t
-        UG               = bits_t(1,           UG_POS),
-        CC1G             = bits_t(1,         CC1G_POS),
-        CC2G             = bits_t(1,         CC2G_POS),
+        UG               = bits_t(1,           UG_POS)
+#if    defined(STM32F767XX_GENTIM_9_10_11_12_13_14) \
+    || defined(STM32F767XX_GENTIM_2_3_4_5) \
+    || defined(STM32F767XX_ADVTIM_1_8)
+                                                      ,
+        CC1G             = bits_t(1,         CC1G_POS)
+#endif
+#if    defined(STM32F767XX_GENTIM_9_12) \
+    || defined(STM32F767XX_GENTIM_2_3_4_5) \
+    || defined(STM32F767XX_ADVTIM_1_8)
+                                                      ,
+        CC2G             = bits_t(1,         CC2G_POS)
+#endif
+#if    defined(STM32F767XX_GENTIM_2_3_4_5) \
+    || defined(STM32F767XX_ADVTIM_1_8)
+                                                      ,
         CC3G             = bits_t(1,         CC3G_POS),
-        CC4G             = bits_t(1,         CC4G_POS),
-        COMG             = bits_t(1,         COMG_POS),
-        TG               = bits_t(1,           TG_POS),
+        CC4G             = bits_t(1,         CC4G_POS)
+#endif
+#if    defined(STM32F767XX_ADVTIM_1_8)
+                                                      ,
+        COMG             = bits_t(1,         COMG_POS)
+#endif
+#if    defined(STM32F767XX_GENTIM_9_12) \
+    || defined(STM32F767XX_GENTIM_2_3_4_5) \
+    || defined(STM32F767XX_ADVTIM_1_8)
+                                                      ,
+        TG               = bits_t(1,           TG_POS)
+#endif
+#if    defined(STM32F767XX_ADVTIM_1_8)
+                                                      ,
         BG               = bits_t(1,           BG_POS),
-        B2G              = bits_t(1,          B2G_POS);
+        B2G              = bits_t(1,          B2G_POS)
+#endif
+                                                      ;
     };  // struct Egr
     using egr_t = Reg<uint32_t, Egr>;
           egr_t   egr;
 
 
-#if    defined(STM32F767XX_ADV_TIM_1_8) \
-    || defined(GENTIM_2_3_4_5) \
-    || defined(GENTIM_9_12)
+#if    defined(STM32F767XX_ADVTIM_1_8) \
+    || defined(STM32F767XX_GENTIM_2_3_4_5) \
+    || defined(STM32F767XX_GENTIM_9_12)
     struct Ccmr1 {
         using              pos_t = Pos<uint32_t, Ccmr1>;
         static constexpr   pos_t
@@ -377,7 +429,7 @@
     };  // struct Ccmr1
     using ccmr1_t = Reg<uint32_t, Ccmr1>;
           ccmr1_t   ccmr1;
-#elif defined(GENTIM_10_11_13_14)
+#elif defined(STM32F767XX_GENTIM_10_11_13_14)
     struct Ccmr1 {
         using              pos_t = Pos<uint32_t, Ccmr1>;
         static constexpr   pos_t
@@ -404,7 +456,7 @@
                OC1M_MASK =    0x1007U,
         // input/capture mode
              IC1PSC_MASK =       0x3U,
-               IC1F_MASK =       0xFU,
+               IC1F_MASK =       0xFU;
 
         using              mskd_t = Mskd<uint32_t, Ccmr1>;
         static constexpr   mskd_t
@@ -447,7 +499,7 @@
         IC1F_DTS_16_N_8  = mskd_t(       IC1F_MASK,  0b1100,           IC1F_POS),
         IC1F_DTS_32_N_5  = mskd_t(       IC1F_MASK,  0b1101,           IC1F_POS),
         IC1F_DTS_32_N_6  = mskd_t(       IC1F_MASK,  0b1110,           IC1F_POS),
-        IC1F_DTS_32_N_8  = mskd_t(       IC1F_MASK,  0b1111,           IC1F_POS),
+        IC1F_DTS_32_N_8  = mskd_t(       IC1F_MASK,  0b1111,           IC1F_POS);
     };  // struct Ccmr1
     using ccmr1_t = Reg<uint32_t, Ccmr1>;
           ccmr1_t   ccmr1;
@@ -456,8 +508,8 @@
 #endif
 
 
-#if    defined(STM32F767XX_ADV_TIM_1_8) \
-    || defined( GENTIM_2_3_4_5)
+#if    defined(STM32F767XX_ADVTIM_1_8) \
+    || defined(STM32F767XX_GENTIM_2_3_4_5)
     struct Ccmr2 {
         using              pos_t = Pos<uint32_t, Ccmr2>;
         static constexpr   pos_t
@@ -559,7 +611,7 @@
 #endif
 
 
-#if defined(STM32F767XX_ADV_TIM_1_8)
+#if defined(STM32F767XX_ADVTIM_1_8)
     struct Ccer {
         using              pos_t = Pos<uint32_t, Ccer>;
         static constexpr   pos_t
@@ -607,7 +659,7 @@
     };  // struct Ccer
     using ccer_t = Reg<uint32_t, Ccer>;
           ccer_t   ccer;
-#elif defined(GENTIM_2_3_4_5)
+#elif defined(STM32F767XX_GENTIM_2_3_4_5)
     struct Ccer {
         using              pos_t = Pos<uint32_t, Ccer>;
         static constexpr   pos_t
@@ -647,7 +699,7 @@
     };  // struct Ccer
     using ccer_t = Reg<uint32_t, Ccer>;
           ccer_t   ccer;
-#elif defined(GENTIM_9_12)
+#elif defined(STM32F767XX_GENTIM_9_12)
     struct Ccer {
         using              pos_t = Pos<uint32_t, Ccer>;
         static constexpr   pos_t
@@ -673,7 +725,7 @@
     };  // struct Ccer
     using ccer_t = Reg<uint32_t, Ccer>;
           ccer_t   ccer;
-#elif defined(GENTIM_10_11_13_14)
+#elif defined(STM32F767XX_GENTIM_10_11_13_14)
     struct Ccer {
         using              pos_t = Pos<uint32_t, Ccer>;
         static constexpr   pos_t
@@ -697,7 +749,7 @@
 
 
     struct Cnt {
-#ifdef STM32F767XX_GEN_TIM_2_5
+#ifdef STM32F767XX_GENTIM_2_5
         // just access as 32-bit .word() and operator=(uint32_t)
 #else
         using              pos_t = Pos<uint32_t, Cnt>;
@@ -750,7 +802,7 @@
 
 
     struct Arr {
-#ifdef STM32F767XX_GEN_TIM_2_5
+#ifdef STM32F767XX_GENTIM_2_5
         // just access as 32-bit .word() and operator=(uint32_t)
 #else
         using              pos_t = Pos<uint32_t, Arr>;
@@ -775,7 +827,7 @@
           arr_t   arr;
 
 
-#ifdef STM32F767XX_ADV_TIM_1_8
+#ifdef STM32F767XX_ADVTIM_1_8
     struct Rcr {
         using              pos_t = Pos<uint32_t, Rcr>;
         static constexpr   pos_t
@@ -792,7 +844,7 @@
 
 
     struct Ccr {
-#ifdef STM32F767XX_GEN_TIM_2_5
+#ifdef STM32F767XX_GENTIM_2_5
         // just access as 32-bit .word() and operator=(uint32_t)
 #else
         using              pos_t = Pos<uint32_t, Ccr>;
@@ -815,22 +867,22 @@
     };  // struct Ccr
     using ccr_t = Reg<uint32_t, Ccr>;
 
-#if    defined(STM32F767XX_ADV_TIM_1_8)             \
-    || defined(STM32F767XX_GEN_TIM_2_3_4_5)         \
+#if    defined(STM32F767XX_ADVTIM_1_8)              \
+    || defined(STM32F767XX_GENTIM_2_3_4_5)          \
     || defined(STM32F767XX_GENTIM_9_10_11_12_13_14)
     ccr_t       ccr1;
 #else
     private: uint32_t   _unimplemented_ccr1;     public:
 #endif
-#if    defined(STM32F767XX_ADV_TIM_1_8)         \
-    || defined(STM32F767XX_GEN_TIM_2_3_4_5)     \
-    || defined(STM32F767XX_GEN_TIM_9_12)
+#if    defined(STM32F767XX_ADVTIM_1_8)          \
+    || defined(STM32F767XX_GENTIM_2_3_4_5)      \
+    || defined(STM32F767XX_GENTIM_9_12)
     ccr_t       ccr2;
 #else
     private: uint32_t   _unimplemented_ccr2;     public:
 #endif
-#if    defined(STM32F767XX_ADV_TIM_1_8)         \
-    || defined(STM32F767XX_GEN_TIM_2_3_4_5)
+#if    defined(STM32F767XX_ADVTIM_1_8)          \
+    || defined(STM32F767XX_GENTIM_2_3_4_5)
     ccr_t       ccr3,
                 ccr4;
 #else
@@ -838,7 +890,7 @@
 #endif
 
 
-#ifdef STM32F767XX_ADV_TIM_1_8
+#ifdef STM32F767XX_ADVTIM_1_8
     struct Bdtr {
         using              pos_t = Pos<uint32_t, Bdtr>;
         static constexpr   pos_t
@@ -914,8 +966,8 @@
 #endif
 
 
-#if    defined(STM32F767XX_ADV_TIM_1_8) \
-    || defined(STM32F767XX_GEN_TIM_2_3_4_5)
+#if    defined(STM32F767XX_ADVTIM_1_8) \
+    || defined(STM32F767XX_GENTIM_2_3_4_5)
     struct Dcr {
         using              pos_t = Pos<uint32_t, Dcr>;
         static constexpr   pos_t
@@ -949,8 +1001,8 @@
 #endif
 
 
-#if    defined(STM32F767XX_ADV_TIM_1_8) \
-    || defined(STM32F767XX_GEN_TIM_2_3_4_5)
+#if    defined(STM32F767XX_ADVTIM_1_8) \
+    || defined(STM32F767XX_GENTIM_2_3_4_5)
     struct Dmar {
         using              pos_t = Pos<uint32_t, Dmar>;
         static constexpr   pos_t
@@ -976,7 +1028,7 @@
 #endif
 
 
-#ifdef STM32F767XX_GEN_TIM_2
+#ifdef STM32F767XX_GENTIM_2
     struct Orr {
         using              pos_t = Pos<uint32_t, Orr>;
         static constexpr   pos_t
@@ -998,7 +1050,7 @@
           orr_t  orr;
 #endif
 
-#ifdef STM32F767XX_GEN_TIM_5
+#ifdef STM32F767XX_GENTIM_5
     struct Orr {
         using              pos_t = Pos<uint32_t, Orr>;
         static constexpr   pos_t
@@ -1020,7 +1072,7 @@
           orr_t  orr;
 #endif
 
-#ifdef STM32F767XX_GEN_TIM_11
+#ifdef STM32F767XX_GENTIM_11
     struct Orr {
         using              pos_t = Pos<uint32_t, Orr>;
         static constexpr   pos_t
@@ -1039,14 +1091,14 @@
 #endif
 
 
-#if    !defined(STM32F767XX_GEN_TIM_2)  \
-    && !defined(STM32F767XX_GEN_TIM_5)  \
-    && !defined(STM32F767XX_GEN_TIM_11)
+#if    !defined(STM32F767XX_GENTIM_2)   \
+    && !defined(STM32F767XX_GENTIM_5)   \
+    && !defined(STM32F767XX_GENTIM_11)
     private: uint32_t   _unimplemented_orr; public:
 #endif
 
 
-#ifdef STM32F767XX_ADV_TIM_1_8
+#ifdef STM32F767XX_ADVTIM_1_8
     struct Ccmr3 {
         using              pos_t = Pos<uint32_t, Ccmr3>;
         static constexpr   pos_t

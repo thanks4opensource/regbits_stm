@@ -3160,9 +3160,9 @@ struct AdvTim_1_8 : Tim,
                     TimAf1,
                     TimAf2
 {
-#define STM32F767XX_ADV_TIM_1_8
+#define STM32F767XX_ADVTIM_1_8
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_ADV_TIM_1_8
+#undef STM32F767XX_ADVTIM_1_8
 };  // struct AdvTim_1_8
 static_assert(sizeof(AdvTim_1_8) == 104, "sizeof(AdvTim_1_8) != 104");
 
@@ -3179,13 +3179,13 @@ struct GenTim_2 : GenTim_2_5,
                   TimDmar,
                   TimOrTim2
 {
-#define STM32F767XX_GEN_TIM_2_3_4_5
-#define STM32F767XX_GEN_TIM_2_5
-#define STM32F767XX_GEN_TIM_2
+#define STM32F767XX_GENTIM_2_3_4_5
+#define STM32F767XX_GENTIM_2_5
+#define STM32F767XX_GENTIM_2
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_GEN_TIM_2
-#undef STM32F767XX_GEN_TIM_2_5
-#undef STM32F767XX_GEN_TIM_2_3_4_5
+#undef STM32F767XX_GENTIM_2
+#undef STM32F767XX_GENTIM_2_5
+#undef STM32F767XX_GENTIM_2_3_4_5
 };  // struct GenTim_2
 static_assert(sizeof(GenTim_2) == 104, "sizeof(GenTim_2) != 104");
 
@@ -3200,11 +3200,11 @@ struct GenTim_3_4 : GenTim_2_3_4_5,
                     TimDcr,
                     TimDmar
 {
-#define STM32F767XX_GEN_TIM_2_3_4_5
-#define STM32F767XX_GEN_TIM_3_4
+#define STM32F767XX_GENTIM_2_3_4_5
+#define STM32F767XX_GENTIM_3_4
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_GEN_TIM_3_4
-#undef STM32F767XX_GEN_TIM_2_3_4_5
+#undef STM32F767XX_GENTIM_3_4
+#undef STM32F767XX_GENTIM_2_3_4_5
 };  // struct GenTim_3_4
 static_assert(sizeof(GenTim_3_4) == 104, "sizeof(GenTim_3_4) != 104");
 
@@ -3221,13 +3221,13 @@ struct GenTim_5 : GenTim_2_5,
                   TimDmar,
                   TimOrTim5
 {
-#define STM32F767XX_GEN_TIM_2_3_4_5
-#define STM32F767XX_GEN_TIM_2_5
-#define STM32F767XX_GEN_TIM_5
+#define STM32F767XX_GENTIM_2_3_4_5
+#define STM32F767XX_GENTIM_2_5
+#define STM32F767XX_GENTIM_5
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_GEN_TIM_5
-#undef STM32F767XX_GEN_TIM_2_5
-#undef STM32F767XX_GEN_TIM_2_3_4_5
+#undef STM32F767XX_GENTIM_5
+#undef STM32F767XX_GENTIM_2_5
+#undef STM32F767XX_GENTIM_2_3_4_5
 };  // struct GenTim_5
 static_assert(sizeof(GenTim_5) == 104, "sizeof(GenTim_5) != 104");
 
@@ -3247,9 +3247,9 @@ struct GenTim_9_12 : GenTim_9_10_11_12_13_14,
                      TimCcr2
 {
 #define STM32F767XX_GENTIM_9_10_11_12_13_14
-#define STM32F767XX_GEN_TIM_9_12
+#define STM32F767XX_GENTIM_9_12
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_GEN_TIM_9_12
+#undef STM32F767XX_GENTIM_9_12
 #undef STM32F767XX_GENTIM_9_10_11_12_13_14
 };  // struct GenTim_9_12
 static_assert(sizeof(GenTim_9_12) == 104, "sizeof(GenTim_9_12) != 104");
@@ -3258,11 +3258,13 @@ struct GenTim_10_13_14 : GenTim_10_11_13_14,
                          TimCcmr1_10_11_13_14,
                          TimCcr1
 {
+#define STM32F767XX_GENTIM_9_10_11_12_13_14
 #define STM32F767XX_GENTIM_10_11_13_14
-#define STM32F767XX_GEN_TIM_10_13_14
+#define STM32F767XX_GENTIM_10_13_14
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_GEN_TIM_10_13_14
+#undef STM32F767XX_GENTIM_10_13_14
 #undef STM32F767XX_GENTIM_10_11_13_14
+#undef STM32F767XX_GENTIM_9_10_11_12_13_14
 };  // struct GenTim_10_13_14
 static_assert( sizeof(GenTim_10_13_14) == 104, "sizeof(GenTim_10_13_14) != 104");
 
@@ -3271,12 +3273,14 @@ struct GenTim_11 : GenTim_10_11_13_14,
                    TimCcr1,
                    TimOrTim11
 {
+#define STM32F767XX_GENTIM_9_10_11_12_13_14
 #define STM32F767XX_GENTIM_10_11_13_14
-#define STM32F767XX_GEN_TIM_11
+#define STM32F767XX_GENTIM_11
 #define STM32F767XX_GENTIM_10_11_13_14
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_GEN_TIM_11
+#undef STM32F767XX_GENTIM_11
 #undef STM32F767XX_GENTIM_10_11_13_14
+#undef STM32F767XX_GENTIM_9_10_11_12_13_14
 };  // struct GenTim_11
 static_assert( sizeof(GenTim_11) == 104, "sizeof(GenTim_11) != 104");
 
@@ -5314,7 +5318,7 @@ struct Usart {
     using tdr_t = Reg<uint32_t, Tdr>;
           tdr_t   tdr;
 
-};  // struct I2c
+};  // struct Usart
 static_assert(sizeof(Usart) == 44, "sizeof(Usart) != 44");
 
 
