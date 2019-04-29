@@ -28,8 +28,8 @@ void tim_feature(TimCcmr1_1_2_3_4_5_8_9_12* const tim_ccmr1_1_2_3_4_5_8_9_12) {}
 void call_tim_feature()
 {
 #ifdef GOOD
-    tim_feature(gentim9);
+    tim_feature(gen_tim_9);
 #else
-    tim_feature(gentim10);
+    tim_feature(gen_tim_10);
 #endif
 }

@@ -748,10 +748,10 @@
 #endif
 
 
-    struct Cnt {
 #ifdef STM32F767XX_GENTIM_2_5
-        // just access as 32-bit .word() and operator=(uint32_t)
+    uint32_t    cnt;
 #else
+    struct Cnt {
         using              pos_t = Pos<uint32_t, Cnt>;
         static constexpr   pos_t
                  CNT_POS = pos_t( 0),
@@ -773,71 +773,31 @@
                            CNT_MASK,
                            CNT_POS,
                            CNT_MASK);
-#endif
     };  // struct Cnt
     using cnt_t = Reg<uint32_t, Cnt>;
           cnt_t   cnt;
-
-
-    struct Psc {
-        using              pos_t = Pos<uint32_t, Psc>;
-        static constexpr   pos_t
-                 PSC_POS = pos_t( 0);
-
-        static const uint32_t
-                PSC_MASK =    0xFFFFU;
-
-        using   mskd_t = Mskd<uint32_t, Psc>;
-        using   shft_t = Shft<uint32_t, Psc>;
-
-        REGBITS_MSKD_RANGE("Tim::Psc",
-                           PSC,
-                           psc,
-                           PSC_MASK,
-                           PSC_POS,
-                           PSC_MASK);
-    };  // struct Psc
-    using psc_t = Reg<uint32_t, Psc>;
-          psc_t   psc;
-
-
-    struct Arr {
-#ifdef STM32F767XX_GENTIM_2_5
-        // just access as 32-bit .word() and operator=(uint32_t)
-#else
-        using              pos_t = Pos<uint32_t, Arr>;
-        static constexpr   pos_t
-                 ARR_POS = pos_t( 0);
-
-        static const uint32_t
-                ARR_MASK = 0xFFFFFFFFU;
-
-        using   mskd_t = Mskd<uint32_t, Arr>;
-        using   shft_t = Shft<uint32_t, Arr>;
-
-        REGBITS_MSKD_RANGE("Tim::Arr",
-                           ARR,
-                           arr,
-                           ARR_MASK,
-                           ARR_POS,
-                           ARR_MASK);
 #endif
-    };  // struct Arr
-    using arr_t = Reg<uint32_t, Arr>;
-          arr_t   arr;
+
+
+#ifdef STM32F767XX_GENTIM_2_5
+    uint32_t    psc;
+#else
+                uint16_t    psc;
+    private:    uint16_t    _psc_high_bits;  public:
+#endif
+
+
+#ifdef STM32F767XX_GENTIM_2_5
+    uint32_t    arr;
+#else
+                uint16_t    arr;
+    private:    uint16_t    _arr_high_bits;  public:
+#endif
 
 
 #ifdef STM32F767XX_ADVTIM_1_8
-    struct Rcr {
-        using              pos_t = Pos<uint32_t, Rcr>;
-        static constexpr   pos_t
-                 REP_POS = pos_t( 0);
-
-        static const uint32_t
-                REP_MASK =    0xFFFFU;
-    };  // struct Rcr
-    using rcr_t = Reg<uint32_t, Rcr>;
-          rcr_t   rcr;
+                uint16_t    rcr;
+    private:    uint16_t    _rcr_high_bits;  public:
 #else
     private: uint32_t   _unimplemented_rcr; public:
 #endif
@@ -870,21 +830,40 @@
 #if    defined(STM32F767XX_ADVTIM_1_8)              \
     || defined(STM32F767XX_GENTIM_2_3_4_5)          \
     || defined(STM32F767XX_GENTIM_9_10_11_12_13_14)
-    ccr_t       ccr1;
+#ifdef STM32F767XX_GENTIM_2_5
+                uint32_t    ccr1;
+#else
+                uint16_t    ccr1;
+    private:    uint16_t    _ccr1_high_bits;     public:
+#endif
 #else
     private: uint32_t   _unimplemented_ccr1;     public:
 #endif
+
 #if    defined(STM32F767XX_ADVTIM_1_8)          \
     || defined(STM32F767XX_GENTIM_2_3_4_5)      \
     || defined(STM32F767XX_GENTIM_9_12)
-    ccr_t       ccr2;
+#ifdef STM32F767XX_GENTIM_2_5
+                uint32_t    ccr2;
+#else
+                uint16_t    ccr2;
+    private:    uint16_t    _ccr2_high_bits;     public:
+#endif
 #else
     private: uint32_t   _unimplemented_ccr2;     public:
 #endif
+
 #if    defined(STM32F767XX_ADVTIM_1_8)          \
     || defined(STM32F767XX_GENTIM_2_3_4_5)
-    ccr_t       ccr3,
-                ccr4;
+#ifdef STM32F767XX_GENTIM_2_5
+                uint32_t    ccr3,
+                            ccr4;
+#else
+                uint16_t    ccr3;
+    private:    uint16_t    _ccr3_high_bits;     public:
+                uint16_t    ccr4;
+    private:    uint16_t    _ccr4_high_bits;     public:
+#endif
 #else
     private: uint32_t   _unimplemented_ccr3_4[2];  public:
 #endif
@@ -1178,25 +1157,8 @@
           ccr5_t   ccr5;
 
 
-    struct Ccr6 {
-        using              pos_t = Pos<uint32_t, Ccr6>;
-        static constexpr   pos_t
-                CCR6_POS = pos_t( 0);
-
-        static const uint32_t
-               CCR6_MASK = 0xFFFFU;
-
-        using mskd_t = Mskd<uint32_t, Ccr6>;
-        using shft_t = Shft<uint32_t, Ccr6>;
-        REGBITS_MSKD_RANGE("Tim::Ccr6",
-                           CCR6,
-                           ccr6,
-                           CCR6_MASK,
-                           CCR6_POS,
-                           CCR6_MASK);
-    };  // struct Ccr6
-    using ccr6_t = Reg<uint32_t, Ccr6>;
-          ccr6_t   ccr6;
+                uint16_t    ccr6;
+    private:    uint16_t    _ccr6_high_bits;     public:
 
 
     struct Af1 {

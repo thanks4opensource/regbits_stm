@@ -17,17 +17,17 @@ void delay(
 uint32_t    milliseconds)
 {
     // disable before making changes
-    bsctim6->cr1 = 0;
+    bsc_tim_6->cr1 = 0;
 
     // initialize
-    bsctim6->sr  = 0;
-    bsctim6->arr = milliseconds;
+    bsc_tim_6->sr    = 0;
+    bsc_tim_6->arr = milliseconds;
 
     // enable and start one-pulse timer
-    bsctim6->cr1 = Bsctim_6_7::Cr1::OPM | Bsctim_6_7::Cr1::CEN;
+    bsc_tim_6->cr1 = BscTim_6_7::Cr1::OPM | BscTim_6_7::Cr1::CEN;
 
     // wait for timer to finish
-    while (bsctim6->sr != Bsctim_6_7::Sr::UIF)
+    while (bsc_tim_6->sr != BscTim_6_7::Sr::UIF)
         asm("nop");
 }
 
@@ -49,10 +49,10 @@ int main()
     gpiob->moder = Gpio::Moder::OUTPUT_0;
 
     // set basic timer 6 prescaler to 1 count per millisecond
-    bsctim6->psc = Bsctim_6_7::Psc::PSC<MAIN_CLOCK_KHZ + 1>();
+    bsc_tim_6->psc = MAIN_CLOCK_KHZ + 1;
     // generate "update event" to load PSC register into actual
     //   prescaler counter shadow register
-    bsctim6->egr = Bsctim_6_7::Egr::UG;
+    bsc_tim_6->egr = BscTim_6_7::Egr::UG;
 
     // turn LED on for 4 seconds
     gpiob->bsrr = Gpio::Bsrr::BS0;

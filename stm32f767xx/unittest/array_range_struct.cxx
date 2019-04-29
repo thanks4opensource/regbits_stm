@@ -26,8 +26,8 @@ using namespace stm32f767xx;
 void array_range_struct()
 {
 #ifdef GOOD
-    dma1->STREAM<7>().sxcr /= Dmastream::Sxcr::MBURST_INCR_16;
+    dma1->STREAM<7>().sxcr /= DmaStream::Sxcr::MBURST_INCR_16;
 #else
-    dma1->STREAM<8>().sxcr /= Dmastream::Sxcr::MBURST_INCR_16;
+    dma1->STREAM<8>().sxcr /= DmaStream::Sxcr::MBURST_INCR_16;
 #endif
 }

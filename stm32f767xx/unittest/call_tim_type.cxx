@@ -28,8 +28,8 @@ void tim_type(GenTim_2_5* const tim_2_5) {}
 void call_tim_type()
 {
 #ifdef GOOD
-    tim_type(gentim2);
+    tim_type(gen_tim_2);
 #else
-    tim_type(gentim3);
+    tim_type(gen_tim_3);
 #endif
 }

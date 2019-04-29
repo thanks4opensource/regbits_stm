@@ -2344,7 +2344,7 @@ struct SysCfg {
 static_assert(sizeof(SysCfg) == 36, "sizeof(SysCfg) != 36");
 
 
-struct Dmastream {
+struct DmaStream {
     struct Sxcr {
         using              pos_t = Pos<uint32_t, Sxcr>;
         static constexpr   pos_t
@@ -2504,8 +2504,8 @@ struct Dmastream {
     using sxfcr_t = Reg<uint32_t, Sxfcr>;
           sxfcr_t   sxfcr;
 
-};  // struct Dmastream
-static_assert(sizeof(Dmastream) == 24, "sizeof(Dmastream) != 24");
+};  // struct DmaStream
+static_assert(sizeof(DmaStream) == 24, "sizeof(DmaStream) != 24");
 
 
 
@@ -2719,15 +2719,16 @@ struct Dma {
     REGBITS_ARRAY_RANGE("Dma",
                         STREAM,
                         stream,
-                        Dmastream,
+                        DmaStream,
                         _streams,
                         NUM_STREAMS - 1);
 
   protected:
-    Dmastream   _streams[NUM_STREAMS];
+    DmaStream   _streams[NUM_STREAMS];
 
 };  // struct Dma
-static_assert(sizeof(Dma) == 16 + 8 * 24, "sizeof(Dma) != 16 + 8 * 24");
+static_assert( sizeof(Dma) == 16 + 8 * sizeof(DmaStream),
+              "sizeof(Dma) != 16 + 8 * sizeof(DmaStream)");
 
 
 
@@ -3231,14 +3232,14 @@ struct GenTim_5 : GenTim_2_5,
 };  // struct GenTim_5
 static_assert(sizeof(GenTim_5) == 104, "sizeof(GenTim_5) != 104");
 
-struct Bsctim_6_7 : Tim,
+struct BscTim_6_7 : Tim,
                     TimCr2
 {
 #define STM32F767XX_BAS_TIM_6_7
 #include "stm32f767xx_tim.hxx"
 #undef STM32F767XX_BAS_TIM_6_7
-};  // struct Bsctim_6_7
-static_assert(sizeof(Bsctim_6_7) == 104, "sizeof(Bsctim_6_7) != 104");
+};  // struct BscTim_6_7
+static_assert(sizeof(BscTim_6_7) == 104, "sizeof(BscTim_6_7) != 104");
 
 struct GenTim_9_12 : GenTim_9_10_11_12_13_14,
                      TimCcmr1_1_2_3_4_5_8_9_12,
@@ -5700,7 +5701,7 @@ static Gpio* const          gpioi = reinterpret_cast<Gpio*>(GPIOI_BASE);
 static Gpio* const          gpioj = reinterpret_cast<Gpio*>(GPIOJ_BASE);
 static Gpio* const          gpiok = reinterpret_cast<Gpio*>(GPIOK_BASE);
 
-static SysCfg* const        syscfg = reinterpret_cast<SysCfg*>(SYSCFG_BASE);
+static SysCfg* const        sys_cfg = reinterpret_cast<SysCfg*>(SYSCFG_BASE);
 
 static Dma* const           dma1 = reinterpret_cast<Dma*>(DMA1_BASE);
 static Dma* const           dma2 = reinterpret_cast<Dma*>(DMA2_BASE);
@@ -5708,33 +5709,35 @@ static Dma* const           dma2 = reinterpret_cast<Dma*>(DMA2_BASE);
 static Exti* const          exti = reinterpret_cast<Exti*>(EXTI_BASE);
 
 
-static AdvTim_1_8* const    advtim1 = reinterpret_cast<AdvTim_1_8*>(TIM1_BASE);
-static AdvTim_1_8* const    advtim8 = reinterpret_cast<AdvTim_1_8*>(TIM8_BASE);
+static AdvTim_1_8* const    adv_tim_1 = reinterpret_cast<AdvTim_1_8*>(TIM1_BASE);
+static AdvTim_1_8* const    adv_tim_8 = reinterpret_cast<AdvTim_1_8*>(TIM8_BASE);
 
-static GenTim_2* const      gentim2 = reinterpret_cast<GenTim_2*>(TIM2_BASE);
+static GenTim_2* const      gen_tim_2 = reinterpret_cast<GenTim_2*>(TIM2_BASE);
 
-static GenTim_5* const      gentim5 = reinterpret_cast<GenTim_5*>(TIM5_BASE);
+static GenTim_5* const      gen_tim_5 = reinterpret_cast<GenTim_5*>(TIM5_BASE);
 
-static GenTim_3_4* const    gentim3 = reinterpret_cast<GenTim_3_4*>(TIM3_BASE);
-static GenTim_3_4* const    gentim4 = reinterpret_cast<GenTim_3_4*>(TIM4_BASE);
+static GenTim_3_4* const    gen_tim_3 = reinterpret_cast<GenTim_3_4*>(TIM3_BASE);
+static GenTim_3_4* const    gen_tim_4 = reinterpret_cast<GenTim_3_4*>(TIM4_BASE);
 
-static GenTim_9_12* const   gentim9  = reinterpret_cast<GenTim_9_12*>(TIM9_BASE );
-static GenTim_9_12* const   gentim12 = reinterpret_cast<GenTim_9_12*>(TIM12_BASE);
+static GenTim_9_12* const   gen_tim_9  = reinterpret_cast<GenTim_9_12*>(
+                                                          TIM9_BASE );
+static GenTim_9_12* const   gen_tim_12 = reinterpret_cast<GenTim_9_12*>(
+                                                          TIM12_BASE);
 
-static GenTim_10_13_14* const   gentim10 = reinterpret_cast<GenTim_10_13_14*>
-                                                           (TIM10_BASE);
-static GenTim_10_13_14* const   gentim13 = reinterpret_cast<GenTim_10_13_14*>
-                                                           (TIM13_BASE);
-static GenTim_10_13_14* const   gentim14 = reinterpret_cast<GenTim_10_13_14*>
-                                                           (TIM14_BASE);
+static GenTim_10_13_14* const   gen_tim_10 = reinterpret_cast<GenTim_10_13_14*>(
+                                                              TIM10_BASE);
+static GenTim_10_13_14* const   gen_tim_13 = reinterpret_cast<GenTim_10_13_14*>(
+                                                              TIM13_BASE);
+static GenTim_10_13_14* const   gen_tim_14 = reinterpret_cast<GenTim_10_13_14*>(
+                                                              TIM14_BASE);
 
-static GenTim_11* const     gentim11 = reinterpret_cast<GenTim_11*>(TIM11_BASE);
+static GenTim_11* const     gen_tim_11 = reinterpret_cast<GenTim_11*>(TIM11_BASE);
 
-static Bsctim_6_7* const    bsctim6 = reinterpret_cast<Bsctim_6_7*>(TIM6_BASE);
-static Bsctim_6_7* const    bsctim7 = reinterpret_cast<Bsctim_6_7*>(TIM7_BASE);
+static BscTim_6_7* const    bsc_tim_6 = reinterpret_cast<BscTim_6_7*>(TIM6_BASE);
+static BscTim_6_7* const    bsc_tim_7 = reinterpret_cast<BscTim_6_7*>(TIM7_BASE);
 
 
-static LpTim* const         lptim1 = reinterpret_cast<LpTim*>(LPTIM1_BASE);
+static LpTim* const         lp_tim_1 = reinterpret_cast<LpTim*>(LPTIM1_BASE);
 
 static Rtc* const           rtc = reinterpret_cast<Rtc*>(RTC_BASE);
 

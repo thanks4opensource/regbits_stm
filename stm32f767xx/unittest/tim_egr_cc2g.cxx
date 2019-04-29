@@ -26,11 +26,11 @@ using namespace stm32f767xx;
 void tim_egr_cc2g()
 {
 #ifdef GOOD
-    advtim8 ->egr = AdvTim_1_8::Egr::CC2G;
-    gentim3 ->egr = GenTim_3_4::Egr::CC2G;
-    gentim9 ->egr = GenTim_9_12::Egr::CC2G;
-    gentim10->egr = GenTim_10_13_14::Egr::CC1G;
+    adv_tim_8 ->egr = AdvTim_1_8::Egr::CC2G;
+    gen_tim_3 ->egr = GenTim_3_4::Egr::CC2G;
+    gen_tim_9 ->egr = GenTim_9_12::Egr::CC2G;
+    gen_tim_10->egr = GenTim_10_13_14::Egr::CC1G;
 #else
-    gentim10->egr = GenTim_10_13_14::Egr::CC2G;
+    gen_tim_10->egr = GenTim_10_13_14::Egr::CC2G;
 #endif
 }
