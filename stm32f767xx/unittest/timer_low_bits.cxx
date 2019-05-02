@@ -22,20 +22,12 @@
 
 using namespace stm32f767xx;
 
-
-void tim_feature(
-TimCcmr1_1_2_3_4_5_8_9_12* const    tim_ccmr1_1_2_3_4_5_8_9_12)
-{
-       tim_ccmr1_1_2_3_4_5_8_9_12->ccmr1
-    /= TimCcmr1_1_2_3_4_5_8_9_12::Ccmr1::CC2S_IN_IC2_TI2;
-}
-
-
-void call_tim_feature()
+void timer_low_bits()
 {
 #ifdef GOOD
-    tim_feature(gen_tim_9->tim_ccmr1_1_2_3_4_5_8_9_12());
+    gen_tim_2->psc = 0xffffffff;
+    gen_tim_3->psc = 0xffff;
 #else
-    tim_feature(gen_tim_10->tim_ccmr1_1_2_3_4_5_8_9_12());
+    gen_tim_3->psc = 0xffffffff;
 #endif
 }

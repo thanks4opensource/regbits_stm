@@ -84,47 +84,190 @@ Note again that this compile-time checking has no run-time performance penalty, 
 
 
 
-### Timers <a name="timers"></a>
+### Timers (UPDATED) <a name="timers"></a> 
+
+
 
 Regbits_stm attempts to provide a consistent system for accessing the large, complex set of STM timers.
 
-#### Compile-time check of features / register sets:
+*Note: Although the following describes timers in the STM32F76xxx and STM32F77xxx MCUs, most of the discussion is applicable to many if not all other ST series MCUs.*
 
-           gentim9->arr = 1500;  // good
-           advtim8->arr = 1500;  // good
-           advtim8->rcr = 1500;  // good
-        // gentim9->rcr = 1500;  // won't compile, only advanced timers 1 and 8 have RCR register
+In terms of features, the various ST timers can be regarded conceptually as falling into an approximate hierarchy, with timers further down the chain having all the capabilities of the ones above them along with new, added features of their own.
+
+        +-- Basic Timers 6 and 7
+        |
+        +--+--  General Timers 9, 10, 11, 12, 13 and 14
+        |  |
+        |  +-----  General Timers 9 and 12
+        |  |
+        |  +--+--  General Timers 10, 11, 13 and 14
+        |     |
+        |     +-----  General Timers 10, 13 and 14
+        |     |
+        |     +-----  General Timer 11
+        |
+        +--+--  General Timers 2, 3, 4 and 5
+        |  |
+        |  +--+--  General Timers 2 and 5
+        |  |  |
+        |  |  +----- General Timer 2
+        |  |  |
+        |  |  +----- General Timer 5
+        |  |
+        |  +-----  General Timers 3 and 4
+        |
+        +----- Advanced Timers 1 and 8 (actually from all timers 2->7 and 9->14)
+
+Unfortunately, the hardware implementation of this conceptual hierarchy is not easily modeled by normal C++ classes. C++ derived classes have an in-memory layout in which lower addresses are structured identically to their base class(es), with the derived class's member variables following immediately after. (Note that implementing object-oriented structures in C is done the same way.)
+
+In ST's timer architecture, all timers, regardless of simplicity or complexity, are represented by a block of 26 consecutive 32-bit words. More complex timers have functionality controlled by more of the 26 words, while simpler timers use fewer. (Also note that whether the simpler timers ignore the unused words vs possibly exhibiting undefined or erroneous behavior is not clearly documented.)
+
+The used vs unused words follow no particular pattern, and certainly not the C++ system of new features being added in memory following old ones. For this reason the timers have been modeled as independent C++ classes, with their hierarchy  implemented via explicit conversion methods. This allows a more complex timer to be substituted for one of it's simpler antecedents (as long as only the simpler interface is used), just as a derived class can be substituted for a base class in normal C++ class design.
+
+The downside of this implementation is that client code is more verbose and less intuitive than it would be otherwise, but there is an advantage when dealing with multiple features (see [below](#timer_multiple_features)).
+
+Finally, note that the explicit hierarchy conversions could be implemented via C++ user-defined cast operators, but the resulting client code would then be even more verbose and less intuitive:
+
+        // current implementation
+        //
+        // use as direct hierarchy parent
+        func(gen_tim_2->gen_tim_2_5());
+        // direct conversion to 2nd-level parent
+        func(gen_tim_2->gen_tim_2_3_4_5());
+        // chained conversion to 2nd-level parent
+        func(gen_tim_2->gen_tim_2_5()->gen_tim_2_3_4_5());
+
+        // alternate, user-defined cast implementation
+        //
+        // use as direct hierarchy parent -- is not dereference operator
+        func(*gen_tim_2);
+        // explicit conversion to direct hierarchy parent
+        func(static_cast<GenTim_2_5*>(gen_tim_2));
+        // direct conversion to 2nd-level parent
+        func(static_cast<GenTim_2_3_4_5*>(gen_tim_2));
+        // chained conversion to 2nd-level parent
+        func(static_cast<GenTim_2_3_4_5*>(*static_cast<GenTim_2_5*>(gen_tim_2)));
+
+Examples of current implementation usage follow ...
 
 
-#### Compile-time check of timer type hierarchy:
+#### Compile-time check of timer features / register sets
 
-        void init_timer(Tim* const timer);
+        gen_tim_9->arr = 1500;  // good
+        adv_tim_8->arr = 1500;  // good
+        adv_tim_8->rcr = 1500;  // good
+        // won't compile, only advanced timers 1 and 8 have RCR register
+        // gen_tim_9->rcr = 1500;
 
-        void init_timer_10_13_14(GenTim_10_13_14* const timer);
 
-        void init_timers()
+#### Compile-time check of timer type
+
+        void func(GenTim_5* const timer);
+
+        void funcs()
         {
-            init_timer(gentim9 );  // good
-            init_timer(gentim10);  // good
-            init_timer(advtim8 );  // good
-            init_timer(bsctim6 );  // good
-
-            init_timer_10_13_14(gentim13);  // good
-         // init_timer_10_13_14(gentim11);  // won't compile, not timer 10, 13, or 14
+            func(gen_tim_5);  // good
+         // func(gen_tim_2);  // won't compile: not general timer 5
         }
 
 
-#### Compile-time check of timer by feature:
+#### Compile-time check of timer type hierarchy
 
-        void init_timer(TimDmar* const timer);
+        void func(Tim* const timer);
+        void func(GenTim_10_13_14* const timer);
+        void func(GenTim_10_11_13_14* const timer);
 
-        void init_timers()
+        void funcs()
         {
-            init_timer(gentim3);  // good
-            init_timer(gentim5);  // good
-            init_timer(advtim1);  // good
-         // init_timer(gentim9);  // won't compile, only general timers 2,3,4,5 and advanced timers 1,8 have DMAR register
+            // call func(Tim*)
+            func(gen_tim_9 ->tim());  // good
+            func(gen_tim_10->tim());  // good
+            func(adv_tim_8 ->tim());  // good
+            func(bsc_tim_6 ->tim());  // good
+
+            // good, calls func(GenTim_10_13_14*) because is type of gen_tim_13
+            func(gen_tim_13);
+            // good, calls func(GenTim_10_11_13_14*)
+            func(gen_tim_11->gen_tim_10_11_13_14());
+
+            // won't compile: gen_tim_11 is type GenTim_11*, no matching func()
+            // func(gen_tim_11);
+
+            // won't compile: can't convert gen_tim_9 to GenTim_10_11_13_14*
+            // func(gen_tim_9->gen_tim_10_11_13_14());
         }
+
+
+#### Compile-time check of timer by feature
+
+        void func(TimDmar* const timer);
+
+        void funcs()
+        {
+            func(gen_tim_3->tim_dmar());  // good
+            func(gen_tim_5->tim_dmar());  // good
+            func(adv_tim_1->tim_dmar());  // good
+            // won't compile, only general timers 2,3,4,5 and advanced timers 1,8 have DMAR register
+            // func(gen_tim_9->tim_dmar());
+        }
+
+
+#### Compile-time check of timer by multiple features <a name="timer_multiple_features"></a>
+
+In the following example, note:  
+
+1. Calls to func() will compile and execute even if fewer than all three of the union's elements are set. However, unless all three are used as intended, an incorrect timer could be passed causing unexpected runtime behavior at minimum, if not complete failure (as would also occur if zero elements were set).
+
+2. Compiler optimization will remove the second and third of the three union element assignments (as the object code for all three is identical) resulting in no code inefficiency compared to a non-typesafe C implementation.
+
+        union Features {
+            TimCr2*     tim_cr2;
+            TimCcr1*    tim_ccr1;
+            TimDmar*    tim_dmar;
+        };
+
+        void func(
+        Features    timer)
+        {
+            timer.tim_cr2 ->cr2  |= TimCr2::Cr2::TI1S;
+            timer.tim_ccr1->ccr1  = 0x1234;
+            timer.tim_dmar->dmar /= TimDmar::Dmar::DMAB<0x789>();
+        }
+
+        void funcs()
+        {
+            Features    timer;
+
+            // good: general timer 5 has CR2, CCR1, and DMAR registers
+            timer.tim_cr2  = gen_tim_5->tim_cr2 ();
+            timer.tim_ccr1 = gen_tim_5->tim_ccr1();
+            timer.tim_dmar = gen_tim_5->tim_dmar();
+            func(timer);
+
+            // good: advanced timer 8 has CR2, CCR1, and DMAR registers
+            timer.tim_cr2  = adv_tim_8->tim_cr2 ();
+            timer.tim_ccr1 = adv_tim_8->tim_ccr1();
+            timer.tim_dmar = adv_tim_8->tim_dmar();
+            func(timer);
+
+            timer.tim_cr2  = bsc_tim_6->tim_cr2 ();
+            // won't compile: basic timers 6 and 7 don't have CCR1 register
+            // timer.tim_ccr1 = bsc_tim_6->tim_ccr1();  
+            // won't compile: basic timers 6 and 7 don't have DMAR register
+            // timer.tim_dmar = bsc_tim_6->tim_dmar();
+            func(timer);
+
+            // won't compile: basic timers 9 and 12 don't have CR2 register
+            // timer.tim_cr2  = gen_tim_9->tim_cr2 ();
+            timer.tim_ccr1 = gen_tim_9->tim_ccr1();
+            // won't compile: basic timers 9 and 12 don't have DMAR register
+            // timer.tim_dmar = gen_tim_9->tim_dmar();
+            func(timer);
+        #endif
+        }
+
+
+#### Comparison with C implementations
 
 Note once again that no run-time code is generated for these checks. Contrast with STM LL and HAL library macros and functions such as:
 

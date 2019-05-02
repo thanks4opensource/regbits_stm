@@ -22,20 +22,39 @@
 
 using namespace stm32f767xx;
 
+union RequiredTimerTypes {
+    TimCr2*     tim_cr2;
+    TimCcr1*    tim_ccr1;
+    TimDmar*    tim_dmar;
+};
+
 
 void tim_feature(
-TimCcmr1_1_2_3_4_5_8_9_12* const    tim_ccmr1_1_2_3_4_5_8_9_12)
+RequiredTimerTypes  timer)
 {
-       tim_ccmr1_1_2_3_4_5_8_9_12->ccmr1
-    /= TimCcmr1_1_2_3_4_5_8_9_12::Ccmr1::CC2S_IN_IC2_TI2;
+    timer.tim_cr2 ->cr2  |= TimCr2::Cr2::TI1S;
+    timer.tim_ccr1->ccr1  = 0x1234;
+    timer.tim_dmar->dmar /= TimDmar::Dmar::DMAB<0x789>();
 }
 
 
-void call_tim_feature()
+void call_tim_multi_feature()
 {
+    RequiredTimerTypes  timer;
 #ifdef GOOD
-    tim_feature(gen_tim_9->tim_ccmr1_1_2_3_4_5_8_9_12());
+    timer.tim_cr2  = gen_tim_5->tim_cr2 ();
+    timer.tim_ccr1 = gen_tim_5->tim_ccr1();
+    timer.tim_dmar = gen_tim_5->tim_dmar();
+    tim_feature(timer);
+
+    timer.tim_cr2  = adv_tim_8->tim_cr2 ();
+    timer.tim_ccr1 = adv_tim_8->tim_ccr1();
+    timer.tim_dmar = adv_tim_8->tim_dmar();
+    tim_feature(timer);
 #else
-    tim_feature(gen_tim_10->tim_ccmr1_1_2_3_4_5_8_9_12());
+    timer.tim_cr2  = gen_tim_9->tim_cr2 ();
+    timer.tim_ccr1 = gen_tim_9->tim_ccr1();
+    timer.tim_dmar = gen_tim_9->tim_dmar();
+    tim_feature(timer);
 #endif
 }

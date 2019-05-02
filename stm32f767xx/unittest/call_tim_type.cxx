@@ -23,7 +23,12 @@
 using namespace stm32f767xx;
 
 
-void tim_type(GenTim_2_5* const tim_2_5) {}
+__attribute__((noinline)) void tim_type(
+GenTim_2* const tim_2)
+{
+    tim_2->ccr4 = 0xfffff;
+}
+
 
 void call_tim_type()
 {

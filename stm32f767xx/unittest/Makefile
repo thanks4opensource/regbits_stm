@@ -77,7 +77,8 @@ clean:
 
 INCLUDES = -I.. -I../..
 
-CXXOPTS =  -Wall		\
+CXXOPTS = -Wall			\
+	  -Werror		\
 	  $(GOOD)		\
 	  -std=$(CXX_STANDARD)	\
 	  $(OPTIMIZE)		\

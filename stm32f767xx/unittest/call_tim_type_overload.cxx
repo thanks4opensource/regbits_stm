@@ -23,19 +23,52 @@
 using namespace stm32f767xx;
 
 
-void tim_feature(
-TimCcmr1_1_2_3_4_5_8_9_12* const    tim_ccmr1_1_2_3_4_5_8_9_12)
+__attribute__((noinline)) void tim_type(
+Tim* const      tim)
 {
-       tim_ccmr1_1_2_3_4_5_8_9_12->ccmr1
-    /= TimCcmr1_1_2_3_4_5_8_9_12::Ccmr1::CC2S_IN_IC2_TI2;
+    tim->arr = 100;
 }
 
 
-void call_tim_feature()
+__attribute__((noinline)) void tim_type(
+GenTim_2_3_4_5* const   tim_2_3_4_5)
+{
+    tim_2_3_4_5->ccer |= GenTim_2_3_4_5::Ccer::CC2E;
+}
+
+
+__attribute__((noinline)) void tim_type(
+GenTim_2_5* const   tim_2_5)
+{
+    tim_2_5->ccr4 = 0xfffff;
+}
+
+
+__attribute__((noinline)) void tim_type(
+GenTim_3_4* const   tim_3_4)
+{
+    tim_3_4->ccr1 = 0x1234;
+}
+
+
+
+__attribute__((noinline)) void tim_type(
+GenTim_2* const tim_2)
+{
+    tim_2->ccr4 = 0xfffff;
+}
+
+
+
+void call_tim_type_overload()
 {
 #ifdef GOOD
-    tim_feature(gen_tim_9->tim_ccmr1_1_2_3_4_5_8_9_12());
+    tim_type(gen_tim_2);
+    tim_type(gen_tim_2->gen_tim_2_5());
+    tim_type(gen_tim_2->gen_tim_2_3_4_5());
+    tim_type(gen_tim_2->tim());
+    tim_type(gen_tim_3);
 #else
-    tim_feature(gen_tim_10->tim_ccmr1_1_2_3_4_5_8_9_12());
+    tim_type(gen_tim_3->gen_tim_2_5());
 #endif
 }

@@ -3106,36 +3106,6 @@ static_assert(sizeof(Exti) == 24, "sizeof(Exti) != 24");
 // timers
 //
 
-// timer hierarchy
-struct Tim {};
-    struct GenTim_2_3_4_5           : Tim {};
-        struct GenTim_2_5           : GenTim_2_3_4_5 {};
-    struct GenTim_9_10_11_12_13_14  : Tim {};
-        struct GenTim_10_11_13_14   : GenTim_9_10_11_12_13_14 {};
-
-// timer features
-struct TimCr2 {};
-struct TimSmcr {};
-struct TimCcmr1_1_2_3_4_5_8_9_12 {};
-struct TimCcmr1_10_11_13_14 {};
-struct TimCcmr2 {};
-struct TimCntArrCcr32 {};
-struct TimRcr {};
-struct TimCcr1 {};
-struct TimCcr2 {};
-struct TimCcr3_4 {};
-struct TimBdtr {};
-struct TimDcr {};
-struct TimDmar {};
-struct TimOrTim2 {};
-struct TimOrTim5 {};
-struct TimOrTim11 {};
-struct TimCcmr3 {};
-struct TimCcr5 {};
-struct TimCcr6 {};
-struct TimAf1 {};
-struct TimAf2 {};
-
 
 // timer types
 //
@@ -3143,145 +3113,400 @@ struct TimAf2 {};
 // check to include private stm32f767xx_tim.hxx from here
 #define STM32F767XX_TIM_HXX_INCLUDE
 
-struct AdvTim_1_8 : Tim,
-                    TimCr2,
-                    TimSmcr,
-                    TimCcmr1_1_2_3_4_5_8_9_12,
-                    TimCcmr2,
-                    TimRcr,
-                    TimCcr1,
-                    TimCcr2,
-                    TimCcr3_4,
-                    TimBdtr,
-                    TimDcr,
-                    TimDmar,
-                    TimCcmr3,
-                    TimCcr5,
-                    TimCcr6,
-                    TimAf1,
-                    TimAf2
+struct Tim
 {
-#define STM32F767XX_ADVTIM_1_8
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_ADVTIM_1_8
+};
+
+struct TimCr2
+{
+#define STM32F767XX_TIM_CR2
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_CR2
+};
+
+struct TimSmcr
+{
+#define STM32F767XX_TIM_SMCR
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_SMCR
+};
+
+struct TimCcmr1_1_2_3_4_5_8_9_12
+{
+#define STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+};
+
+struct TimCcmr1_10_11_13_14
+{
+#define STM32F767XX_TIM_CCMR1_10_11_13_14
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_CCMR1_10_11_13_14
+};
+
+struct TimCcmr2
+{
+#define STM32F767XX_TIM_CCMR2
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_CCMR2
+};
+
+struct TimRcr
+{
+#define STM32F767XX_TIM_RCR
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_RCR
+};
+
+struct TimCcr1
+{
+#define STM32F767XX_TIM_CCR1
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_CCR1
+};
+
+struct TimCcr2
+{
+#define STM32F767XX_TIM_CCR2
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_CCR2
+};
+
+struct TimCcr3_4
+{
+#define STM32F767XX_TIM_CCR3_4
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_CCR3_4
+};
+
+struct TimDcr
+{
+#define STM32F767XX_TIM_DCR
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_DCR
+};
+
+struct TimDmar
+{
+#define STM32F767XX_TIM_DMAR
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_DMAR
+};
+
+struct TimOrr_2
+{
+#define STM32F767XX_TIM_ORR_2
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_ORR_2
+};
+
+struct TimOrr_5
+{
+#define STM32F767XX_TIM_ORR_5
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_ORR_5
+};
+
+struct TimOrr_11
+{
+#define STM32F767XX_TIM_ORR_11
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_ORR_11
+};
+
+
+// timers classes
+//
+
+struct AdvTim_1_8
+{
+#define STM32F767XX_ADV_TIM_1_8
+#define STM32F767XX_TIM_CR2
+#define STM32F767XX_TIM_SMCR
+#define STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#define STM32F767XX_TIM_CCMR2
+#define STM32F767XX_TIM_RCR
+#define STM32F767XX_TIM_CCR1
+#define STM32F767XX_TIM_CCR2
+#define STM32F767XX_TIM_CCR3_4
+#define STM32F767XX_TIM_DCR
+#define STM32F767XX_TIM_DMAR
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_ADV_TIM_1_8
+#undef STM32F767XX_TIM_CR2
+#undef STM32F767XX_TIM_SMCR
+#undef STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#undef STM32F767XX_TIM_CCMR2
+#undef STM32F767XX_TIM_RCR
+#undef STM32F767XX_TIM_CCR1
+#undef STM32F767XX_TIM_CCR2
+#undef STM32F767XX_TIM_CCR3_4
+#undef STM32F767XX_TIM_DCR
+#undef STM32F767XX_TIM_DMAR
 };  // struct AdvTim_1_8
 static_assert(sizeof(AdvTim_1_8) == 104, "sizeof(AdvTim_1_8) != 104");
 
-struct GenTim_2 : GenTim_2_5,
-                  TimCr2,
-                  TimSmcr,
-                  TimCcmr1_1_2_3_4_5_8_9_12,
-                  TimCcmr2,
-                  TimCntArrCcr32,
-                  TimCcr1,
-                  TimCcr2,
-                  TimCcr3_4,
-                  TimDcr,
-                  TimDmar,
-                  TimOrTim2
+struct GenTim_2_3_4_5
 {
-#define STM32F767XX_GENTIM_2_3_4_5
-#define STM32F767XX_GENTIM_2_5
-#define STM32F767XX_GENTIM_2
+#define STM32F767XX_GEN_TIM_2_3_4_5
+#define STM32F767XX_TIM_CR2
+#define STM32F767XX_TIM_SMCR
+#define STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#define STM32F767XX_TIM_CCMR2
+#define STM32F767XX_TIM_CCR1
+#define STM32F767XX_TIM_CCR2
+#define STM32F767XX_TIM_CCR3_4
+#define STM32F767XX_TIM_DCR
+#define STM32F767XX_TIM_DMAR
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_GENTIM_2
-#undef STM32F767XX_GENTIM_2_5
-#undef STM32F767XX_GENTIM_2_3_4_5
+#undef STM32F767XX_GEN_TIM_2_3_4_5
+#undef STM32F767XX_TIM_CR2
+#undef STM32F767XX_TIM_SMCR
+#undef STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#undef STM32F767XX_TIM_CCMR2
+#undef STM32F767XX_TIM_CCR1
+#undef STM32F767XX_TIM_CCR2
+#undef STM32F767XX_TIM_CCR3_4
+#undef STM32F767XX_TIM_DCR
+#undef STM32F767XX_TIM_DMAR
+};  // struct GenTim_2_3_4_5
+static_assert(sizeof(GenTim_2_3_4_5) == 104, "sizeof(GenTim_2_3_4_5) != 104");
+
+struct GenTim_2_5
+{
+    GenTim_2_3_4_5* gen_tim_2_3_4_5() {
+        return reinterpret_cast<GenTim_2_3_4_5*>(this);
+    }
+#define STM32F767XX_GEN_TIM_2_5
+#define STM32F767XX_GEN_TIM_2_3_4_5
+#define STM32F767XX_TIM_CR2
+#define STM32F767XX_TIM_SMCR
+#define STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#define STM32F767XX_TIM_CCMR2
+#define STM32F767XX_TIM_CCR1
+#define STM32F767XX_TIM_CCR2
+#define STM32F767XX_TIM_CCR3_4
+#define STM32F767XX_TIM_DCR
+#define STM32F767XX_TIM_DMAR
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_GEN_TIM_2_5
+#undef STM32F767XX_GEN_TIM_2_3_4_5
+#undef STM32F767XX_TIM_CR2
+#undef STM32F767XX_TIM_SMCR
+#undef STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#undef STM32F767XX_TIM_CCMR2
+#undef STM32F767XX_TIM_CCR1
+#undef STM32F767XX_TIM_CCR2
+#undef STM32F767XX_TIM_CCR3_4
+#undef STM32F767XX_TIM_DCR
+#undef STM32F767XX_TIM_DMAR
+};  // struct GenTim_2_5
+static_assert(sizeof(GenTim_2_5) == 104, "sizeof(GenTim_2_5) != 104");
+
+struct GenTim_2
+{
+    GenTim_2_3_4_5* gen_tim_2_3_4_5() {
+        return reinterpret_cast<GenTim_2_3_4_5*>(this);
+    }
+    GenTim_2_5* gen_tim_2_5() { return reinterpret_cast<GenTim_2_5*>(this); }
+#define STM32F767XX_GEN_TIM_2
+#define STM32F767XX_GEN_TIM_2_5
+#define STM32F767XX_GEN_TIM_2_3_4_5
+#define STM32F767XX_TIM_CR2
+#define STM32F767XX_TIM_SMCR
+#define STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#define STM32F767XX_TIM_CCMR2
+#define STM32F767XX_TIM_CCR1
+#define STM32F767XX_TIM_CCR2
+#define STM32F767XX_TIM_CCR3_4
+#define STM32F767XX_TIM_DCR
+#define STM32F767XX_TIM_DMAR
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_GEN_TIM_2
+#undef STM32F767XX_GEN_TIM_2_5
+#undef STM32F767XX_GEN_TIM_2_3_4_5
+#undef STM32F767XX_TIM_CR2
+#undef STM32F767XX_TIM_SMCR
+#undef STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#undef STM32F767XX_TIM_CCMR2
+#undef STM32F767XX_TIM_CCR1
+#undef STM32F767XX_TIM_CCR2
+#undef STM32F767XX_TIM_CCR3_4
+#undef STM32F767XX_TIM_DCR
+#undef STM32F767XX_TIM_DMAR
 };  // struct GenTim_2
 static_assert(sizeof(GenTim_2) == 104, "sizeof(GenTim_2) != 104");
 
-struct GenTim_3_4 : GenTim_2_3_4_5,
-                    TimCr2,
-                    TimSmcr,
-                    TimCcmr1_1_2_3_4_5_8_9_12,
-                    TimCcmr2,
-                    TimCcr1,
-                    TimCcr2,
-                    TimCcr3_4,
-                    TimDcr,
-                    TimDmar
+struct GenTim_3_4
 {
-#define STM32F767XX_GENTIM_2_3_4_5
-#define STM32F767XX_GENTIM_3_4
+    GenTim_2_3_4_5* gen_tim_2_3_4_5() {
+        return reinterpret_cast<GenTim_2_3_4_5*>(this);
+    }
+#define STM32F767XX_GEN_TIM_3_4
+#define STM32F767XX_GEN_TIM_2_3_4_5
+#define STM32F767XX_TIM_CR2
+#define STM32F767XX_TIM_SMCR
+#define STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#define STM32F767XX_TIM_CCMR2
+#define STM32F767XX_TIM_CCR1
+#define STM32F767XX_TIM_CCR2
+#define STM32F767XX_TIM_CCR3_4
+#define STM32F767XX_TIM_DCR
+#define STM32F767XX_TIM_DMAR
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_GENTIM_3_4
-#undef STM32F767XX_GENTIM_2_3_4_5
+#undef STM32F767XX_GEN_TIM_3_4
+#undef STM32F767XX_GEN_TIM_2_3_4_5
+#undef STM32F767XX_TIM_CR2
+#undef STM32F767XX_TIM_SMCR
+#undef STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#undef STM32F767XX_TIM_CCMR2
+#undef STM32F767XX_TIM_CCR1
+#undef STM32F767XX_TIM_CCR2
+#undef STM32F767XX_TIM_CCR3_4
+#undef STM32F767XX_TIM_DCR
+#undef STM32F767XX_TIM_DMAR
 };  // struct GenTim_3_4
 static_assert(sizeof(GenTim_3_4) == 104, "sizeof(GenTim_3_4) != 104");
 
-struct GenTim_5 : GenTim_2_5,
-                  TimCr2,
-                  TimSmcr,
-                  TimCcmr1_1_2_3_4_5_8_9_12,
-                  TimCcmr2,
-                  TimCntArrCcr32,
-                  TimCcr1,
-                  TimCcr2,
-                  TimCcr3_4,
-                  TimDcr,
-                  TimDmar,
-                  TimOrTim5
+struct GenTim_5
 {
-#define STM32F767XX_GENTIM_2_3_4_5
-#define STM32F767XX_GENTIM_2_5
-#define STM32F767XX_GENTIM_5
+    GenTim_2_3_4_5* gen_tim_2_3_4_5() {
+        return reinterpret_cast<GenTim_2_3_4_5*>(this);
+    }
+    GenTim_2_5* gen_tim_2_5() { return reinterpret_cast<GenTim_2_5*>(this); }
+#define STM32F767XX_GEN_TIM_2_3_4_5
+#define STM32F767XX_GEN_TIM_2_5
+#define STM32F767XX_GEN_TIM_5
+#define STM32F767XX_TIM_CR2
+#define STM32F767XX_TIM_SMCR
+#define STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#define STM32F767XX_TIM_CCMR2
+#define STM32F767XX_TIM_CCR1
+#define STM32F767XX_TIM_CCR2
+#define STM32F767XX_TIM_CCR3_4
+#define STM32F767XX_TIM_DCR
+#define STM32F767XX_TIM_DMAR
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_GENTIM_5
-#undef STM32F767XX_GENTIM_2_5
-#undef STM32F767XX_GENTIM_2_3_4_5
+#undef STM32F767XX_GEN_TIM_2_3_4_5
+#undef STM32F767XX_GEN_TIM_2_5
+#undef STM32F767XX_GEN_TIM_5
+#undef STM32F767XX_TIM_CR2
+#undef STM32F767XX_TIM_SMCR
+#undef STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#undef STM32F767XX_TIM_CCMR2
+#undef STM32F767XX_TIM_CCR1
+#undef STM32F767XX_TIM_CCR2
+#undef STM32F767XX_TIM_CCR3_4
+#undef STM32F767XX_TIM_DCR
+#undef STM32F767XX_TIM_DMAR
 };  // struct GenTim_5
 static_assert(sizeof(GenTim_5) == 104, "sizeof(GenTim_5) != 104");
 
-struct BscTim_6_7 : Tim,
-                    TimCr2
+struct BscTim_6_7
 {
-#define STM32F767XX_BAS_TIM_6_7
+#define STM32F767XX_BSC_TIM_6_7
+#define STM32F767XX_TIM_CR2
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_BAS_TIM_6_7
+#undef STM32F767XX_BSC_TIM_6_7
+#undef STM32F767XX_TIM_CR2
 };  // struct BscTim_6_7
 static_assert(sizeof(BscTim_6_7) == 104, "sizeof(BscTim_6_7) != 104");
 
-struct GenTim_9_12 : GenTim_9_10_11_12_13_14,
-                     TimCcmr1_1_2_3_4_5_8_9_12,
-                     TimCcmr2,
-                     TimCcr1,
-                     TimCcr2
+struct   GenTim_9_10_11_12_13_14
 {
-#define STM32F767XX_GENTIM_9_10_11_12_13_14
-#define STM32F767XX_GENTIM_9_12
+#define STM32F767XX_GEN_TIM_9_10_11_12_13_14
+#define STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#define STM32F767XX_TIM_CCR1
+#define STM32F767XX_TIM_CCR2
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_GENTIM_9_12
-#undef STM32F767XX_GENTIM_9_10_11_12_13_14
+#undef STM32F767XX_GEN_TIM_9_10_11_12_13_14
+#undef STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#undef STM32F767XX_TIM_CCR1
+#undef STM32F767XX_TIM_CCR2
+};  // struct GenTim_9_10_11_12_13_14
+static_assert( sizeof(GenTim_9_10_11_12_13_14) == 104,
+              "sizeof(GenTim_9_10_11_12_13_14) != 104");
+
+struct GenTim_9_12
+{
+    GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14() {
+        return reinterpret_cast<GenTim_9_10_11_12_13_14*>(this);
+    }
+#define STM32F767XX_GEN_TIM_9_10_11_12_13_14
+#define STM32F767XX_GEN_TIM_9_12
+#define STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#define STM32F767XX_TIM_CCR1
+#define STM32F767XX_TIM_CCR2
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_GEN_TIM_9_10_11_12_13_14
+#undef STM32F767XX_GEN_TIM_9_12
+#undef STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
+#undef STM32F767XX_TIM_CCR1
+#undef STM32F767XX_TIM_CCR2
 };  // struct GenTim_9_12
 static_assert(sizeof(GenTim_9_12) == 104, "sizeof(GenTim_9_12) != 104");
 
-struct GenTim_10_13_14 : GenTim_10_11_13_14,
-                         TimCcmr1_10_11_13_14,
-                         TimCcr1
+struct GenTim_10_11_13_14
 {
-#define STM32F767XX_GENTIM_9_10_11_12_13_14
-#define STM32F767XX_GENTIM_10_11_13_14
-#define STM32F767XX_GENTIM_10_13_14
+    GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14() {
+        return reinterpret_cast<GenTim_9_10_11_12_13_14*>(this);
+    }
+#undef STM32F767XX_GEN_TIM_10_11_13_14
+#undef STM32F767XX_GEN_TIM_9_10_11_12_13_14
+#define STM32F767XX_GEN_TIM_10_11_13_14
+#define STM32F767XX_TIM_CCMR1_10_11_13_14
+#define STM32F767XX_TIM_CCR1
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_GENTIM_10_13_14
-#undef STM32F767XX_GENTIM_10_11_13_14
-#undef STM32F767XX_GENTIM_9_10_11_12_13_14
+#undef STM32F767XX_GEN_TIM_10_11_13_14
+#undef STM32F767XX_GEN_TIM_9_10_11_12_13_14
+#undef STM32F767XX_TIM_CCMR1_10_11_13_14
+#undef STM32F767XX_TIM_CCR1
+};  // struct GenTim_10_13_14
+static_assert( sizeof(GenTim_10_11_13_14) == 104,
+              "sizeof(GenTim_10_11_13_14) != 104");
+
+struct GenTim_10_13_14
+{
+    GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14() {
+        return reinterpret_cast<GenTim_9_10_11_12_13_14*>(this);
+    }
+    GenTim_10_11_13_14* gen_tim_10_11_13_14() {
+        return reinterpret_cast<GenTim_10_11_13_14*>(this);
+    }
+#define STM32F767XX_GEN_TIM_9_10_11_12_13_14
+#define STM32F767XX_GEN_TIM_10_11_13_14
+#define STM32F767XX_GEN_TIM_10_13_14
+#define STM32F767XX_TIM_CCMR1_10_11_13_14
+#define STM32F767XX_TIM_CCR1
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_GEN_TIM_10_13_14
+#undef STM32F767XX_GEN_TIM_10_11_13_14
+#undef STM32F767XX_GEN_TIM_9_10_11_12_13_14
+#undef STM32F767XX_TIM_CCMR1_10_11_13_14
+#undef STM32F767XX_TIM_CCR1
 };  // struct GenTim_10_13_14
 static_assert( sizeof(GenTim_10_13_14) == 104, "sizeof(GenTim_10_13_14) != 104");
 
-struct GenTim_11 : GenTim_10_11_13_14,
-                   TimCcmr1_10_11_13_14,
-                   TimCcr1,
-                   TimOrTim11
+struct GenTim_11
 {
-#define STM32F767XX_GENTIM_9_10_11_12_13_14
-#define STM32F767XX_GENTIM_10_11_13_14
-#define STM32F767XX_GENTIM_11
-#define STM32F767XX_GENTIM_10_11_13_14
+    GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14() {
+        return reinterpret_cast<GenTim_9_10_11_12_13_14*>(this);
+    }
+    GenTim_10_11_13_14* gen_tim_10_11_13_14() {
+        return reinterpret_cast<GenTim_10_11_13_14*>(this);
+    }
+#define STM32F767XX_GEN_TIM_9_10_11_12_13_14
+#define STM32F767XX_GEN_TIM_10_11_13_14
+#define STM32F767XX_GEN_TIM_11
 #include "stm32f767xx_tim.hxx"
-#undef STM32F767XX_GENTIM_11
-#undef STM32F767XX_GENTIM_10_11_13_14
-#undef STM32F767XX_GENTIM_9_10_11_12_13_14
+#undef STM32F767XX_GEN_TIM_9_10_11_12_13_14
+#undef STM32F767XX_GEN_TIM_10_11_13_14
+#undef STM32F767XX_GEN_TIM_11
+#undef STM32F767XX_GEN_TIM_10_11_13_14
+#undef STM32F767XX_TIM_CCMR1_10_11_13_14
+#undef STM32F767XX_TIM_CCR1
 };  // struct GenTim_11
 static_assert( sizeof(GenTim_11) == 104, "sizeof(GenTim_11) != 104");
 
