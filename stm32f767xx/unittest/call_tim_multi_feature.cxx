@@ -23,9 +23,9 @@
 using namespace stm32f767xx;
 
 union RequiredTimerTypes {
-    TimCr2*     tim_cr2;
-    TimCcr1*    tim_ccr1;
-    TimDmar*    tim_dmar;
+    volatile TimCr2*    tim_cr2;
+    volatile TimCcr1*   tim_ccr1;
+    volatile TimDmar*   tim_dmar;
 };
 
 

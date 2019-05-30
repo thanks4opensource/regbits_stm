@@ -84,7 +84,7 @@ Note again that this compile-time checking has no run-time performance penalty, 
 
 
 
-### Timers (UPDATED) <a name="timers"></a> 
+### Timers <a name="timers"></a> 
 
 
 
@@ -221,9 +221,9 @@ In the following example, note:
 2. Compiler optimization will remove the second and third of the three union element assignments (as the object code for all three is identical) resulting in no code inefficiency compared to a non-typesafe C implementation.
 
         union Features {
-            TimCr2*     tim_cr2;
-            TimCcr1*    tim_ccr1;
-            TimDmar*    tim_dmar;
+            volatile TimCr2*   tim_cr2;
+            volatile TimCcr1*  tim_ccr1;
+            volatile TimDmar*  tim_dmar;
         };
 
         void func(
@@ -296,7 +296,7 @@ Unit tests <a name="unittests"></a>
 
 A reasonably extensive unit test suite is included in the [regbits](https://github.com/thanks4opensource/regbits) repository. See [documentation](https://github.com/thanks4opensource/regbits#unit_test) and [code](https://github.com/thanks4opensource/regbits/tree/master/unittest).
 
-Small sets of unit tests for specific features of the STM regbits implementations in this repository are included here, for example in the [stm32f767xx/unittest](stm32f767xx/unittest) subdirectory.
+Small sets of unit tests for specific features of the STM regbits implementations in this repository are included here, for example in the [stm32f103xb/unittest](stm32f103xb/unittest) and [stm32f767xx/unittest](stm32f767xx/unittest) subdirectories.
 
 To run, `cd` to a unittest directory, and type `make` and optionally `make GOOD=-DGOOD`. Nothing will be output if all tests pass, Note that an environment variable, `GCC_ARM_ROOT`, must point to an installed development environment.
 
@@ -305,4 +305,4 @@ To run, `cd` to a unittest directory, and type `make` and optionally `make GOOD=
 Future work <a name="future_work"></a>
 -----------
 
-This initial release of regbits_stm contains a single, incomplete, implementation, specifically for the STM32F76xx family of MCUs. At this time, [stm32f767xx.hxx](stm32f767xx/stm32f767xx.hxx) only provides access to  approximately half of the extremely complex chip's capabilities. (Each of the  peripherals that are implemented, however, should be complete.)  The author may add to this implementation, and/or provide regbits for other STM and non-STM MCUs in the future. Any help in doing so would be appreciated.
+This initial release of regbits_stm contains two incomplete implementations, one each for the STM32F103xx and STM32F76xx families of MCUs. At this time, [stm32f103xb.hxx](stm32f103xb/stm32f103xb.hxx) and [stm32f767xx.hxx](stm32f767xx/stm32f767xx.hxx) only provides access to  approximately half of the chip's capabilities. (Each of the peripherals that are implemented, however, should be complete.)  The author may add to these implementations, and/or provide regbits for other STM and non-STM MCUs in the future. Any help in doing so would be appreciated.

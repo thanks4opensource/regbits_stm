@@ -199,15 +199,17 @@ struct Rcc {
         HPRE_DIV_256  = mskd_t(HPRE_MASK, 0b1110, HPRE_POS),
         HPRE_DIV_512  = mskd_t(HPRE_MASK, 0b1111, HPRE_POS),
 
-        PPRE1_DIV_2   = mskd_t(PPRE1_MASK, 0b1000, PPRE1_POS),
-        PPRE1_DIV_4   = mskd_t(PPRE1_MASK, 0b1001, PPRE1_POS),
-        PPRE1_DIV_8   = mskd_t(PPRE1_MASK, 0b1010, PPRE1_POS),
-        PPRE1_DIV_16  = mskd_t(PPRE1_MASK, 0b1011, PPRE1_POS),
+        PPRE1_DIV_1   = mskd_t(PPRE1_MASK, 0b000, PPRE1_POS),
+        PPRE1_DIV_2   = mskd_t(PPRE1_MASK, 0b100, PPRE1_POS),
+        PPRE1_DIV_4   = mskd_t(PPRE1_MASK, 0b101, PPRE1_POS),
+        PPRE1_DIV_8   = mskd_t(PPRE1_MASK, 0b110, PPRE1_POS),
+        PPRE1_DIV_16  = mskd_t(PPRE1_MASK, 0b111, PPRE1_POS),
 
-        PPRE2_DIV_2   = mskd_t(PPRE2_MASK, 0b1000, PPRE2_POS),
-        PPRE2_DIV_4   = mskd_t(PPRE2_MASK, 0b1001, PPRE2_POS),
-        PPRE2_DIV_8   = mskd_t(PPRE2_MASK, 0b1010, PPRE2_POS),
-        PPRE2_DIV_16  = mskd_t(PPRE2_MASK, 0b1011, PPRE2_POS),
+        PPRE2_DIV_1   = mskd_t(PPRE2_MASK, 0b000, PPRE2_POS),
+        PPRE2_DIV_2   = mskd_t(PPRE2_MASK, 0b100, PPRE2_POS),
+        PPRE2_DIV_4   = mskd_t(PPRE2_MASK, 0b101, PPRE2_POS),
+        PPRE2_DIV_8   = mskd_t(PPRE2_MASK, 0b110, PPRE2_POS),
+        PPRE2_DIV_16  = mskd_t(PPRE2_MASK, 0b111, PPRE2_POS),
 
         RTCPRE_NONE_0 = mskd_t(RTCPRE_MASK,  0, RTCPRE_POS),
         RTCPRE_NONE_1 = mskd_t(RTCPRE_MASK,  1, RTCPRE_POS),
@@ -1898,7 +1900,6 @@ struct Gpio {
     using lckr_t = Reg<uint32_t, Lckr>;
           lckr_t   lckr;
 
-
     struct Afrl {
         using            pos_t = Pos<uint32_t, Afrl>;
         static constexpr pos_t
@@ -1920,6 +1921,23 @@ struct Gpio {
               AFRL5_MASK =       0xFU,
               AFRL6_MASK =       0xFU,
               AFRL7_MASK =       0xFU;
+
+        static const uint32_t   AF0  =  0,
+                                AF1  =  1,
+                                AF2  =  2,
+                                AF3  =  3,
+                                AF4  =  4,
+                                AF5  =  5,
+                                AF6  =  6,
+                                AF7  =  7,
+                                AF8  =  8,
+                                AF9  =  9,
+                                AF10 = 10,
+                                AF11 = 11,
+                                AF12 = 12,
+                                AF13 = 13,
+                                AF14 = 14,
+                                AF15 = 15;
 
         using            mskd_t = Mskd<uint32_t, Afrl>;
         using            shft_t = Shft<uint32_t, Afrl>;
@@ -1998,6 +2016,23 @@ struct Gpio {
               AFRH13_MASK =      0xFU,
               AFRH14_MASK =      0xFU,
               AFRH15_MASK =      0xFU;
+
+        static const uint32_t   AF0  =  0,
+                                AF1  =  1,
+                                AF2  =  2,
+                                AF3  =  3,
+                                AF4  =  4,
+                                AF5  =  5,
+                                AF6  =  6,
+                                AF7  =  7,
+                                AF8  =  8,
+                                AF9  =  9,
+                                AF10 = 10,
+                                AF11 = 11,
+                                AF12 = 12,
+                                AF13 = 13,
+                                AF14 = 14,
+                                AF15 = 15;
 
         using            mskd_t = Mskd<uint32_t, Afrh>;
         using            shft_t = Shft<uint32_t, Afrh>;
@@ -2123,6 +2158,18 @@ struct SysCfg {
     using pmc_t = Reg<uint32_t, Pmc>;
           pmc_t   pmc;
 
+
+    static const uint32_t   EXTI_GPIOA  = 0x0,
+                            EXTI_GPIOB  = 0x1,
+                            EXTI_GPIOC  = 0x2,
+                            EXTI_GPIOD  = 0x3,
+                            EXTI_GPIOE  = 0x4,
+                            EXTI_GPIOF  = 0x5,
+                            EXTI_GPIOG  = 0x6,
+                            EXTI_GPIOH  = 0x7,
+                            EXTI_GPIOI  = 0x8,
+                            EXTI_GPIOJ  = 0x9,
+                            EXTI_GPIOK  = 0xa;
 
     struct Exticr1 {
         using            pos_t = Pos<uint32_t, Exticr1>;
@@ -3121,7 +3168,18 @@ struct Tim
 struct TimCr2
 {
 #define STM32F767XX_TIM_CR2
+#define STM32F767XX_TIM_CR2
 #include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_CR2
+#undef STM32F767XX_TIM_CR2
+};
+
+struct TimCr2Ccds
+{
+#define STM32F767XX_TIM_CR2
+#define STM32F767XX_TIM_CR2_CCDS
+#include "stm32f767xx_tim.hxx"
+#undef STM32F767XX_TIM_CR2_CCDS
 #undef STM32F767XX_TIM_CR2
 };
 
@@ -3276,9 +3334,10 @@ static_assert(sizeof(GenTim_2_3_4_5) == 104, "sizeof(GenTim_2_3_4_5) != 104");
 
 struct GenTim_2_5
 {
-    GenTim_2_3_4_5* gen_tim_2_3_4_5() {
-        return reinterpret_cast<GenTim_2_3_4_5*>(this);
-    }
+    volatile GenTim_2_3_4_5* gen_tim_2_3_4_5() volatile {
+        return reinterpret_cast<volatile GenTim_2_3_4_5*>(this); }
+             GenTim_2_3_4_5* gen_tim_2_3_4_5()          {
+        return reinterpret_cast<         GenTim_2_3_4_5*>(this); }
 #define STM32F767XX_GEN_TIM_2_5
 #define STM32F767XX_GEN_TIM_2_3_4_5
 #define STM32F767XX_TIM_CR2
@@ -3307,10 +3366,14 @@ static_assert(sizeof(GenTim_2_5) == 104, "sizeof(GenTim_2_5) != 104");
 
 struct GenTim_2
 {
-    GenTim_2_3_4_5* gen_tim_2_3_4_5() {
-        return reinterpret_cast<GenTim_2_3_4_5*>(this);
-    }
-    GenTim_2_5* gen_tim_2_5() { return reinterpret_cast<GenTim_2_5*>(this); }
+    volatile GenTim_2_3_4_5* gen_tim_2_3_4_5() volatile {
+        return reinterpret_cast<volatile GenTim_2_3_4_5*>(this); }
+             GenTim_2_3_4_5* gen_tim_2_3_4_5()          {
+        return reinterpret_cast<         GenTim_2_3_4_5*>(this); }
+    volatile GenTim_2_5* gen_tim_2_5() volatile {
+        return reinterpret_cast<volatile GenTim_2_5*>(this); }
+             GenTim_2_5* gen_tim_2_5()          {
+        return reinterpret_cast<         GenTim_2_5*>(this); }
 #define STM32F767XX_GEN_TIM_2
 #define STM32F767XX_GEN_TIM_2_5
 #define STM32F767XX_GEN_TIM_2_3_4_5
@@ -3341,9 +3404,10 @@ static_assert(sizeof(GenTim_2) == 104, "sizeof(GenTim_2) != 104");
 
 struct GenTim_3_4
 {
-    GenTim_2_3_4_5* gen_tim_2_3_4_5() {
-        return reinterpret_cast<GenTim_2_3_4_5*>(this);
-    }
+    volatile GenTim_2_3_4_5* gen_tim_2_3_4_5() volatile {
+        return reinterpret_cast<volatile GenTim_2_3_4_5*>(this); }
+             GenTim_2_3_4_5* gen_tim_2_3_4_5()          {
+        return reinterpret_cast<         GenTim_2_3_4_5*>(this); }
 #define STM32F767XX_GEN_TIM_3_4
 #define STM32F767XX_GEN_TIM_2_3_4_5
 #define STM32F767XX_TIM_CR2
@@ -3372,10 +3436,14 @@ static_assert(sizeof(GenTim_3_4) == 104, "sizeof(GenTim_3_4) != 104");
 
 struct GenTim_5
 {
-    GenTim_2_3_4_5* gen_tim_2_3_4_5() {
-        return reinterpret_cast<GenTim_2_3_4_5*>(this);
-    }
-    GenTim_2_5* gen_tim_2_5() { return reinterpret_cast<GenTim_2_5*>(this); }
+    volatile GenTim_2_3_4_5* gen_tim_2_3_4_5()volatile  {
+        return reinterpret_cast<volatile GenTim_2_3_4_5*>(this); }
+             GenTim_2_3_4_5* gen_tim_2_3_4_5()          {
+        return reinterpret_cast<         GenTim_2_3_4_5*>(this); }
+    volatile GenTim_2_5* gen_tim_2_5() volatile {
+        return reinterpret_cast<volatile GenTim_2_5*>(this); }
+             GenTim_2_5* gen_tim_2_5()          {
+        return reinterpret_cast<         GenTim_2_5*>(this); }
 #define STM32F767XX_GEN_TIM_2_3_4_5
 #define STM32F767XX_GEN_TIM_2_5
 #define STM32F767XX_GEN_TIM_5
@@ -3431,9 +3499,10 @@ static_assert( sizeof(GenTim_9_10_11_12_13_14) == 104,
 
 struct GenTim_9_12
 {
-    GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14() {
-        return reinterpret_cast<GenTim_9_10_11_12_13_14*>(this);
-    }
+    volatile GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14() volatile {
+        return reinterpret_cast<volatile GenTim_9_10_11_12_13_14*>(this); }
+             GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14()          {
+        return reinterpret_cast<         GenTim_9_10_11_12_13_14*>(this); }
 #define STM32F767XX_GEN_TIM_9_10_11_12_13_14
 #define STM32F767XX_GEN_TIM_9_12
 #define STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
@@ -3450,9 +3519,10 @@ static_assert(sizeof(GenTim_9_12) == 104, "sizeof(GenTim_9_12) != 104");
 
 struct GenTim_10_11_13_14
 {
-    GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14() {
-        return reinterpret_cast<GenTim_9_10_11_12_13_14*>(this);
-    }
+    volatile GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14() volatile {
+        return reinterpret_cast<volatile GenTim_9_10_11_12_13_14*>(this); }
+             GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14()          {
+        return reinterpret_cast<         GenTim_9_10_11_12_13_14*>(this); }
 #undef STM32F767XX_GEN_TIM_10_11_13_14
 #undef STM32F767XX_GEN_TIM_9_10_11_12_13_14
 #define STM32F767XX_GEN_TIM_10_11_13_14
@@ -3469,12 +3539,14 @@ static_assert( sizeof(GenTim_10_11_13_14) == 104,
 
 struct GenTim_10_13_14
 {
-    GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14() {
-        return reinterpret_cast<GenTim_9_10_11_12_13_14*>(this);
-    }
-    GenTim_10_11_13_14* gen_tim_10_11_13_14() {
-        return reinterpret_cast<GenTim_10_11_13_14*>(this);
-    }
+    volatile GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14() volatile {
+        return reinterpret_cast<volatile GenTim_9_10_11_12_13_14*>(this);}
+             GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14()          {
+        return reinterpret_cast<         GenTim_9_10_11_12_13_14*>(this);}
+    volatile GenTim_10_11_13_14* gen_tim_10_11_13_14() volatile {
+        return reinterpret_cast<volatile GenTim_10_11_13_14*>(this); }
+             GenTim_10_11_13_14* gen_tim_10_11_13_14()          {
+        return reinterpret_cast<         GenTim_10_11_13_14*>(this); }
 #define STM32F767XX_GEN_TIM_9_10_11_12_13_14
 #define STM32F767XX_GEN_TIM_10_11_13_14
 #define STM32F767XX_GEN_TIM_10_13_14
@@ -3491,12 +3563,12 @@ static_assert( sizeof(GenTim_10_13_14) == 104, "sizeof(GenTim_10_13_14) != 104")
 
 struct GenTim_11
 {
-    GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14() {
-        return reinterpret_cast<GenTim_9_10_11_12_13_14*>(this);
-    }
-    GenTim_10_11_13_14* gen_tim_10_11_13_14() {
-        return reinterpret_cast<GenTim_10_11_13_14*>(this);
-    }
+    volatile GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14() volatile {
+        return reinterpret_cast<volatile GenTim_9_10_11_12_13_14*>(this); }
+             GenTim_9_10_11_12_13_14* gen_tim_9_10_11_12_13_14()          {
+        return reinterpret_cast<         GenTim_9_10_11_12_13_14*>(this); }
+    volatile GenTim_10_11_13_14* gen_tim_10_11_13_14() volatile {
+        return reinterpret_cast<volatile GenTim_10_11_13_14*>(this); }
 #define STM32F767XX_GEN_TIM_9_10_11_12_13_14
 #define STM32F767XX_GEN_TIM_10_11_13_14
 #define STM32F767XX_GEN_TIM_11
@@ -4682,7 +4754,7 @@ struct Rtc {
                             _words,
                             NUM_BKPXRS - 1);
       private:
-        volatile uint32_t   _words[NUM_BKPXRS];
+        uint32_t    _words[NUM_BKPXRS];
     };  // struct Bkpxr
     Bkpxr   bkpxr;
     static_assert(sizeof(Bkpxr) == 128, "sizeof(Bkpxr) != 128");
@@ -5701,60 +5773,20 @@ struct Spi {
           sr_t   sr;
 
 
-    struct Dr {
-        using              pos_t = Pos<uint32_t, Dr>;
-        static constexpr   pos_t
-                  DR_POS = pos_t( 0);
-
-        static const uint32_t
-                 DR_MASK =    0xFFFFU;
-
-        // access using operator=(unit32_t) and word() -- no masking/shifting
-    };  // struct Dr
-    using dr_t = Reg<uint32_t, Dr>;
-          dr_t   dr;
+                uint16_t    dr;
+    private:    uint16_t    _dr_high_bits;   public:
 
 
-    struct Crcpr {
-        using              pos_t = Pos<uint32_t, Crcpr>;
-        static constexpr   pos_t
-             CRCPOLY_POS = pos_t( 0);
-
-        static const uint32_t
-            CRCPOLY_MASK =    0xFFFFU;
-
-        // access using operator=(unit32_t) and word() -- no masking/shiftingqsw
-    };  // struct Crcpr
-    using crcpr_t = Reg<uint32_t, Crcpr>;
-          crcpr_t   crcpr;
+                uint16_t    crcpr;
+    private:    uint16_t    _crcpr_high_bits;    public:
 
 
-    struct Rxcrcr {
-        using              pos_t = Pos<uint32_t, Rxcrcr>;
-        static constexpr   pos_t
-               RXCRC_POS = pos_t( 0);
-
-        static const uint32_t
-              RXCRC_MASK =    0xFFFFU;
-
-        // access using operator=(unit32_t) and word() -- no masking/shiftingqsw
-    };  // struct Rxcrcr
-    using rxcrcr_t = Reg<uint32_t, Rxcrcr>;
-          rxcrcr_t   rxcrcr;
+                uint16_t    rxcrcr;
+    private:    uint16_t    _rxcrcr_high_bits;   public:
 
 
-    struct Txcrcr {
-        using              pos_t = Pos<uint32_t, Txcrcr>;
-        static constexpr   pos_t
-               TXCRC_POS = pos_t( 0);
-
-        static const uint32_t
-              TXCRC_MASK =    0xFFFFU;
-
-        // access using operator=(unit32_t) and word() -- no masking/shiftingqsw
-    };  // struct Txcrcr
-    using txcrcr_t = Reg<uint32_t, Txcrcr>;
-          txcrcr_t   txcrcr;
+                uint16_t    txcrcr;
+    private:    uint16_t    _txcrcr_high_bits;   public:
 
 
     struct I2scfgr {
@@ -5910,66 +5942,72 @@ static const uint32_t   RCC_BASE            = AHB1PERIPH_BASE + 0x3800U,
                         CRC_BASE            = AHB1PERIPH_BASE + 0x3000U;
 
 
+#define STM32F767XX_PERIPH(TYPE, PERIPH, BASE)      \
+    static volatile TYPE* const                     \
+    PERIPH = reinterpret_cast<volatile TYPE*>(BASE)
+
+STM32F767XX_PERIPH( Rcc,                rcc,            RCC_BASE    );
+
+STM32F767XX_PERIPH( Gpio,               gpioa,          GPIOA_BASE  );
+STM32F767XX_PERIPH( Gpio,               gpiob,          GPIOB_BASE  );
+STM32F767XX_PERIPH( Gpio,               gpioc,          GPIOC_BASE  );
+STM32F767XX_PERIPH( Gpio,               gpiod,          GPIOD_BASE  );
+STM32F767XX_PERIPH( Gpio,               gpioe,          GPIOE_BASE  );
+STM32F767XX_PERIPH( Gpio,               gpiof,          GPIOF_BASE  );
+STM32F767XX_PERIPH( Gpio,               gpiog,          GPIOG_BASE  );
+STM32F767XX_PERIPH( Gpio,               gpioh,          GPIOH_BASE  );
+STM32F767XX_PERIPH( Gpio,               gpioi,          GPIOI_BASE  );
+STM32F767XX_PERIPH( Gpio,               gpioj,          GPIOJ_BASE  );
+STM32F767XX_PERIPH( Gpio,               gpiok,          GPIOK_BASE  );
+
+STM32F767XX_PERIPH( SysCfg,             sys_cfg,        SYSCFG_BASE );
+
+STM32F767XX_PERIPH( Dma,                dma1,           DMA1_BASE   );
+STM32F767XX_PERIPH( Dma,                dma2,           DMA2_BASE   );
+
+STM32F767XX_PERIPH( Exti,               exti,           EXTI_BASE   );
 
 
-static Rcc* const           rcc = reinterpret_cast<Rcc*>(RCC_BASE);
+STM32F767XX_PERIPH( AdvTim_1_8,         adv_tim_1,      TIM1_BASE   );
+STM32F767XX_PERIPH( AdvTim_1_8,         adv_tim_8,      TIM8_BASE   );
 
-static Gpio* const          gpioa = reinterpret_cast<Gpio*>(GPIOA_BASE);
-static Gpio* const          gpiob = reinterpret_cast<Gpio*>(GPIOB_BASE);
-static Gpio* const          gpioc = reinterpret_cast<Gpio*>(GPIOC_BASE);
-static Gpio* const          gpiod = reinterpret_cast<Gpio*>(GPIOD_BASE);
-static Gpio* const          gpioe = reinterpret_cast<Gpio*>(GPIOE_BASE);
-static Gpio* const          gpiof = reinterpret_cast<Gpio*>(GPIOF_BASE);
-static Gpio* const          gpiog = reinterpret_cast<Gpio*>(GPIOG_BASE);
-static Gpio* const          gpioh = reinterpret_cast<Gpio*>(GPIOH_BASE);
-static Gpio* const          gpioi = reinterpret_cast<Gpio*>(GPIOI_BASE);
-static Gpio* const          gpioj = reinterpret_cast<Gpio*>(GPIOJ_BASE);
-static Gpio* const          gpiok = reinterpret_cast<Gpio*>(GPIOK_BASE);
+STM32F767XX_PERIPH( GenTim_2,           gen_tim_2,      TIM2_BASE   );
 
-static SysCfg* const        sys_cfg = reinterpret_cast<SysCfg*>(SYSCFG_BASE);
+STM32F767XX_PERIPH( GenTim_5,           gen_tim_5,      TIM5_BASE   );
 
-static Dma* const           dma1 = reinterpret_cast<Dma*>(DMA1_BASE);
-static Dma* const           dma2 = reinterpret_cast<Dma*>(DMA2_BASE);
+STM32F767XX_PERIPH( GenTim_3_4,         gen_tim_3,      TIM3_BASE   );
+STM32F767XX_PERIPH( GenTim_3_4,         gen_tim_4,      TIM4_BASE   );
 
-static Exti* const          exti = reinterpret_cast<Exti*>(EXTI_BASE);
+STM32F767XX_PERIPH( GenTim_9_12,        gen_tim_9,      TIM9_BASE   );
+STM32F767XX_PERIPH( GenTim_9_12,        gen_tim_12,     TIM12_BASE  );
 
+STM32F767XX_PERIPH( GenTim_10_13_14,    gen_tim_10,     TIM10_BASE  );
+STM32F767XX_PERIPH( GenTim_10_13_14,    gen_tim_13,     TIM13_BASE  );
+STM32F767XX_PERIPH( GenTim_10_13_14,    gen_tim_14,     TIM14_BASE  );
 
-static AdvTim_1_8* const    adv_tim_1 = reinterpret_cast<AdvTim_1_8*>(TIM1_BASE);
-static AdvTim_1_8* const    adv_tim_8 = reinterpret_cast<AdvTim_1_8*>(TIM8_BASE);
+STM32F767XX_PERIPH( GenTim_11,          gen_tim_11,     TIM11_BASE  );
 
-static GenTim_2* const      gen_tim_2 = reinterpret_cast<GenTim_2*>(TIM2_BASE);
-
-static GenTim_5* const      gen_tim_5 = reinterpret_cast<GenTim_5*>(TIM5_BASE);
-
-static GenTim_3_4* const    gen_tim_3 = reinterpret_cast<GenTim_3_4*>(TIM3_BASE);
-static GenTim_3_4* const    gen_tim_4 = reinterpret_cast<GenTim_3_4*>(TIM4_BASE);
-
-static GenTim_9_12* const   gen_tim_9  = reinterpret_cast<GenTim_9_12*>(
-                                                          TIM9_BASE );
-static GenTim_9_12* const   gen_tim_12 = reinterpret_cast<GenTim_9_12*>(
-                                                          TIM12_BASE);
-
-static GenTim_10_13_14* const   gen_tim_10 = reinterpret_cast<GenTim_10_13_14*>(
-                                                              TIM10_BASE);
-static GenTim_10_13_14* const   gen_tim_13 = reinterpret_cast<GenTim_10_13_14*>(
-                                                              TIM13_BASE);
-static GenTim_10_13_14* const   gen_tim_14 = reinterpret_cast<GenTim_10_13_14*>(
-                                                              TIM14_BASE);
-
-static GenTim_11* const     gen_tim_11 = reinterpret_cast<GenTim_11*>(TIM11_BASE);
-
-static BscTim_6_7* const    bsc_tim_6 = reinterpret_cast<BscTim_6_7*>(TIM6_BASE);
-static BscTim_6_7* const    bsc_tim_7 = reinterpret_cast<BscTim_6_7*>(TIM7_BASE);
+STM32F767XX_PERIPH( BscTim_6_7,         bsc_tim_6,      TIM6_BASE   );
+STM32F767XX_PERIPH( BscTim_6_7,         bsc_tim_7,      TIM7_BASE   );
 
 
-static LpTim* const         lp_tim_1 = reinterpret_cast<LpTim*>(LPTIM1_BASE);
+STM32F767XX_PERIPH( LpTim,              lp_tim_1,       LPTIM1_BASE );
 
-static Rtc* const           rtc = reinterpret_cast<Rtc*>(RTC_BASE);
+STM32F767XX_PERIPH( Rtc,                rtc,            RTC_BASE    );
 
-static I2c* const           i2c1 = reinterpret_cast<I2c*>(I2C1_BASE);
-static I2c* const           i2c2 = reinterpret_cast<I2c*>(I2C2_BASE);
-static I2c* const           i2c3 = reinterpret_cast<I2c*>(I2C3_BASE);
-static I2c* const           i2c4 = reinterpret_cast<I2c*>(I2C4_BASE);
+STM32F767XX_PERIPH( Spi,                spi1,           SPI1_BASE   );
+STM32F767XX_PERIPH( Spi,                spi2,           SPI2_BASE   );
+STM32F767XX_PERIPH( Spi,                spi3,           SPI3_BASE   );
+STM32F767XX_PERIPH( Spi,                spi4,           SPI4_BASE   );
+STM32F767XX_PERIPH( Spi,                spi5,           SPI5_BASE   );
+STM32F767XX_PERIPH( Spi,                spi6,           SPI6_BASE   );
+
+STM32F767XX_PERIPH( I2c,                i2c1,           I2C1_BASE   );
+STM32F767XX_PERIPH( I2c,                i2c2,           I2C2_BASE   );
+STM32F767XX_PERIPH( I2c,                i2c3,           I2C3_BASE   );
+STM32F767XX_PERIPH( I2c,                i2c4,           I2C4_BASE   );
+
+#undef STM32F767XX_PERIPH
 
 }  // namespace stm32f767xx
 

@@ -18,23 +18,17 @@
 // <https://www.gnu.org/licenses/gpl.html>
 
 
-#include "stm32f767xx.hxx"
+#include "stm32f103xb.hxx"
 
-using namespace stm32f767xx;
-
-
-__attribute__((noinline)) void tim_type(
-volatile GenTim_2* const tim_2)
-{
-    tim_2->ccr4 = 0xfffff;
-}
+using namespace stm32f103xb;
 
 
-void call_tim_type()
+void tim_cr2_mms()
 {
 #ifdef GOOD
-    tim_type(gen_tim_2);
+    adv_tim_1 ->cr2 = AdvTim_1    ::Cr2::CCUS      ;
+    gen_tim_3 ->cr2 = GenTim_2_3_4::Cr2::MMS_ENABLE;
 #else
-    tim_type(gen_tim_3);
+    gen_tim_3 ->cr2 = GenTim_2_3_4::Cr2::CCUS      ;
 #endif
 }

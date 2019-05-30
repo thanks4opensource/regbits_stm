@@ -27,7 +27,7 @@ uint32_t    milliseconds)
     bsc_tim_6->cr1 = BscTim_6_7::Cr1::OPM | BscTim_6_7::Cr1::CEN;
 
     // wait for timer to finish
-    while (bsc_tim_6->sr != BscTim_6_7::Sr::UIF)
+    while (!bsc_tim_6->sr.any(BscTim_6_7::Sr::UIF))
         asm("nop");
 }
 

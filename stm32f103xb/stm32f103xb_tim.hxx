@@ -19,7 +19,7 @@
 
 
 // included multiple times, only from stm32f767.hxx
-#ifndef STM32F767XX_TIM_HXX_INCLUDE
+#ifndef STM32F103XB_TIM_HXX_INCLUDE
 #error -- private file, #include stm32f767xx_tim.hxx only from stm32f767.hxx
 #else
 
@@ -27,6 +27,7 @@
         return reinterpret_cast<volatile Tim*>(this); }
              Tim*   tim()          {
         return reinterpret_cast<         Tim*>(this); }
+
 
     struct Cr1 {
         using            pos_t = Pos<uint32_t, Cr1>;
@@ -65,10 +66,7 @@
     using cr1_t = Reg<uint32_t, Cr1>;
           cr1_t   cr1;
 
-
-#if    defined(STM32F767XX_ADV_TIM_1_8 ) \
-    || defined(STM32F767XX_TIM_CR2     ) \
-    || defined(STM32F767XX_TIM_CR2_CCDS)
+#ifdef STM32F103XB_ADV_TIM_1
     struct Cr2 {
         using              pos_t = Pos<uint32_t, Cr2>;
         static constexpr   pos_t
@@ -83,18 +81,13 @@
                OIS2N_POS = pos_t(11),
                 OIS3_POS = pos_t(12),
                OIS3N_POS = pos_t(13),
-                OIS4_POS = pos_t(14),
-                OIS5_POS = pos_t(16),
-                OIS6_POS = pos_t(18),
-                MMS2_POS = pos_t(20);
+                OIS4_POS = pos_t(14);
 
         using              bits_t = Bits<uint32_t, Cr2>;
         static constexpr   bits_t
         CCPC             = bits_t(1,         CCPC_POS),
         CCUS             = bits_t(1,         CCUS_POS),
         CCDS             = bits_t(1,         CCDS_POS),
-        OIS5             = bits_t(1,         OIS5_POS),
-        OIS6             = bits_t(1,         OIS6_POS),
         TI1S             = bits_t(1,         TI1S_POS),
         OIS1             = bits_t(1,         OIS1_POS),
         OIS1N            = bits_t(1,        OIS1N_POS),
@@ -105,54 +98,22 @@
         OIS4             = bits_t(1,         OIS4_POS);
 
         static const uint32_t
-                MMS_MASK =       0x7U,
-               MMS2_MASK =       0xFU;
+                MMS_MASK =       0x7U;
 
         using               mskd_t = Mskd<uint32_t, Cr2>;
         static constexpr    mskd_t
-        MMS_RESET         = mskd_t( MMS_MASK,   0b000 , MMS_POS ),
-        MMS_ENABLE        = mskd_t( MMS_MASK,   0b001 , MMS_POS ),
-        MMS_UPDATE        = mskd_t( MMS_MASK,   0b010 , MMS_POS ),
-        MMS_COMPARE       = mskd_t( MMS_MASK,   0b011 , MMS_POS ),
-        MMS_OC1REF        = mskd_t( MMS_MASK,   0b100 , MMS_POS ),
-        MMS_OC2REF        = mskd_t( MMS_MASK,   0b101 , MMS_POS ),
-        MMS_OC3REF        = mskd_t( MMS_MASK,   0b110 , MMS_POS ),
-        MMS_OC4REF        = mskd_t( MMS_MASK,   0b111 , MMS_POS ),
-        MMS2_RESET        = mskd_t(MMS2_MASK,   0b0000, MMS2_POS),
-        MMS2_ENABLE       = mskd_t(MMS2_MASK,   0b0001, MMS2_POS),
-        MMS2_UPDATE       = mskd_t(MMS2_MASK,   0b0010, MMS2_POS),
-        MMS2_COMPARE      = mskd_t(MMS2_MASK,   0b0011, MMS2_POS),
-        MMS2_OC1REF       = mskd_t(MMS2_MASK,   0b0100, MMS2_POS),
-        MMS2_OC2REF       = mskd_t(MMS2_MASK,   0b0101, MMS2_POS),
-        MMS2_OC3REF       = mskd_t(MMS2_MASK,   0b0110, MMS2_POS),
-        MMS2_OC4REF       = mskd_t(MMS2_MASK,   0b0111, MMS2_POS),
-        MMS2_OC5REF       = mskd_t(MMS2_MASK,   0b1000, MMS2_POS),
-        MMS2_OC6REF       = mskd_t(MMS2_MASK,   0b1001, MMS2_POS),
-        MMS2_OC4_RIS_FAL  = mskd_t(MMS2_MASK,   0b1010, MMS2_POS),
-        MMS2_OC6_RIS_FAL  = mskd_t(MMS2_MASK,   0b1011, MMS2_POS),
-        MMS2_OC4_6_RISE   = mskd_t(MMS2_MASK,   0b1100, MMS2_POS),
-        MMS2_OC4_6_FALL   = mskd_t(MMS2_MASK,   0b1101, MMS2_POS),
-        MMS2_OC5_6_RISE   = mskd_t(MMS2_MASK,   0b1110, MMS2_POS),
-        MMS2_OC5RIS_6FAL  = mskd_t(MMS2_MASK,   0b1111, MMS2_POS);
+        MMS_RESET         = mskd_t( MMS_MASK,   0b000, MMS_POS),
+        MMS_ENABLE        = mskd_t( MMS_MASK,   0b001, MMS_POS),
+        MMS_UPDATE        = mskd_t( MMS_MASK,   0b010, MMS_POS),
+        MMS_COMPARE       = mskd_t( MMS_MASK,   0b011, MMS_POS),
+        MMS_OC1REF        = mskd_t( MMS_MASK,   0b100, MMS_POS),
+        MMS_OC2REF        = mskd_t( MMS_MASK,   0b101, MMS_POS),
+        MMS_OC3REF        = mskd_t( MMS_MASK,   0b110, MMS_POS),
+        MMS_OC4REF        = mskd_t( MMS_MASK,   0b111, MMS_POS);
     };  // struct Cr2
     using cr2_t = Reg<uint32_t, Cr2>;
           cr2_t   cr2;
-    volatile TimCr2*
-    tim_cr2() volatile { return reinterpret_cast<volatile TimCr2*>(this); }
-             TimCr2*
-    tim_cr2()          { return reinterpret_cast<         TimCr2*>(this); }
-#ifdef STM32F767XX_TIM_CR2_CCDS
-    volatile TimCr2Ccds*
-    tim_cr2_ccds() volatile {
-                         return reinterpret_cast<volatile TimCr2Ccds*>(this); }
-             TimCr2Ccds*
-    tim_cr2_ccds()          {
-                         return reinterpret_cast<         TimCr2Ccds*>(this); }
-#endif
-
-#elif    defined( STM32F767XX_GEN_TIM_2_3_4_5) \
-       || defined(STM32F767XX_TIM_CR2        ) \
-       || defined(STM32F767XX_TIM_CR2_CCDS   )
+#elif defined(STM32F103XB_GEN_TIM_2_3_4)
     struct Cr2 {
         using            pos_t = Pos<uint32_t, Cr2>;
         static constexpr pos_t      CCDS_POS = pos_t(3),
@@ -165,7 +126,7 @@
 
         static const uint32_t       MMS_MASK = 0x7;
 
-        using            mskd_t = Mskd<uint32_t, Cr2>;
+        using mskd_t = Mskd<uint32_t, Cr2>;
         static constexpr mskd_t MMS_RESET   = mskd_t(MMS_MASK, 0b000, MMS_POS),
                                 MMS_ENABLE  = mskd_t(MMS_MASK, 0b001, MMS_POS),
                                 MMS_UPDATE  = mskd_t(MMS_MASK, 0b010, MMS_POS),
@@ -177,45 +138,11 @@
     };  // struct Cr2
     using cr2_t = Reg<uint32_t, Cr2>;
           cr2_t   cr2;
-    volatile TimCr2*
-    tim_cr2() volatile { return reinterpret_cast<volatile TimCr2*>(this); }
-             TimCr2*
-    tim_cr2()          { return reinterpret_cast<         TimCr2*>(this); }
-#ifdef STM32F767XX_TIM_CR2_CCDS
-    volatile TimCr2Ccds*
-    tim_cr2_ccds() volatile {
-                         return reinterpret_cast<volatile TimCr2Ccds*>(this); }
-             TimCr2Ccds*
-    tim_cr2_ccds()          {
-                         return reinterpret_cast<         TimCr2Ccds*>(this); }
+#else
+    private: uint32_t   _unimplemented_cr2;  public:
 #endif
 
-#elif    defined(STM32F767XX_BSC_TIM_6_7) \
-      || defined(STM32F767XX_TIM_CR2    )
 
-    struct Cr2 {
-        using            pos_t = Pos<uint32_t, Cr2>;
-        static constexpr pos_t      MMS_POS  = pos_t(4);
-
-        static const uint32_t       MMS_MASK = 0x7;
-
-        using mskd_t = Mskd<uint32_t, Cr2>;
-        static constexpr mskd_t MMS_RESET   = mskd_t(MMS_MASK, 0b000, MMS_POS),
-                                MMS_ENABLE  = mskd_t(MMS_MASK, 0b001, MMS_POS),
-                                MMS_UPDATE  = mskd_t(MMS_MASK, 0b010, MMS_POS);
-    };  // struct Cr2
-    using cr2_t = Reg<uint32_t, Cr2>;
-          cr2_t   cr2;
-    volatile TimCr2*
-    tim_cr2() volatile { return reinterpret_cast<volatile TimCr2*>(this); }
-             TimCr2*
-    tim_cr2()          { return reinterpret_cast<         TimCr2*>(this); }
-#else
-     private: uint32_t  _unimplemented_cr2; public:
-#endif  // #ifdef STM32F767XX_TIM_CR2
-
-
-#ifdef STM32F767XX_TIM_SMCR
     struct Smcr {
         using              pos_t = Pos<uint32_t, Smcr>;
         static constexpr   pos_t
@@ -281,13 +208,6 @@
     };  // struct Smcr
     using smcr_t = Reg<uint32_t, Smcr>;
           smcr_t   smcr;
-    volatile TimSmcr*
-    tim_smcr() volatile { return reinterpret_cast<volatile TimSmcr*>(this); }
-             TimSmcr*
-    tim_smcr()          { return reinterpret_cast<         TimSmcr*>(this); }
-#else
-    private: uint32_t   _unimplemented_smcr;     public:
-#endif
 
 
     struct Dier {
@@ -377,77 +297,39 @@
     struct Egr {
         using              pos_t = Pos<uint32_t, Egr>;
         static constexpr   pos_t
-                  UG_POS = pos_t( 0)
-#if    defined(STM32F767XX_GEN_TIM_9_10_11_12_13_14) \
-    || defined(STM32F767XX_GEN_TIM_2_3_4_5) \
-    || defined(STM32F767XX_ADV_TIM_1_8)
-                                    ,
-                CC1G_POS = pos_t( 1)
-#endif
-#if    defined(STM32F767XX_GEN_TIM_9_12) \
-    || defined(STM32F767XX_GEN_TIM_2_3_4_5) \
-    || defined(STM32F767XX_ADV_TIM_1_8)
-                                    ,
-                CC2G_POS = pos_t( 2)
-#endif
-#if    defined(STM32F767XX_GEN_TIM_2_3_4_5) \
-    || defined(STM32F767XX_ADV_TIM_1_8)
-                                    ,
+                  UG_POS = pos_t( 0),
+                CC1G_POS = pos_t( 1),
+                CC2G_POS = pos_t( 2),
                 CC3G_POS = pos_t( 3),
                 CC4G_POS = pos_t( 4)
-#endif
-#if    defined(STM32F767XX_ADV_TIM_1_8)
+#ifdef STM32F103XB_ADV_TIM_1
                                     ,
                 COMG_POS = pos_t( 5)
 #endif
-#if    defined(STM32F767XX_GEN_TIM_9_12) \
-    || defined(STM32F767XX_GEN_TIM_2_3_4_5) \
-    || defined(STM32F767XX_ADV_TIM_1_8)
                                     ,
                   TG_POS = pos_t( 6)
-#endif
-#if    defined(STM32F767XX_ADV_TIM_1_8)
+#ifdef STM32F103XB_ADV_TIM_1
                                     ,
-                  BG_POS = pos_t( 7),
-                 B2G_POS = pos_t( 8)
+                  BG_POS = pos_t( 7)
 #endif
                                     ;
 
         using              bits_t = Bits<uint32_t, Egr>;
         static constexpr   bits_t
-        UG               = bits_t(1,           UG_POS)
-#if    defined(STM32F767XX_GEN_TIM_9_10_11_12_13_14) \
-    || defined(STM32F767XX_GEN_TIM_2_3_4_5) \
-    || defined(STM32F767XX_ADV_TIM_1_8)
-                                                      ,
-        CC1G             = bits_t(1,         CC1G_POS)
-#endif
-#if    defined(STM32F767XX_GEN_TIM_9_12) \
-    || defined(STM32F767XX_GEN_TIM_2_3_4_5) \
-    || defined(STM32F767XX_ADV_TIM_1_8)
-                                                      ,
-        CC2G             = bits_t(1,         CC2G_POS)
-#endif
-#if    defined(STM32F767XX_GEN_TIM_2_3_4_5) \
-    || defined(STM32F767XX_ADV_TIM_1_8)
-                                                      ,
+        UG               = bits_t(1,           UG_POS),
+        CC1G             = bits_t(1,         CC1G_POS),
+        CC2G             = bits_t(1,         CC2G_POS),
         CC3G             = bits_t(1,         CC3G_POS),
         CC4G             = bits_t(1,         CC4G_POS)
-#endif
-#if    defined(STM32F767XX_ADV_TIM_1_8)
+#ifdef STM32F103XB_ADV_TIM_1
                                                       ,
         COMG             = bits_t(1,         COMG_POS)
 #endif
-#if    defined(STM32F767XX_GEN_TIM_9_12) \
-    || defined(STM32F767XX_GEN_TIM_2_3_4_5) \
-    || defined(STM32F767XX_ADV_TIM_1_8)
                                                       ,
         TG               = bits_t(1,           TG_POS)
-#endif
-#if    defined(STM32F767XX_ADV_TIM_1_8)
+#ifdef STM32F103XB_ADV_TIM_1
                                                       ,
-        BG               = bits_t(1,           BG_POS),
-        B2G              = bits_t(1,          B2G_POS)
+        BG               = bits_t(1,           BG_POS)
 #endif
                                                       ;
     };  // struct Egr
@@ -455,7 +337,6 @@
           egr_t   egr;
 
 
-#ifdef STM32F767XX_TIM_CCMR1_1_2_3_4_5_8_9_12
     struct Ccmr1 {
         using              pos_t = Pos<uint32_t, Ccmr1>;
         static constexpr   pos_t
@@ -552,94 +433,8 @@
     };  // struct Ccmr1
     using ccmr1_t = Reg<uint32_t, Ccmr1>;
           ccmr1_t   ccmr1;
-    volatile TimCcmr1_1_2_3_4_5_8_9_12* tim_ccmr1_1_2_3_4_5_8_9_12() volatile {
-        return reinterpret_cast<volatile TimCcmr1_1_2_3_4_5_8_9_12*>(this); }
-             TimCcmr1_1_2_3_4_5_8_9_12* tim_ccmr1_1_2_3_4_5_8_9_12()          {
-        return reinterpret_cast<         TimCcmr1_1_2_3_4_5_8_9_12*>(this); }
-#elif defined(STM32F767XX_TIM_CCMR1_10_11_13_14)
-    struct Ccmr1 {
-        using              pos_t = Pos<uint32_t, Ccmr1>;
-        static constexpr   pos_t
-        // output/compare mode
-                CC1S_POS = pos_t( 0),
-               OC1FE_POS = pos_t( 2),
-               OC1PE_POS = pos_t( 3),
-                OC1M_POS = pos_t( 4),
-               OC1CE_POS = pos_t( 7),
-        // input/capture mode
-              IC1PSC_POS = pos_t( 2),
-                IC1F_POS = pos_t( 4);
-
-        using              bits_t = Bits<uint32_t, Ccmr1>;
-        static constexpr   bits_t
-        // output/compare mode
-        OC1FE            = bits_t(1,        OC1FE_POS),
-        OC1PE            = bits_t(1,        OC1PE_POS),
-        OC1CE            = bits_t(1,        OC1CE_POS);
-
-        static const uint32_t
-        // output/compare mode
-               CC1S_MASK =       0x3U,
-               OC1M_MASK =    0x1007U,
-        // input/capture mode
-             IC1PSC_MASK =       0x3U,
-               IC1F_MASK =       0xFU;
-
-        using              mskd_t = Mskd<uint32_t, Ccmr1>;
-        static constexpr   mskd_t
-        // both modes
-        CC1S_OUTPUT      = mskd_t(       CC1S_MASK,  0b00,         CC1S_POS),
-        CC1S_IC1_TI1     = mskd_t(       CC1S_MASK,  0b01,         CC1S_POS),
-        CC1S_IC1_TI2     = mskd_t(       CC1S_MASK,  0b10,         CC1S_POS),
-        CC1S_IC1_TRC     = mskd_t(       CC1S_MASK,  0b11,         CC1S_POS),
-        // output/compare mode
-        OC1M_FROZEN      = mskd_t(       OC1M_MASK,  0x0000,          OC1M_POS),
-        OC1M_CH1_ACTV    = mskd_t(       OC1M_MASK,  0x0001,          OC1M_POS),
-        OC1M_CH1_INACT   = mskd_t(       OC1M_MASK,  0x0002,          OC1M_POS),
-        OC1M_TOGGLE      = mskd_t(       OC1M_MASK,  0x0003,          OC1M_POS),
-        OC1M_FORCE_LOW   = mskd_t(       OC1M_MASK,  0x0004,          OC1M_POS),
-        OC1M_FORCE_HIGH  = mskd_t(       OC1M_MASK,  0x0006,          OC1M_POS),
-        OC1M_PWM_MODE_2  = mskd_t(       OC1M_MASK,  0x0007,          OC1M_POS),
-        OC1M_RETRIG_1    = mskd_t(       OC1M_MASK,  0x1000,          OC1M_POS),
-        OC1M_RETRIG_2    = mskd_t(       OC1M_MASK,  0x1001,          OC1M_POS),
-        OC1M_COMB_PWM_1  = mskd_t(       OC1M_MASK,  0x1004,          OC1M_POS),
-        OC1M_COMB_PWM_2  = mskd_t(       OC1M_MASK,  0x1005,          OC1M_POS),
-        OC1M_ASYM_PWM_1  = mskd_t(       OC1M_MASK,  0x1006,          OC1M_POS),
-        OC1M_ASYM_PWM_2  = mskd_t(       OC1M_MASK,  0x1007,          OC1M_POS),
-        // input/capture mode
-        IC1PSC_PRESCAL_1 = mskd_t(     IC1PSC_MASK,  0b00,           IC1PSC_POS),
-        IC1PSC_PRESCAL_2 = mskd_t(     IC1PSC_MASK,  0b01,           IC1PSC_POS),
-        IC1PSC_PRESCAL_4 = mskd_t(     IC1PSC_MASK,  0b10,           IC1PSC_POS),
-        IC1PSC_PRESCAL_8 = mskd_t(     IC1PSC_MASK,  0b11,           IC1PSC_POS),
-        IC1F_NO_FILT     = mskd_t(       IC1F_MASK,  0b0000,           IC1F_POS),
-        IC1F_CK_INT_N_2  = mskd_t(       IC1F_MASK,  0b0001,           IC1F_POS),
-        IC1F_CK_INT_N_4  = mskd_t(       IC1F_MASK,  0b0010,           IC1F_POS),
-        IC1F_CK_INT_N_8  = mskd_t(       IC1F_MASK,  0b0011,           IC1F_POS),
-        IC1F_DTS_2_N_6   = mskd_t(       IC1F_MASK,  0b0100,           IC1F_POS),
-        IC1F_DTS_2_N_8   = mskd_t(       IC1F_MASK,  0b0101,           IC1F_POS),
-        IC1F_DTS_4_N_6   = mskd_t(       IC1F_MASK,  0b0110,           IC1F_POS),
-        IC1F_DTS_4_N_8   = mskd_t(       IC1F_MASK,  0b0111,           IC1F_POS),
-        IC1F_DTS_8_N_6   = mskd_t(       IC1F_MASK,  0b1000,           IC1F_POS),
-        IC1F_DTS_8_N_8   = mskd_t(       IC1F_MASK,  0b1001,           IC1F_POS),
-        IC1F_DTS_16_N_5  = mskd_t(       IC1F_MASK,  0b1010,           IC1F_POS),
-        IC1F_DTS_16_N_6  = mskd_t(       IC1F_MASK,  0b1011,           IC1F_POS),
-        IC1F_DTS_16_N_8  = mskd_t(       IC1F_MASK,  0b1100,           IC1F_POS),
-        IC1F_DTS_32_N_5  = mskd_t(       IC1F_MASK,  0b1101,           IC1F_POS),
-        IC1F_DTS_32_N_6  = mskd_t(       IC1F_MASK,  0b1110,           IC1F_POS),
-        IC1F_DTS_32_N_8  = mskd_t(       IC1F_MASK,  0b1111,           IC1F_POS);
-    };  // struct Ccmr1
-    using ccmr1_t = Reg<uint32_t, Ccmr1>;
-          ccmr1_t   ccmr1;
-    volatile TimCcmr1_10_11_13_14* tim_ccmr1_10_11_13_14() volatile {
-        return reinterpret_cast<volatile TimCcmr1_10_11_13_14*>(this); }
-             TimCcmr1_10_11_13_14* tim_ccmr1_10_11_13_14()          {
-        return reinterpret_cast<         TimCcmr1_10_11_13_14*>(this); }
-#else
-    private: uint32_t   _unimplemented_ccmr1;  public:
-#endif
 
 
-#ifdef STM32F767XX_TIM_CCMR2
     struct Ccmr2 {
         using              pos_t = Pos<uint32_t, Ccmr2>;
         static constexpr   pos_t
@@ -736,16 +531,9 @@
     };  // struct Ccmr2
     using ccmr2_t = Reg<uint32_t, Ccmr2>;
           ccmr2_t   ccmr2;
-    volatile TimCcmr2* tim_ccmr2() volatile {
-        return reinterpret_cast<volatile TimCcmr2*>(this); }
-             TimCcmr2* tim_ccmr2()          {
-        return reinterpret_cast<         TimCcmr2*>(this); }
-#else
-    private: uint32_t   _unimplemented_ccmr2;  public:
-#endif
 
 
-#if defined(STM32F767XX_ADV_TIM_1_8)
+#ifdef STM32F103XB_ADV_TIM_1
     struct Ccer {
         using              pos_t = Pos<uint32_t, Ccer>;
         static constexpr   pos_t
@@ -762,12 +550,7 @@
                CC3NE_POS = pos_t(10),
                CC3NP_POS = pos_t(11),
                 CC4E_POS = pos_t(12),
-                CC4P_POS = pos_t(13),
-               CC4NP_POS = pos_t(15),
-                CC5E_POS = pos_t(16),
-                CC5P_POS = pos_t(17),
-                CC6E_POS = pos_t(20),
-                CC6P_POS = pos_t(21);
+                CC4P_POS = pos_t(13);
 
         using              bits_t = Bits<uint32_t, Ccer>;
         static constexpr   bits_t
@@ -783,97 +566,33 @@
         CC3P             = bits_t(1,         CC3P_POS),
         CC3NE            = bits_t(1,        CC3NE_POS),
         CC3NP            = bits_t(1,        CC3NP_POS),
-        CC4E             = bits_t(1,         CC4E_POS),
-        CC4P             = bits_t(1,         CC4P_POS),
-        CC4NP            = bits_t(1,        CC4NP_POS),
-        CC5E             = bits_t(1,         CC5E_POS),
-        CC5P             = bits_t(1,         CC5P_POS),
-        CC6E             = bits_t(1,         CC6E_POS),
-        CC6P             = bits_t(1,         CC6P_POS);
+        CC4E             = bits_t(1,         CC4E_POS);
     };  // struct Ccer
     using ccer_t = Reg<uint32_t, Ccer>;
           ccer_t   ccer;
-#elif defined(STM32F767XX_GEN_TIM_2_3_4_5)
+#elif defined(STM32F103XB_GEN_TIM_2_3_4)
     struct Ccer {
         using              pos_t = Pos<uint32_t, Ccer>;
         static constexpr   pos_t
                 CC1E_POS = pos_t( 0),
                 CC1P_POS = pos_t( 1),
-               CC1NE_POS = pos_t( 2),
-               CC1NP_POS = pos_t( 3),
                 CC2E_POS = pos_t( 4),
                 CC2P_POS = pos_t( 5),
-               CC2NE_POS = pos_t( 6),
-               CC2NP_POS = pos_t( 7),
                 CC3E_POS = pos_t( 8),
                 CC3P_POS = pos_t( 9),
-               CC3NE_POS = pos_t(10),
-               CC3NP_POS = pos_t(11),
                 CC4E_POS = pos_t(12),
-                CC4P_POS = pos_t(13),
-               CC4NP_POS = pos_t(15);
+                CC4P_POS = pos_t(13);
 
         using              bits_t = Bits<uint32_t, Ccer>;
         static constexpr   bits_t
         CC1E             = bits_t(1,         CC1E_POS),
         CC1P             = bits_t(1,         CC1P_POS),
-        CC1NE            = bits_t(1,        CC1NE_POS),
-        CC1NP            = bits_t(1,        CC1NP_POS),
         CC2E             = bits_t(1,         CC2E_POS),
         CC2P             = bits_t(1,         CC2P_POS),
-        CC2NE            = bits_t(1,        CC2NE_POS),
-        CC2NP            = bits_t(1,        CC2NP_POS),
         CC3E             = bits_t(1,         CC3E_POS),
         CC3P             = bits_t(1,         CC3P_POS),
-        CC3NE            = bits_t(1,        CC3NE_POS),
-        CC3NP            = bits_t(1,        CC3NP_POS),
         CC4E             = bits_t(1,         CC4E_POS),
-        CC4P             = bits_t(1,         CC4P_POS),
-        CC4NP            = bits_t(1,        CC4NP_POS);
-    };  // struct Ccer
-    using ccer_t = Reg<uint32_t, Ccer>;
-          ccer_t   ccer;
-#elif defined(STM32F767XX_GEN_TIM_9_12)
-    struct Ccer {
-        using              pos_t = Pos<uint32_t, Ccer>;
-        static constexpr   pos_t
-                CC1E_POS = pos_t( 0),
-                CC1P_POS = pos_t( 1),
-               CC1NE_POS = pos_t( 2),
-               CC1NP_POS = pos_t( 3),
-                CC2E_POS = pos_t( 4),
-                CC2P_POS = pos_t( 5),
-               CC2NE_POS = pos_t( 6),
-               CC2NP_POS = pos_t( 7);
-
-        using              bits_t = Bits<uint32_t, Ccer>;
-        static constexpr   bits_t
-        CC1E             = bits_t(1,         CC1E_POS),
-        CC1P             = bits_t(1,         CC1P_POS),
-        CC1NE            = bits_t(1,        CC1NE_POS),
-        CC1NP            = bits_t(1,        CC1NP_POS),
-        CC2E             = bits_t(1,         CC2E_POS),
-        CC2P             = bits_t(1,         CC2P_POS),
-        CC2NE            = bits_t(1,        CC2NE_POS),
-        CC2NP            = bits_t(1,        CC2NP_POS);
-    };  // struct Ccer
-    using ccer_t = Reg<uint32_t, Ccer>;
-          ccer_t   ccer;
-#elif defined(STM32F767XX_GEN_TIM_10_11_13_14)
-    struct Ccer {
-        using              pos_t = Pos<uint32_t, Ccer>;
-        static constexpr   pos_t
-                CC1E_POS = pos_t( 0),
-                CC1P_POS = pos_t( 1),
-               CC1NE_POS = pos_t( 2),
-               CC1NP_POS = pos_t( 3);
-
-        using              bits_t = Bits<uint32_t, Ccer>;
-        static constexpr   bits_t
-        CC1E             = bits_t(1,         CC1E_POS),
-        CC1P             = bits_t(1,         CC1P_POS),
-        CC1NE            = bits_t(1,        CC1NE_POS),
-        CC1NP            = bits_t(1,        CC1NP_POS);
+        CC4P             = bits_t(1,         CC4P_POS);
     };  // struct Ccer
     using ccer_t = Reg<uint32_t, Ccer>;
           ccer_t   ccer;
@@ -882,112 +601,44 @@
 #endif
 
 
-#ifdef STM32F767XX_GEN_TIM_2_5
-    uint32_t    cnt;
-#else
-    struct Cnt {
-        using              pos_t = Pos<uint32_t, Cnt>;
-        static constexpr   pos_t
-                 CNT_POS = pos_t( 0),
-              UIFCPY_POS = pos_t(31);
+                uint16_t    cnt;
+    private:    uint16_t    _cnt_high_bits;  public:
 
-        using              bits_t = Bits<uint32_t, Cnt>;
-        static constexpr   bits_t
-        UIFCPY           = bits_t(1,       UIFCPY_POS);
-
-        static const uint32_t
-                CNT_MASK = 0xFFFFFFFFU;
-
-        using   mskd_t = Mskd<uint32_t, Cnt>;
-        using   shft_t = Shft<uint32_t, Cnt>;
-
-        REGBITS_MSKD_RANGE("Tim::Cnt",
-                           CNT,
-                           cnt,
-                           CNT_MASK,
-                           CNT_POS,
-                           CNT_MASK);
-    };  // struct Cnt
-    using cnt_t = Reg<uint32_t, Cnt>;
-          cnt_t   cnt;
-#endif
-
-
-#ifdef STM32F767XX_GEN_TIM_2_5
-    uint32_t    psc;
-#else
                 uint16_t    psc;
     private:    uint16_t    _psc_high_bits;  public:
-#endif
 
 
-#ifdef STM32F767XX_GEN_TIM_2_5
-    uint32_t    arr;
-#else
                 uint16_t    arr;
     private:    uint16_t    _arr_high_bits;  public:
-#endif
 
 
-#ifdef STM32F767XX_ADV_TIM_1_8
-                uint16_t    rcr;
-    private:    uint16_t    _rcr_high_bits;  public:
+#ifdef STM32F103XB_ADV_TIM_1
+             uint8_t    rcr_rep;
+    private:
+             uint8_t    _unimplemented_rcr_high_byte ;
+             uint16_t   _unimplemented_rcr_high_short;
 #else
     private: uint32_t   _unimplemented_rcr; public:
 #endif
 
 
-#ifdef STM32F767XX_TIM_CCR1
-#ifdef STM32F767XX_GEN_TIM_2_5
-                uint32_t    ccr1;
-#else
                 uint16_t    ccr1;
     private:    uint16_t    _ccr1_high_bits;     public:
-#endif
-    volatile TimCcr1* tim_ccr1() volatile {
-        return reinterpret_cast<volatile TimCcr1*>(this); }
-             TimCcr1* tim_ccr1()          {
-        return reinterpret_cast<         TimCcr1*>(this); }
-#else
-    private: uint32_t   _unimplemented_ccr1;     public:
-#endif
 
 
-#ifdef STM32F767XX_TIM_CCR2
-#ifdef STM32F767XX_GEN_TIM_2_5
-                uint32_t    ccr2;
-#else
                 uint16_t    ccr2;
     private:    uint16_t    _ccr2_high_bits;     public:
-#endif
-    volatile TimCcr2* tim_ccr2() volatile {
-        return reinterpret_cast<volatile TimCcr2*>(this); }
-             TimCcr2* tim_ccr2()          {
-        return reinterpret_cast<         TimCcr2*>(this); }
-#else
-    private: uint32_t   _unimplemented_ccr2;     public:
-#endif
 
-#ifdef STM32F767XX_TIM_CCR3_4
-#ifdef STM32F767XX_GEN_TIM_2_5
-                uint32_t    ccr3,
-                            ccr4;
-#else
+
                 uint16_t    ccr3;
     private:    uint16_t    _ccr3_high_bits;     public:
+
+
                 uint16_t    ccr4;
     private:    uint16_t    _ccr4_high_bits;     public:
-#endif
-    volatile TimCcr3_4* tim_ccr3_4() volatile {
-        return reinterpret_cast<volatile TimCcr3_4*>(this); }
-             TimCcr3_4* tim_ccr3_4()          {
-        return reinterpret_cast<         TimCcr3_4*>(this); }
-#else
-    private: uint32_t   _unimplemented_ccr3_4[2];  public:
-#endif
 
 
-#ifdef STM32F767XX_ADV_TIM_1_8
+#ifdef STM32F103XB_ADV_TIM_1
     struct Bdtr {
         using              pos_t = Pos<uint32_t, Bdtr>;
         static constexpr   pos_t
@@ -998,11 +649,7 @@
                  BKE_POS = pos_t(12),
                  BKP_POS = pos_t(13),
                  AOE_POS = pos_t(14),
-                 MOE_POS = pos_t(15),
-                 BKF_POS = pos_t(16),
-                BK2F_POS = pos_t(20),
-                BK2E_POS = pos_t(24),
-                BK2P_POS = pos_t(25);
+                 MOE_POS = pos_t(15);
 
         using              bits_t = Bits<uint32_t, Bdtr>;
         static constexpr   bits_t
@@ -1011,15 +658,11 @@
         BKE              = bits_t(1,          BKE_POS),
         BKP              = bits_t(1,          BKP_POS),
         AOE              = bits_t(1,          AOE_POS),
-        MOE              = bits_t(1,          MOE_POS),
-        BK2E             = bits_t(1,         BK2E_POS),
-        BK2P             = bits_t(1,         BK2P_POS);
+        MOE              = bits_t(1,          MOE_POS);
 
         static const uint32_t
                 DTG_MASK =      0xFFU,
-               LOCK_MASK =       0x3U,
-                BKF_MASK =       0xFU,
-               BK2F_MASK =       0xFU;
+               LOCK_MASK =       0x3U;
 
         using              mskd_t = Mskd<uint32_t, Bdtr>;
         using              shft_t = Shft<uint32_t, Bdtr>;
@@ -1063,7 +706,6 @@
 #endif
 
 
-#ifdef STM32F767XX_TIM_DCR
     struct Dcr {
         using              pos_t = Pos<uint32_t, Dcr>;
         static constexpr   pos_t
@@ -1092,254 +734,19 @@
     };  // struct Dcr
     using dcr_t = Reg<uint32_t, Dcr>;
           dcr_t   dcr;
-    volatile TimDcr* tim_dcr() volatile {
-        return reinterpret_cast<volatile TimDcr*>(this); }
-             TimDcr* tim_dcr()          {
-        return reinterpret_cast<         TimDcr*>(this); }
+
+
+#ifdef STM32F103XB_ADV_TIM1
+                uint32_t    dmar_dmab;
+#elif defined(STM32F103XB_GEN_TIM2_3_4)
+                uint16_t    dmar_dmab;
+    private:    uint16_t    _dmar_dmab_high_bits;    public:
 #else
-    private: uint32_t   _unimplemented_dcr; public:
+    private: uint32_t   _unimplemented_dmar; public:
 #endif
 
 
-#ifdef STM32F767XX_TIM_DMAR
-    struct Dmar {
-        using              pos_t = Pos<uint32_t, Dmar>;
-        static constexpr   pos_t
-                DMAB_POS = pos_t( 0);
-
-        static const uint32_t
-               DMAB_MASK =    0xFFFFU;
-
-        using   mskd_t = Mskd<uint32_t, Dmar>;
-        using   shft_t = Shft<uint32_t, Dmar>;
-
-        REGBITS_MSKD_RANGE("Tim::Dcr",
-                           DMAB,
-                           dmab,
-                           DMAB_MASK,
-                           DMAB_POS,
-                           DMAB_MASK);
-    };  // struct Dmar
-    using dmar_t = Reg<uint32_t, Dmar>;
-          dmar_t   dmar;
-    volatile TimDmar*       tim_dmar() volatile {
-        return reinterpret_cast<volatile TimDmar*>(this); }
-             TimDmar*       tim_dmar()          {
-        return reinterpret_cast<         TimDmar*>(this); }
-#else
-    private: uint32_t   _unimplemented_dmar;     public:
-#endif
+    private: uint32_t   _unimplemented_or; public:
 
 
-#ifdef STM32F767XX_GEN_TIM_2
-    struct Orr {
-        using              pos_t = Pos<uint32_t, Orr>;
-        static constexpr   pos_t
-            ITR1_RMP_POS = pos_t(10);
-
-        static const uint32_t
-           ITR1_RMP_MASK =       0x3U;
-
-        using   mskd_t = Mskd<uint32_t, Orr>;
-        using   shft_t = Shft<uint32_t, Orr>;
-
-        static constexpr   mskd_t
-        ITR1_RMP_TIM8_TRIGOUT    = mskd_t(ITR1_RMP_MASK,  0b00,  ITR1_RMP_POS),
-        ITR1_RMP_ETH_PTP_TRIGOUT = mskd_t(ITR1_RMP_MASK,  0b01,  ITR1_RMP_POS),
-        ITR1_RMP_OTG_FS_SOF      = mskd_t(ITR1_RMP_MASK,  0b10,  ITR1_RMP_POS),
-        ITR1_RMP_OTG_HS_SOF      = mskd_t(ITR1_RMP_MASK,  0b11,  ITR1_RMP_POS);
-    };  // struct Orr
-    using orr_t = Reg<uint32_t, Orr>;
-          orr_t  orr;
-    volatile TimOrr_2*  tim_orr_2() volatile {
-        return reinterpret_cast<volatile TimOrr_2*>(this); }
-             TimOrr_2*  tim_orr_2()          {
-        return reinterpret_cast<         TimOrr_2*>(this); }
-#endif
-
-#ifdef STM32F767XX_GEN_TIM_5
-    struct Orr {
-        using              pos_t = Pos<uint32_t, Orr>;
-        static constexpr   pos_t
-             TI4_RMP_POS = pos_t( 6);
-
-        static const uint32_t
-            TI4_RMP_MASK =       0x3U;
-
-        using   mskd_t = Mskd<uint32_t, Orr>;
-        using   shft_t = Shft<uint32_t, Orr>;
-
-        static constexpr   mskd_t
-        TI4_RMP_TIM5_CH4_GPIO    = mskd_t(TI4_RMP_MASK,  0b00,   TI4_RMP_POS),
-        TI4_RMP_LSI_TIM5_CH4     = mskd_t(TI4_RMP_MASK,  0b01,   TI4_RMP_POS),
-        TI4_RMP_LSE_TIM5_CH4     = mskd_t(TI4_RMP_MASK,  0b10,   TI4_RMP_POS),
-        TI4_RMP_RTC_TIM5_CH4     = mskd_t(TI4_RMP_MASK,  0b11,   TI4_RMP_POS);
-    };  // struct Orr
-    using orr_t = Reg<uint32_t, Orr>;
-          orr_t  orr;
-    volatile TimOrr_5*  tim_orr_5() volatile {
-        return reinterpret_cast<volatile TimOrr_5*>(this); }
-             TimOrr_5*  tim_orr_5()          {
-        return reinterpret_cast<         TimOrr_5*>(this); }
-#endif
-
-#ifdef STM32F767XX_GEN_TIM_11
-    struct Orr {
-        using              pos_t = Pos<uint32_t, Orr>;
-        static constexpr   pos_t
-             TI1_RMP_POS = pos_t( 0);
-
-        static const uint32_t
-            TI1_RMP_MASK =       0x3U;
-
-        using              mskd_t = Mskd<uint32_t, Orr>;
-        static constexpr   mskd_t
-        TI1_RMP_0        = mskd_t(    TI1_RMP_MASK,  0x1U,      TI1_RMP_POS),
-        TI1_RMP_1        = mskd_t(    TI1_RMP_MASK,  0x2U,      TI1_RMP_POS);
-    };  // struct Orr
-    using orr_t = Reg<uint32_t, Orr>;
-          orr_t   orr;
-    volatile TimOrr_11* tim_orr_11() volatile {
-        return reinterpret_cast<volatile TimOrr_11*>(this);
-    }
-             TimOrr_11* tim_orr_11()          {
-        return reinterpret_cast<         TimOrr_11*>(this);
-    }
-#endif
-
-
-#if    !defined(STM32F767XX_GEN_TIM_2)  \
-    && !defined(STM32F767XX_GEN_TIM_5)  \
-    && !defined(STM32F767XX_GEN_TIM_11)
-    private: uint32_t   _unimplemented_orr; public:
-#endif
-
-
-#ifdef STM32F767XX_ADV_TIM_1_8
-    struct Ccmr3 {
-        using              pos_t = Pos<uint32_t, Ccmr3>;
-        static constexpr   pos_t
-               OC5FE_POS = pos_t( 2),
-               OC5PE_POS = pos_t( 3),
-           OC5M_B210_POS = pos_t( 4),
-               OC5CE_POS = pos_t( 7),
-               OC6FE_POS = pos_t(10),
-               OC6PE_POS = pos_t(11),
-           OC6M_B210_POS = pos_t(12),
-               OC6CE_POS = pos_t(15),
-             OC5M_B3_POS = pos_t(16),
-             OC6M_B3_POS = pos_t(24);
-
-        using              bits_t = Bits<uint32_t, Ccmr3>;
-        static constexpr   bits_t
-        OC5FE            = bits_t(1,        OC5FE_POS),
-        OC5PE            = bits_t(1,        OC5PE_POS),
-        OC5CE            = bits_t(1,        OC5CE_POS),
-        OC6FE            = bits_t(1,        OC6FE_POS),
-        OC6PE            = bits_t(1,        OC6PE_POS),
-        OC6CE            = bits_t(1,        OC6CE_POS),
-        OC5M_B3          = bits_t(1,      OC5M_B3_POS),
-        OC6M_B3          = bits_t(1,      OC6M_B3_POS);
-
-        static const uint32_t
-        OC5M_B210_MASK   = 0x7U,
-        OC6M_B210_MASK   = 0x7U;
-
-        using   mskd_t = Mskd<uint32_t, Ccmr3>;
-        using   shft_t = Shft<uint32_t, Ccmr3>;
-
-        REGBITS_MSKD_RANGE("Tim::Ccmr3",
-                           OC5M_B210,
-                           Oc5m_b210,
-                           OC5M_B210_MASK,
-                           OC5M_B210_POS,
-                           OC5M_B210_MASK);
-        REGBITS_MSKD_RANGE("Tim::Ccmr3",
-                           OC6M_B210,
-                           Oc6m_b210,
-                           OC6M_B210_MASK,
-                           OC6M_B210_POS,
-                           OC6M_B210_MASK);
-    };  // struct Ccmr3
-    using ccmr3_t = Reg<uint32_t, Ccmr3>;
-          ccmr3_t   ccmr3;
-
-
-    struct Ccr5 {
-        using              pos_t = Pos<uint32_t, Ccr5>;
-        static constexpr   pos_t
-                CCR5_POS = pos_t( 0),
-               GC5C1_POS = pos_t(29),
-               GC5C2_POS = pos_t(30),
-               GC5C3_POS = pos_t(31);
-
-        using              bits_t = Bits<uint32_t, Ccr5>;
-        static constexpr   bits_t
-        GC5C1            = bits_t(1,        GC5C1_POS),
-        GC5C2            = bits_t(1,        GC5C2_POS),
-        GC5C3            = bits_t(1,        GC5C3_POS);
-
-        static const uint32_t
-               CCR5_MASK = 0xFFFFU;
-
-        using mskd_t = Mskd<uint32_t, Ccr5>;
-        using shft_t = Shft<uint32_t, Ccr5>;
-        REGBITS_MSKD_RANGE("Tim::Ccr5",
-                           CCR5,
-                           ccr5,
-                           CCR5_MASK,
-                           CCR5_POS,
-                           CCR5_MASK);
-    };  // struct Ccr5
-    using ccr5_t = Reg<uint32_t, Ccr5>;
-          ccr5_t   ccr5;
-
-
-                uint16_t    ccr6;
-    private:    uint16_t    _ccr6_high_bits;     public:
-
-
-    struct Af1 {
-        using              pos_t = Pos<uint32_t, Af1>;
-        static constexpr   pos_t
-              _BKINE_POS = pos_t( 0),
-           _BKDF1BKE_POS = pos_t( 8),
-              _BKINP_POS = pos_t( 9);
-
-        using              bits_t = Bits<uint32_t, Af1>;
-        static constexpr   bits_t
-        _BKINE           = bits_t(1,       _BKINE_POS),
-        _BKDF1BKE        = bits_t(1,    _BKDF1BKE_POS),
-        _BKINP           = bits_t(1,       _BKINP_POS);
-    };  // struct Af1
-    using af1_t = Reg<uint32_t, Af1>;
-          af1_t   af1;
-
-
-    struct Af2 {
-        using              pos_t = Pos<uint32_t, Af2>;
-        static constexpr   pos_t
-              BK2INE_POS = pos_t( 0),
-           BK2DF1BKE_POS = pos_t( 8),
-              BK2INP_POS = pos_t( 9);
-
-        using              bits_t = Bits<uint32_t, Af2>;
-        static constexpr   bits_t
-        BK2INE           = bits_t(1,       BK2INE_POS),
-        BK2DF1BKE        = bits_t(1,    BK2DF1BKE_POS),
-        BK2INP           = bits_t(1,       BK2INP_POS);
-    };  // struct Af2
-    using af2_t = Reg<uint32_t, Af2>;
-          af2_t   af2;
-
-#else
-  private:
-    uint32_t    _unimplemented_ccmr3,
-                _unimplemented_ccr5 ,
-                _unimplemented_ccr6 ,
-                _unimplemented_af1  ,
-                _unimplemented_af2  ;
-  public:
-#endif
-
-#endif  // #ifndef STM32F767XX_TIM_HXX_INCLUDE
+#endif  // #ifndef STM32F103XB_TIM_HXX_INCLUDE

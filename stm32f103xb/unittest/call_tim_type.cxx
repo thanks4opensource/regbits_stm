@@ -18,15 +18,15 @@
 // <https://www.gnu.org/licenses/gpl.html>
 
 
-#include "stm32f767xx.hxx"
+#include "stm32f103xb.hxx"
 
-using namespace stm32f767xx;
+using namespace stm32f103xb;
 
 
 __attribute__((noinline)) void tim_type(
-volatile GenTim_2* const tim_2)
+volatile GenTim_2_3_4* const tim_2)
 {
-    tim_2->ccr4 = 0xfffff;
+    tim_2->ccr4 = 0xffff;
 }
 
 
@@ -35,6 +35,6 @@ void call_tim_type()
 #ifdef GOOD
     tim_type(gen_tim_2);
 #else
-    tim_type(gen_tim_3);
+    tim_type(gen_tim_1);
 #endif
 }

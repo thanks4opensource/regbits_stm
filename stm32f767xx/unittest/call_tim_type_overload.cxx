@@ -24,28 +24,28 @@ using namespace stm32f767xx;
 
 
 __attribute__((noinline)) void tim_type(
-Tim* const      tim)
+volatile Tim* const     tim)
 {
     tim->arr = 100;
 }
 
 
 __attribute__((noinline)) void tim_type(
-GenTim_2_3_4_5* const   tim_2_3_4_5)
+volatile GenTim_2_3_4_5* const  tim_2_3_4_5)
 {
     tim_2_3_4_5->ccer |= GenTim_2_3_4_5::Ccer::CC2E;
 }
 
 
 __attribute__((noinline)) void tim_type(
-GenTim_2_5* const   tim_2_5)
+volatile GenTim_2_5* const  tim_2_5)
 {
     tim_2_5->ccr4 = 0xfffff;
 }
 
 
 __attribute__((noinline)) void tim_type(
-GenTim_3_4* const   tim_3_4)
+volatile GenTim_3_4* const  tim_3_4)
 {
     tim_3_4->ccr1 = 0x1234;
 }
@@ -53,7 +53,7 @@ GenTim_3_4* const   tim_3_4)
 
 
 __attribute__((noinline)) void tim_type(
-GenTim_2* const tim_2)
+volatile GenTim_2* const tim_2)
 {
     tim_2->ccr4 = 0xfffff;
 }
