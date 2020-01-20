@@ -1,5 +1,5 @@
 // regbits_stm: regbits implementations for STM MCUs
-// Copyright (C) 2019 Mark R. Rubin
+// Copyright (C) 2019,2020 Mark R. Rubin
 //
 // This file is part of regbits_stm.
 //
@@ -10,11 +10,11 @@
 //
 // The regbits_stm program is distributed in the hope that it will be
 // useful, but WITHOUT ANY WARRANTY; without even the implied warranty
-// of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 // General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// (LICENSE.txt) along with the regbits_stm program.  If not, see
+// (LICENSE.txt) along with the regbits_stm program. If not, see
 // <https://www.gnu.org/licenses/gpl.html>
 
 
@@ -24,6 +24,19 @@
 #include <stdint.h>
 
 #include <regbits.hxx>
+
+
+#if REGBITS_MAJOR_VERSION == 1
+#if REGBITS_MINOR_VERSION  < 0
+#warning REGBITS_MINOR_VERSION >= 0 with required REGBITS_MAJOR_VERSION == 1
+#endif
+#else
+#error REGBITS_MAJOR_VERSION != 1
+#endif
+
+#define STM32F767XX_MAJOR_VERSION   1
+#define STM32F767XX_MINOR_VERSION   2
+#define STM32F767XX_MICRO_VERSION   0
 
 
 
@@ -5773,7 +5786,14 @@ struct Spi {
           sr_t   sr;
 
 
-                uint16_t    dr;
+    union {
+        uint16_t      dr16;
+        struct {
+            uint8_t   dr8,
+                     _high_byte;
+        };
+    };
+
     private:    uint16_t    _dr_high_bits;   public:
 
 

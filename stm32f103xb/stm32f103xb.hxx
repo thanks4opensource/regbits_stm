@@ -1,5 +1,5 @@
 // regbits_stm: regbits implementations for STM MCUs
-// Copyright (C) 2019 Mark R. Rubin
+// Copyright (C) 2019,2020 Mark R. Rubin
 //
 // This file is part of regbits_stm.
 //
@@ -10,11 +10,11 @@
 //
 // The regbits_stm program is distributed in the hope that it will be
 // useful, but WITHOUT ANY WARRANTY; without even the implied warranty
-// of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 // General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// (LICENSE.txt) along with the regbits_stm program.  If not, see
+// (LICENSE.txt) along with the regbits_stm program. If not, see
 // <https://www.gnu.org/licenses/gpl.html>
 
 
@@ -24,6 +24,19 @@
 #include <stdint.h>
 
 #include <regbits.hxx>
+
+
+#if REGBITS_MAJOR_VERSION == 1
+#if REGBITS_MINOR_VERSION  < 0
+#warning REGBITS_MINOR_VERSION >= 0 with required REGBITS_MAJOR_VERSION == 1
+#endif
+#else
+#error REGBITS_MAJOR_VERSION != 1
+#endif
+
+#define STM32F103XB_MAJOR_VERSION   1
+#define STM32F103XB_MINOR_VERSION   2
+#define STM32F103XB_MICRO_VERSION   0
 
 
 
@@ -470,8 +483,10 @@ struct Rcc {
     };  // struct Csr
     using csr_t = Reg<uint32_t, Csr>;
           csr_t   csr;
+
 };  // struct Rcc
 static_assert(sizeof(Rcc) == 40, "sizeof(Rcc) != 40");
+
 
 
 struct Gpio {
@@ -1011,8 +1026,10 @@ struct Gpio {
     };  // struct Lckr
     using lckr_t = Reg<uint32_t, Lckr>;
           lckr_t   lckr;
+
 };  // struct Gpio
 static_assert(sizeof(Gpio) == 28, "sizeof(Gpio) != 28");
+
 
 
 struct Afio {
@@ -1318,8 +1335,10 @@ struct Afio {
     private:
     uint32_t    _reserved0,
                 _undefined_mapr2;
+
 };  // struct Afio
 static_assert(sizeof(Afio) == 32, "sizeof(Afio) != 32");
+
 
 
 struct Exti {
@@ -1615,8 +1634,211 @@ struct Exti {
     };  // struct Pr
     using pr_t = Reg<uint32_t, Pr>;
           pr_t   pr;
+
 };  // struct Exti
 static_assert(sizeof(Exti) == 24, "sizeof(Exti) != 24");
+
+
+
+struct Dma {
+    struct Isr {
+        using              pos_t = Pos<uint32_t, Isr>;
+        static constexpr   pos_t
+                GIF1_POS = pos_t( 0),
+               TCIF1_POS = pos_t( 1),
+               HTIF1_POS = pos_t( 2),
+               TEIF1_POS = pos_t( 3),
+                GIF2_POS = pos_t( 4),
+               TCIF2_POS = pos_t( 5),
+               HTIF2_POS = pos_t( 6),
+               TEIF2_POS = pos_t( 7),
+                GIF3_POS = pos_t( 8),
+               TCIF3_POS = pos_t( 9),
+               HTIF3_POS = pos_t(10),
+               TEIF3_POS = pos_t(11),
+                GIF4_POS = pos_t(12),
+               TCIF4_POS = pos_t(13),
+               HTIF4_POS = pos_t(14),
+               TEIF4_POS = pos_t(15),
+                GIF5_POS = pos_t(16),
+               TCIF5_POS = pos_t(17),
+               HTIF5_POS = pos_t(18),
+               TEIF5_POS = pos_t(19),
+                GIF6_POS = pos_t(20),
+               TCIF6_POS = pos_t(21),
+               HTIF6_POS = pos_t(22),
+               TEIF6_POS = pos_t(23),
+                GIF7_POS = pos_t(24),
+               TCIF7_POS = pos_t(25),
+               HTIF7_POS = pos_t(26),
+               TEIF7_POS = pos_t(27);
+
+        using              bits_t = Bits<uint32_t, Isr>;
+        static constexpr   bits_t
+        GIF1             = bits_t(1,         GIF1_POS),
+        TCIF1            = bits_t(1,        TCIF1_POS),
+        HTIF1            = bits_t(1,        HTIF1_POS),
+        TEIF1            = bits_t(1,        TEIF1_POS),
+        GIF2             = bits_t(1,         GIF2_POS),
+        TCIF2            = bits_t(1,        TCIF2_POS),
+        HTIF2            = bits_t(1,        HTIF2_POS),
+        TEIF2            = bits_t(1,        TEIF2_POS),
+        GIF3             = bits_t(1,         GIF3_POS),
+        TCIF3            = bits_t(1,        TCIF3_POS),
+        HTIF3            = bits_t(1,        HTIF3_POS),
+        TEIF3            = bits_t(1,        TEIF3_POS),
+        GIF4             = bits_t(1,         GIF4_POS),
+        TCIF4            = bits_t(1,        TCIF4_POS),
+        HTIF4            = bits_t(1,        HTIF4_POS),
+        TEIF4            = bits_t(1,        TEIF4_POS),
+        GIF5             = bits_t(1,         GIF5_POS),
+        TCIF5            = bits_t(1,        TCIF5_POS),
+        HTIF5            = bits_t(1,        HTIF5_POS),
+        TEIF5            = bits_t(1,        TEIF5_POS),
+        GIF6             = bits_t(1,         GIF6_POS),
+        TCIF6            = bits_t(1,        TCIF6_POS),
+        HTIF6            = bits_t(1,        HTIF6_POS),
+        TEIF6            = bits_t(1,        TEIF6_POS),
+        GIF7             = bits_t(1,         GIF7_POS),
+        TCIF7            = bits_t(1,        TCIF7_POS),
+        HTIF7            = bits_t(1,        HTIF7_POS),
+        TEIF7            = bits_t(1,        TEIF7_POS);
+    };  // struct Isr
+    using isr_t = Reg<uint32_t, Isr>;
+          isr_t   isr;
+
+
+    struct Ifcr {
+        using              pos_t = Pos<uint32_t, Ifcr>;
+        static constexpr   pos_t
+               CGIF1_POS = pos_t( 0),
+              CTCIF1_POS = pos_t( 1),
+              CHTIF1_POS = pos_t( 2),
+              CTEIF1_POS = pos_t( 3),
+               CGIF2_POS = pos_t( 4),
+              CTCIF2_POS = pos_t( 5),
+              CHTIF2_POS = pos_t( 6),
+              CTEIF2_POS = pos_t( 7),
+               CGIF3_POS = pos_t( 8),
+              CTCIF3_POS = pos_t( 9),
+              CHTIF3_POS = pos_t(10),
+              CTEIF3_POS = pos_t(11),
+               CGIF4_POS = pos_t(12),
+              CTCIF4_POS = pos_t(13),
+              CHTIF4_POS = pos_t(14),
+              CTEIF4_POS = pos_t(15),
+               CGIF5_POS = pos_t(16),
+              CTCIF5_POS = pos_t(17),
+              CHTIF5_POS = pos_t(18),
+              CTEIF5_POS = pos_t(19),
+               CGIF6_POS = pos_t(20),
+              CTCIF6_POS = pos_t(21),
+              CHTIF6_POS = pos_t(22),
+              CTEIF6_POS = pos_t(23),
+               CGIF7_POS = pos_t(24),
+              CTCIF7_POS = pos_t(25),
+              CHTIF7_POS = pos_t(26),
+              CTEIF7_POS = pos_t(27);
+
+        using              bits_t = Bits<uint32_t, Ifcr>;
+        static constexpr   bits_t
+        CGIF1            = bits_t(1,        CGIF1_POS),
+        CTCIF1           = bits_t(1,       CTCIF1_POS),
+        CHTIF1           = bits_t(1,       CHTIF1_POS),
+        CTEIF1           = bits_t(1,       CTEIF1_POS),
+        CGIF2            = bits_t(1,        CGIF2_POS),
+        CTCIF2           = bits_t(1,       CTCIF2_POS),
+        CHTIF2           = bits_t(1,       CHTIF2_POS),
+        CTEIF2           = bits_t(1,       CTEIF2_POS),
+        CGIF3            = bits_t(1,        CGIF3_POS),
+        CTCIF3           = bits_t(1,       CTCIF3_POS),
+        CHTIF3           = bits_t(1,       CHTIF3_POS),
+        CTEIF3           = bits_t(1,       CTEIF3_POS),
+        CGIF4            = bits_t(1,        CGIF4_POS),
+        CTCIF4           = bits_t(1,       CTCIF4_POS),
+        CHTIF4           = bits_t(1,       CHTIF4_POS),
+        CTEIF4           = bits_t(1,       CTEIF4_POS),
+        CGIF5            = bits_t(1,        CGIF5_POS),
+        CTCIF5           = bits_t(1,       CTCIF5_POS),
+        CHTIF5           = bits_t(1,       CHTIF5_POS),
+        CTEIF5           = bits_t(1,       CTEIF5_POS),
+        CGIF6            = bits_t(1,        CGIF6_POS),
+        CTCIF6           = bits_t(1,       CTCIF6_POS),
+        CHTIF6           = bits_t(1,       CHTIF6_POS),
+        CTEIF6           = bits_t(1,       CTEIF6_POS),
+        CGIF7            = bits_t(1,        CGIF7_POS),
+        CTCIF7           = bits_t(1,       CTCIF7_POS),
+        CHTIF7           = bits_t(1,       CHTIF7_POS),
+        CTEIF7           = bits_t(1,       CTEIF7_POS);
+    };  // struct Ifcr
+    using ifcr_t = Reg<uint32_t, Ifcr>;
+          ifcr_t   ifcr;
+
+};  // struct Dma
+static_assert(sizeof(Dma) == 8, "sizeof(Dma) != 8");
+
+
+
+struct DmaChannel {
+    struct Ccr {
+        using              pos_t = Pos<uint32_t, Ccr>;
+        static constexpr   pos_t
+                  EN_POS = pos_t( 0),
+                TCIE_POS = pos_t( 1),
+                HTIE_POS = pos_t( 2),
+                TEIE_POS = pos_t( 3),
+                 DIR_POS = pos_t( 4),
+                CIRC_POS = pos_t( 5),
+                PINC_POS = pos_t( 6),
+                MINC_POS = pos_t( 7),
+               PSIZE_POS = pos_t( 8),
+               MSIZE_POS = pos_t(10),
+                  PL_POS = pos_t(12),
+             MEM2MEM_POS = pos_t(14);
+
+        using              bits_t = Bits<uint32_t, Ccr>;
+        static constexpr   bits_t
+        EN               = bits_t(1,           EN_POS),
+        TCIE             = bits_t(1,         TCIE_POS),
+        HTIE             = bits_t(1,         HTIE_POS),
+        TEIE             = bits_t(1,         TEIE_POS),
+        DIR              = bits_t(1,          DIR_POS),
+        DIR_PERIPH2MEM   = bits_t(0,          DIR_POS),
+        DIR_MEM2PERIPH   = bits_t(1,          DIR_POS),
+        CIRC             = bits_t(1,         CIRC_POS),
+        PINC             = bits_t(1,         PINC_POS),
+        MINC             = bits_t(1,         MINC_POS),
+        MEM2MEM          = bits_t(1,      MEM2MEM_POS);
+
+        static const uint32_t
+              PSIZE_MASK =       0x3U,
+              MSIZE_MASK =       0x3U,
+                 PL_MASK =       0x3U;
+
+        using              mskd_t = Mskd<uint32_t, Ccr>;
+        static constexpr   mskd_t
+        PL_LOW           = mskd_t(      PL_MASK,     0b00,        PL_POS),
+        PL_MEDIUM        = mskd_t(      PL_MASK,     0b01,        PL_POS),
+        PL_HIGH          = mskd_t(      PL_MASK,     0b10,        PL_POS),
+        PL_VERY_HIGH     = mskd_t(      PL_MASK,     0b11,        PL_POS),
+        MSIZE_8_BITS     = mskd_t(      MSIZE_MASK,  0b00,        MSIZE_POS),
+        MSIZE_16_BITS    = mskd_t(      MSIZE_MASK,  0b01,        MSIZE_POS),
+        MSIZE_32_BITS    = mskd_t(      MSIZE_MASK,  0b10,        MSIZE_POS),
+        PSIZE_8_BITS     = mskd_t(      PSIZE_MASK,  0b00,        PSIZE_POS),
+        PSIZE_16_BITS    = mskd_t(      PSIZE_MASK,  0b01,        PSIZE_POS),
+        PSIZE_32_BITS    = mskd_t(      PSIZE_MASK,  0b10,        PSIZE_POS);
+    };  // struct Ccr
+    using ccr_t = Reg<uint32_t, Ccr>;
+          ccr_t   ccr;
+
+
+    uint32_t    ndt,
+                pa,
+                ma;
+
+};  // struct DmaChannel
+static_assert(sizeof(DmaChannel) == 16, "sizeof(DmaChannel) != 16");
+
 
 
 // timers
@@ -1656,6 +1878,550 @@ struct GenTim_2_3_4
 static_assert(sizeof(GenTim_2_3_4) == 84, "sizeof(GenTim_2_3_4) != 84");
 
 #undef STM32F103XB_TIM_HXX_INCLUDE
+
+
+
+struct Usb {
+    struct Epr {
+        using              pos_t = Pos<uint32_t, Epr>;
+        static constexpr   pos_t
+                  EA_POS = pos_t( 0),
+             STAT_TX_POS = pos_t( 4),
+             DTOG_TX_POS = pos_t( 6),
+              CTR_TX_POS = pos_t( 7),
+             EP_KIND_POS = pos_t( 8),
+             EP_TYPE_POS = pos_t( 9),
+               SETUP_POS = pos_t(11),
+             STAT_RX_POS = pos_t(12),
+             DTOG_RX_POS = pos_t(14),
+              CTR_RX_POS = pos_t(15);
+
+        using              bits_t = Bits<uint32_t, Epr>;
+        static constexpr   bits_t
+        // DTOX_xX mskd_t for clear-by-write-0-unchange-1 and toggle semantics
+    //  DTOG_TX          = bits_t(1,      DTOG_TX_POS),
+        CTR_TX           = bits_t(1,       CTR_TX_POS),
+        DBL_BUF          = bits_t(1,      EP_KIND_POS),
+        STATUS_OUT       = bits_t(1,      EP_KIND_POS),
+        SETUP            = bits_t(1,        SETUP_POS),
+    //  DTOG_RX          = bits_t(1,      DTOG_RX_POS),
+        CTR_RX           = bits_t(1,       CTR_RX_POS);
+
+        static const uint32_t
+                 EA_MASK = 0xf,
+            STAT_TX_MASK = 0x3,
+            DTOG_TX_MASK = 0x1,
+             CTR_TX_MASK = 0x1,
+            EP_KIND_MASK = 0x1,
+            EP_TYPE_MASK = 0x3,
+            STAT_RX_MASK = 0x3,
+            DTOG_RX_MASK = 0x1,
+             CTR_RX_MASK = 0x1;
+
+        using   mskd_t = Mskd<uint32_t, Epr>;
+        using   shft_t = Shft<uint32_t, Epr>;
+
+        REGBITS_MSKD_RANGE("Epr::Ea",
+                           EA,
+                           ea,
+                           EA_MASK,
+                           EA_POS,
+                           EA_MASK);
+
+        static constexpr   mskd_t
+        STAT_TX_DISABLED    = mskd_t(STAT_TX_MASK,   0b00,      STAT_TX_POS),
+        STAT_TX_STALL       = mskd_t(STAT_TX_MASK,   0b01,      STAT_TX_POS),
+        STAT_TX_NAK         = mskd_t(STAT_TX_MASK,   0b10,      STAT_TX_POS),
+        STAT_TX_VALID       = mskd_t(STAT_TX_MASK,   0b11,      STAT_TX_POS),
+        DTOG_TX_DATA0       = mskd_t(DTOG_TX_MASK,   0b0,       DTOG_TX_POS),
+        DTOG_TX_DATA1       = mskd_t(DTOG_TX_MASK,   0b1,       DTOG_TX_POS),
+        EP_TYPE_BULK        = mskd_t(EP_TYPE_MASK,   0b00,      EP_TYPE_POS),
+        EP_TYPE_CONTROL     = mskd_t(EP_TYPE_MASK,   0b01,      EP_TYPE_POS),
+        EP_TYPE_ISO         = mskd_t(EP_TYPE_MASK,   0b10,      EP_TYPE_POS),
+        EP_TYPE_INTERRUPT   = mskd_t(EP_TYPE_MASK,   0b11,      EP_TYPE_POS),
+        STAT_RX_DISABLED    = mskd_t(STAT_RX_MASK,   0b00,      STAT_RX_POS),
+        STAT_RX_STALL       = mskd_t(STAT_RX_MASK,   0b01,      STAT_RX_POS),
+        STAT_RX_NAK         = mskd_t(STAT_RX_MASK,   0b10,      STAT_RX_POS),
+        STAT_RX_VALID       = mskd_t(STAT_RX_MASK,   0b11,      STAT_RX_POS),
+        DTOG_RX_DATA0       = mskd_t(DTOG_RX_MASK,   0b0,       DTOG_RX_POS),
+        DTOG_RX_DATA1       = mskd_t(DTOG_RX_MASK,   0b1,       DTOG_RX_POS);
+    };  // struct Epr
+
+    struct epr_t : public Reg<uint32_t, Epr> {
+        using   bits_t = Bits<uint32_t, Epr>;
+        using   mskd_t = Mskd<uint32_t, Epr>;
+
+        // not automatically inherited from base class
+        void operator=(const Bits<uint32_t, Epr>  bits) volatile {
+            Reg<uint32_t, Epr>::operator=(bits);
+        }
+
+        void write(
+        const mskd_t    rw_bits)
+        volatile
+        {
+            // don't modify read/write bits or toggle toggle-only bits
+            Reg<uint32_t, Epr>  current = *this;
+
+            // clear toggle-only bits so as to not toggle (also read-only)
+                          // must use mskd_t's with all bits set
+            current.clr(  Epr::STAT_TX_VALID
+                        | Epr::DTOG_TX_DATA1
+                        | Epr::SETUP
+                        | Epr::STAT_RX_VALID
+                        | Epr::DTOG_RX_DATA1);
+
+            // set two possible clear bits so by default will not clear
+            current.set(Epr::CTR_TX | Epr::CTR_RX);
+
+            // insert desired masked bits
+            current /= rw_bits;
+
+            *this = current;
+        }
+
+        void clear(
+        const bits_t    clear_bits)
+        volatile
+        {
+            // don't modify read/write bits or toggle toggle-only bits
+            Reg<uint32_t, Epr>  current = *this;
+
+            // clear toggle-only bits so as to not toggle (also read-only)
+                          // must use mskd_ts with all bits set
+            current.clr(  Epr::STAT_TX_VALID
+                        | Epr::DTOG_TX_DATA1
+                        | Epr::SETUP
+                        | Epr::STAT_RX_VALID
+                        | Epr::DTOG_RX_DATA1);
+
+            // set two possible clear bits so by default will not clear
+            // no, assume caller will set only desired bits to clear
+            // current.set(Epr::CTR_TX | Epr::CTR_RX);
+
+            // clear one or both bits to be cleared
+            current.clr(clear_bits);
+
+            // write back to register
+            *this = current;
+        }
+
+        // not automatically inherited from base class
+        void operator/=(const Mskd<uint32_t, Epr>  mskd)
+        volatile
+        {
+            Reg<uint32_t, Epr>::operator/=(mskd);
+        }
+
+        // not automatically inherited from base class
+        void operator=(const uint32_t   word)
+        volatile
+        {
+            Reg<uint32_t, Epr>::operator=(word);
+        }
+
+
+        // toggle-only bits
+        //
+        // exclusive-or current with new
+        //  was     arg     write   becomes
+        //  0       0       0       0
+        //  0       1       1       1
+        //  1       0       1       0
+        //  1       1       0       1
+
+
+        void stat_tx(
+        const mskd_t    tx_stat)
+        volatile
+        {
+            // don't modify read/write bits, clear clear-only bits, or
+            // toggle other toggle-only bits
+            Reg<uint32_t, Epr>  current = *this;
+
+            // clear bits which should not be toggled, cleared, or written
+                          // must use mskd_t's with all bits set
+            current.clr(  Epr::DTOG_TX_DATA1
+                        | Epr::CTR_TX
+                        | Epr::SETUP
+                        | Epr::STAT_RX_VALID
+                        | Epr::DTOG_RX_DATA1
+                        | Epr::CTR_RX       );
+
+            // XOR new stat bits
+            current.flp(tx_stat);
+
+            // write back to register, toggling stat bits to desired value
+            *this = current;
+        }
+
+
+        void stat_rx(
+        const mskd_t    rx_stat)
+        volatile
+        {
+            // don't modify read/write bits, clear clear-only bits, or
+            // toggle other toggle-only bits
+            Reg<uint32_t, Epr>  current = *this;
+
+            // clear bits which should not be toggled, cleared, or written
+                          // must use mskd_t's with all bits set
+            current.clr(  Epr::STAT_TX_VALID
+                        | Epr::DTOG_TX_DATA1
+                        | Epr::CTR_TX
+                        | Epr::SETUP
+                        | Epr::DTOG_RX_DATA1
+                        | Epr::CTR_RX   );
+
+            // XOR new stat bits
+            current.flp(rx_stat);
+
+            // write back to register, toggling stat bits to desired value
+            *this = current;
+        }
+
+
+        void stat_tx_rx(
+        const mskd_t    stat)
+        volatile
+        {
+            // don't modify read/write bits, clear clear-only bits, or
+            // toggle other toggle-only bits
+            Reg<uint32_t, Epr>  current = *this;
+
+            // clear bits which should not be toggled, cleared, or written
+                          // must use mskd_t's with all bits set
+            current.clr(  Epr::DTOG_TX_DATA1
+                        | Epr::CTR_TX
+                        | Epr::SETUP
+                        | Epr::DTOG_RX_DATA1
+                        | Epr::CTR_RX       );
+
+            // XOR new stat bits
+            current.flp(stat);
+
+            // write back to register, toggling stat bits to desired value
+            *this = current;
+        }
+    };  // struct epr_t
+
+    static const uint32_t   NUM_ENDPOINT_REGS = 8;
+    private:
+    epr_t   _eprs[NUM_ENDPOINT_REGS];
+    public:
+    REGBITS_ARRAY_RANGE("Eprn",
+                        EPRN,
+                        eprn,
+                        epr_t,
+                        _eprs,
+                        NUM_ENDPOINT_REGS);
+
+
+    private:
+    uint32_t    _reserved[8];
+    public:
+
+
+    struct Cntr {
+        using              pos_t = Pos<uint32_t, Cntr>;
+        static constexpr   pos_t
+                FRES_POS = pos_t( 0),
+                PDWN_POS = pos_t( 1),
+             LP_MODE_POS = pos_t( 2),
+               FSUSP_POS = pos_t( 3),
+              RESUME_POS = pos_t( 4),
+               ESOFM_POS = pos_t( 8),
+                SOFM_POS = pos_t( 9),
+              RESETM_POS = pos_t(10),
+               SUSPM_POS = pos_t(11),
+               WKUPM_POS = pos_t(12),
+                ERRM_POS = pos_t(13),
+             PMAOVRM_POS = pos_t(14),
+                CTRM_POS = pos_t(15);
+
+        using              bits_t = Bits<uint32_t, Cntr>;
+        static constexpr   bits_t
+        FRES             = bits_t(1,         FRES_POS),
+        PDWN             = bits_t(1,         PDWN_POS),
+        LP_MODE          = bits_t(1,      LP_MODE_POS),
+        FSUSP            = bits_t(1,        FSUSP_POS),
+        RESUME           = bits_t(1,       RESUME_POS),
+        ESOFM            = bits_t(1,        ESOFM_POS),
+        SOFM             = bits_t(1,         SOFM_POS),
+        RESETM           = bits_t(1,       RESETM_POS),
+        SUSPM            = bits_t(1,        SUSPM_POS),
+        WKUPM            = bits_t(1,        WKUPM_POS),
+        ERRM             = bits_t(1,         ERRM_POS),
+        PMAOVRM          = bits_t(1,      PMAOVRM_POS),
+        CTRM             = bits_t(1,         CTRM_POS);
+    };  // struct Cntr
+    using cntr_t = Reg<uint32_t, Cntr>;
+          cntr_t   cntr;
+
+
+    struct Istr {
+        using              pos_t = Pos<uint32_t, Istr>;
+        static constexpr   pos_t
+               EP_ID_POS = pos_t( 0),
+                 DIR_POS = pos_t( 4),
+                ESOF_POS = pos_t( 8),
+                 SOF_POS = pos_t( 9),
+               RESET_POS = pos_t(10),
+                SUSP_POS = pos_t(11),
+                WKUP_POS = pos_t(12),
+                 ERR_POS = pos_t(13),
+              PMAOVR_POS = pos_t(14),
+                 CTR_POS = pos_t(15);
+
+        using              bits_t = Bits<uint32_t, Istr>;
+        static constexpr   bits_t
+        DIR              = bits_t(1,          DIR_POS),
+        DIR_OUT          = bits_t(1,          DIR_POS),
+        ESOF             = bits_t(1,         ESOF_POS),
+        SOF              = bits_t(1,          SOF_POS),
+        RESET            = bits_t(1,        RESET_POS),
+        SUSP             = bits_t(1,         SUSP_POS),
+        WKUP             = bits_t(1,         WKUP_POS),
+        ERR              = bits_t(1,          ERR_POS),
+        PMAOVR           = bits_t(1,       PMAOVR_POS),
+        CTR              = bits_t(1,          CTR_POS);
+
+        static const uint32_t
+              EP_ID_MASK =       0xF;
+
+        using      mskd_t = Mskd<uint32_t, Istr>;
+        using      shft_t = Shft<uint32_t, Istr>;
+
+        REGBITS_MSKD_RANGE("istr::EpId",
+                           EP_ID,
+                           ep_id,
+                           EP_ID_MASK,
+                           EP_ID_POS,
+                           EP_ID_MASK);
+    };  // struct Istr
+    using istr_t = Reg<uint32_t, Istr>;
+          istr_t   istr;
+
+
+    struct Fnr {
+        using              pos_t = Pos<uint32_t, Fnr>;
+        static constexpr   pos_t
+                  FN_POS = pos_t( 0),
+                LSOF_POS = pos_t(11),
+                 LCK_POS = pos_t(13),
+                RXDM_POS = pos_t(14),
+                RXDP_POS = pos_t(15);
+
+        using              bits_t = Bits<uint32_t, Fnr>;
+        static constexpr   bits_t
+        LCK              = bits_t(1,          LCK_POS),
+        RXDM             = bits_t(1,         RXDM_POS),
+        RXDP             = bits_t(1,         RXDP_POS);
+
+        static const uint32_t
+                 FN_MASK =     0x7FFU,
+               LSOF_MASK =       0x3U;
+
+        using      shft_t = Shft<uint32_t, Fnr>;
+
+        static constexpr   shft_t
+        FN   = shft_t(  FN_MASK,   FN_POS),
+        LSOF = shft_t(LSOF_MASK, LSOF_POS);
+    };  // struct Fnr
+    using fnr_t = Reg<uint32_t, Fnr>;
+          fnr_t   fnr;
+
+
+    struct Daddr {
+        using              pos_t = Pos<uint32_t, Daddr>;
+        static constexpr   pos_t
+                 ADD_POS = pos_t( 0),
+                  EF_POS = pos_t( 7);
+
+        using              bits_t = Bits<uint32_t, Daddr>;
+        static constexpr   bits_t
+        EF               = bits_t(1,           EF_POS);
+
+        static const uint32_t
+                ADD_MASK =      0x7FU;
+
+        using      mskd_t = Mskd<uint32_t, Daddr>;
+        using      shft_t = Shft<uint32_t, Daddr>;
+
+        REGBITS_MSKD_RANGE("daddr::add",
+                           ADD,
+                           add,
+                           ADD_MASK,
+                           ADD_POS,
+                           ADD_MASK);
+    };  // struct Daddr
+    using daddr_t = Reg<uint32_t, Daddr>;
+          daddr_t   daddr;
+
+
+                uint16_t    btable;
+    private:    uint16_t    _btable_high_bits;   public:
+
+};  // struct Usb
+static_assert(sizeof(Usb) == 84, "sizeof(Usb) != 84");
+
+
+
+struct UsbBufDesc {
+                uint16_t    addr_tx;
+    private:    uint16_t    _addr_tx_high_bits;  public:
+
+
+    struct CountTx {
+        using              pos_t = Pos<uint32_t, CountTx>;
+        static constexpr   pos_t
+            COUNT_0_POS = pos_t( 0),
+            COUNT_1_POS = pos_t(16);
+
+        static const uint32_t
+                COUNT_0_MASK =  0x3ff,
+                COUNT_1_MASK =  0x3ff;
+
+        using      mskd_t = Mskd<uint32_t, CountTx>;
+        using      shft_t = Shft<uint32_t, CountTx>;
+
+        REGBITS_MSKD_RANGE("UsbBufDesc::CountTx",
+                           COUNT_0,
+                           count_0,
+                           COUNT_0_MASK,
+                           COUNT_0_POS,
+                           COUNT_0_MASK);
+        REGBITS_MSKD_RANGE("UsbBufDesc::CountTx",
+                           COUNT_1,
+                           count_1,
+                           COUNT_1_MASK,
+                           COUNT_1_POS,
+                           COUNT_1_MASK);
+    };  // struct CountTx
+    using count_tx_t = Reg<uint32_t, CountTx>;
+          count_tx_t    count_tx;
+
+
+                uint16_t    addr_rx;
+    private:    uint16_t    _addr_rx_high_bits;  public:
+
+
+    struct CountRx {
+        using              pos_t = Pos<uint32_t, CountRx>;
+        static constexpr   pos_t
+                COUNT_0_POS = pos_t( 0),
+            NUM_BLOCK_0_POS = pos_t(10),
+               BLSIZE_0_POS = pos_t(15),
+                COUNT_1_POS = pos_t(16),
+            NUM_BLOCK_1_POS = pos_t(26),
+               BLSIZE_1_POS = pos_t(31);
+
+        using              bits_t = Bits<uint32_t, CountRx>;
+        static constexpr   bits_t
+            BLSIZE_0 = bits_t(1, BLSIZE_0_POS),
+            BLSIZE_1 = bits_t(1, BLSIZE_1_POS);
+
+        static const uint32_t
+                    COUNT_0_MASK = 0x3ff,
+                NUM_BLOCK_0_MASK = 0x01f,
+                   BLSIZE_0_MASK = 0x001,
+                    COUNT_1_MASK = 0x3ff,
+                NUM_BLOCK_1_MASK = 0x01f,
+                   BLSIZE_1_MASK = 0x001;
+
+        using      mskd_t = Mskd<uint32_t, CountRx>;
+        using      shft_t = Shft<uint32_t, CountRx>;
+
+        static constexpr    mskd_t
+        BLSIZE_0_2_BYTES  = mskd_t(BLSIZE_0_MASK, 0, BLSIZE_0_POS),
+        BLSIZE_0_32_BYTES = mskd_t(BLSIZE_0_MASK, 1, BLSIZE_0_POS),
+        BLSIZE_1_2_BYTES  = mskd_t(BLSIZE_1_MASK, 0, BLSIZE_1_POS),
+        BLSIZE_1_32_BYTES = mskd_t(BLSIZE_1_MASK, 1, BLSIZE_1_POS);
+
+        REGBITS_MSKD_RANGE("UsbBufDesc::CountRx",
+                           COUNT_0,
+                           count_0,
+                           COUNT_0_MASK,
+                           COUNT_0_POS,
+                           COUNT_0_MASK);
+        REGBITS_MSKD_RANGE("UsbBufDesc::CountRx",
+                           NUM_BLOCK_0,
+                           num_block_0,
+                           NUM_BLOCK_0_MASK,
+                           NUM_BLOCK_0_POS,
+                           NUM_BLOCK_0_MASK);
+        REGBITS_MSKD_RANGE("UsbBufDesc::CountRx",
+                           COUNT_1,
+                           count_1,
+                           COUNT_1_MASK,
+                           COUNT_1_POS,
+                           COUNT_1_MASK);
+        REGBITS_MSKD_RANGE("UsbBufDesc::CountRx",
+                           NUM_BLOCK_1,
+                           num_block_1,
+                           NUM_BLOCK_1_MASK,
+                           NUM_BLOCK_1_POS,
+                           NUM_BLOCK_1_MASK);
+    };  // struct CountRx
+
+    struct count_rx_t : public Reg<uint32_t, CountRx> {
+        // not automatically inherited from base class
+        void operator=(const Mskd<uint32_t, CountRx>  mskd) volatile {
+            Reg<uint32_t, CountRx>::operator=(mskd);
+        }
+
+        void set_num_blocks_0(
+        const uint16_t  num_bytes)
+        volatile
+        {
+            if (num_bytes <= 62)
+                *this =   CountRx::BLSIZE_0_2_BYTES
+                        | CountRx::num_block_0((num_bytes + 1) >> 1);
+            else if (num_bytes <= 512)
+                *this =   CountRx::BLSIZE_0_32_BYTES
+                        | CountRx::num_block_0(    (   ((num_bytes + 31) & ~31)
+                                                     - 32)
+                                                >> 5);
+            // else fail silently
+        }
+
+        void set_num_blocks_1(
+        const uint16_t  num_bytes)
+        volatile
+        {
+            if (num_bytes <= 62)
+                *this =   CountRx::BLSIZE_1_2_BYTES
+                        | CountRx::num_block_1((num_bytes + 1) >> 1);
+            else if (num_bytes <= 512)
+                *this =   CountRx::BLSIZE_1_32_BYTES
+                        | CountRx::num_block_1(    (   ((num_bytes + 31) & ~31)
+                                                     - 32)
+                                                >> 5);
+            // else fail silently
+        }
+
+        uint16_t num_bytes_0()
+        volatile
+        {
+            uint16_t    num_blocks = this->shifted(CountRx::NUM_BLOCK_0_SHFT);
+
+            if (this->any(CountRx::BLSIZE_0)) return (num_blocks + 1) << 5;
+            else                              return  num_blocks      << 1;
+        }
+
+        uint16_t num_bytes_1()
+        volatile
+        {
+            uint16_t    num_blocks = this->shifted(CountRx::NUM_BLOCK_1_SHFT);
+
+            if (this->any(CountRx::BLSIZE_1)) return (num_blocks + 1) << 5;
+            else                              return  num_blocks      << 1;
+        }
+    };  // struct count_rx_t
+    count_rx_t  count_rx;
+
+};  // struct UsbBufDesc
+static_assert(sizeof(UsbBufDesc) == 16, "sizeof(UsbBufDesc) != 16");
 
 
 
@@ -1789,8 +2555,10 @@ struct Spi {
     };  // struct I2scfgr
     using i2scfgr_t = Reg<uint32_t, I2scfgr>;
           i2scfgr_t   i2scfgr;
+
 };  // struct Spi
 static_assert(sizeof(Spi) == 32, "sizeof(Spi) != 32");
+
 
 
 struct ElecSig {
@@ -1801,10 +2569,147 @@ struct ElecSig {
 
                 uint16_t    u_id_15_0,
                             u_id_31_16;
-                uint32_t    u_id_62_32,
+                uint32_t    u_id_63_32,
                             u_id_95_64;
 };  // struct ElecSig
 static_assert(sizeof(ElecSig) == 20, "sizeof(ElecSig) != 20");
+
+
+
+struct Flash {
+    struct Acr {
+        using              pos_t = Pos<uint32_t, Acr>;
+        static constexpr   pos_t
+             LATENCY_POS = pos_t( 0),
+              HLFCYA_POS = pos_t( 3),
+              PRFTBE_POS = pos_t( 4),
+              PRFTBS_POS = pos_t( 5);
+
+        using              bits_t = Bits<uint32_t, Acr>;
+        static constexpr   bits_t
+        HLFCYA           = bits_t(1,       HLFCYA_POS),
+        PRFTBE           = bits_t(1,       PRFTBE_POS),
+        PRFTBS           = bits_t(1,       PRFTBS_POS);
+
+        static const uint32_t
+            LATENCY_MASK =       0x7U;
+
+        using              mskd_t = Mskd<uint32_t, Acr>;
+        static constexpr   mskd_t
+        LATENCY_0_WAIT_STATES = mskd_t(LATENCY_MASK, 0b000, LATENCY_POS),
+        LATENCY_1_WAIT_STATE  = mskd_t(LATENCY_MASK, 0b001, LATENCY_POS),
+        LATENCY_2_WAIT_STATES = mskd_t(LATENCY_MASK, 0b010, LATENCY_POS);
+    };  // struct Acr
+    using acr_t = Reg<uint32_t, Acr>;
+          acr_t   acr;
+
+
+    uint32_t    keyr,
+                optkeyr;
+
+
+    struct Sr {
+        using              pos_t = Pos<uint32_t, Sr>;
+        static constexpr   pos_t
+                 BSY_POS = pos_t( 0),
+               PGERR_POS = pos_t( 2),
+            WRPRTERR_POS = pos_t( 4),
+                 EOP_POS = pos_t( 5);
+
+        using              bits_t = Bits<uint32_t, Sr>;
+        static constexpr   bits_t
+        BSY              = bits_t(1,          BSY_POS),
+        PGERR            = bits_t(1,        PGERR_POS),
+        WRPRTERR         = bits_t(1,     WRPRTERR_POS),
+        EOP              = bits_t(1,          EOP_POS);
+    };  // struct Sr
+    using sr_t = Reg<uint32_t, Sr>;
+          sr_t   sr;
+
+
+    struct Cr {
+        using              pos_t = Pos<uint32_t, Cr>;
+        static constexpr   pos_t
+                  PG_POS = pos_t( 0),
+                 PER_POS = pos_t( 1),
+                 MER_POS = pos_t( 2),
+               OPTPG_POS = pos_t( 4),
+               OPTER_POS = pos_t( 5),
+                STRT_POS = pos_t( 6),
+                LOCK_POS = pos_t( 7),
+              OPTWRE_POS = pos_t( 9),
+               ERRIE_POS = pos_t(10),
+               EOPIE_POS = pos_t(12);
+
+        using              bits_t = Bits<uint32_t, Cr>;
+        static constexpr   bits_t
+        PG               = bits_t(1,           PG_POS),
+        PER              = bits_t(1,          PER_POS),
+        MER              = bits_t(1,          MER_POS),
+        OPTPG            = bits_t(1,        OPTPG_POS),
+        OPTER            = bits_t(1,        OPTER_POS),
+        STRT             = bits_t(1,         STRT_POS),
+        LOCK             = bits_t(1,         LOCK_POS),
+        OPTWRE           = bits_t(1,       OPTWRE_POS),
+        ERRIE            = bits_t(1,        ERRIE_POS),
+        EOPIE            = bits_t(1,        EOPIE_POS);
+    };  // struct Cr
+    using cr_t = Reg<uint32_t, Cr>;
+          cr_t   cr;
+
+
+    uint32_t    ar,
+                reserved0;
+
+
+    struct Obr {
+        using              pos_t = Pos<uint32_t, Obr>;
+        static constexpr   pos_t
+              OPTERR_POS = pos_t( 0),
+               RDPRT_POS = pos_t( 1),
+             IWDG_SW_POS = pos_t( 2),
+           nRST_STOP_POS = pos_t( 3),
+          nRST_STDBY_POS = pos_t( 4),
+               DATA0_POS = pos_t(10),
+               DATA1_POS = pos_t(18);
+
+        using              bits_t = Bits<uint32_t, Obr>;
+        static constexpr   bits_t
+        OPTERR           = bits_t(1,       OPTERR_POS),
+        RDPRT            = bits_t(1,        RDPRT_POS),
+        IWDG_SW          = bits_t(1,      IWDG_SW_POS),
+        nRST_STOP        = bits_t(1,    nRST_STOP_POS),
+        nRST_STDBY       = bits_t(1,   nRST_STDBY_POS);
+
+        static const uint32_t
+              DATA0_MASK =      0xFFU,
+              DATA1_MASK =      0xFFU;
+
+        using   mskd_t = Mskd<uint32_t, Obr>;
+        using   shft_t = Shft<uint32_t, Obr>;
+
+        REGBITS_MSKD_RANGE("Flash::Obr",
+                           DATA0,
+                           data0,
+                           DATA0_MASK,
+                           DATA0_POS,
+                           DATA0_MASK);
+        REGBITS_MSKD_RANGE("Flash::Obr",
+                           DATA1,
+                           data1,
+                           DATA1_MASK,
+                           DATA1_POS,
+                           DATA1_MASK);
+    };  // struct Obr
+    using obr_t = Reg<uint32_t, Obr>;
+          obr_t   obr;
+
+
+    uint32_t    wrpr;
+
+};  // struct Flash
+static_assert(sizeof(Flash) == 36, "sizeof(Flash) != 36");
+
 
 
 struct DbgMcu {
@@ -1836,8 +2741,10 @@ struct DbgMcu {
     };  // struct Idcode
     using idcode_t = Reg<uint32_t, Idcode>;
           idcode_t   idcode;
+
 };  // struct DbgMcu
 static_assert(sizeof(DbgMcu) == 4, "sizeof(DbgMcu) != 4");
+
 
 
 static const uint32_t   PERIPH_BASE         = 0x40000000U;
@@ -1858,6 +2765,9 @@ static const uint32_t   TIM2_BASE           = APB1PERIPH_BASE + 0x00000000U,
                         USART3_BASE         = APB1PERIPH_BASE + 0x00004800U,
                         I2C1_BASE           = APB1PERIPH_BASE + 0x00005400U,
                         I2C2_BASE           = APB1PERIPH_BASE + 0x00005800U,
+                        USB_BASE            = APB1PERIPH_BASE + 0x00005C00U,
+                        USB_PMAADDR         = APB1PERIPH_BASE + 0x00006000U,
+                        USB_PMASIZE         = 512                          ,
                         CAN1_BASE           = APB1PERIPH_BASE + 0x00006400U,
                         BKP_BASE            = APB1PERIPH_BASE + 0x00006C00U,
                         PWR_BASE            = APB1PERIPH_BASE + 0x00007000U;
@@ -1878,17 +2788,18 @@ static const uint32_t   AFIO_BASE           = APB2PERIPH_BASE + 0x00000000U,
 
 // AHB peripherals
 static const uint32_t   DMA1_BASE           = AHBPERIPH_BASE + 0x00000000U,
-                        DMA1_Channel1_BASE  = AHBPERIPH_BASE + 0x00000008U,
-                        DMA1_Channel2_BASE  = AHBPERIPH_BASE + 0x0000001CU,
-                        DMA1_Channel3_BASE  = AHBPERIPH_BASE + 0x00000030U,
-                        DMA1_Channel4_BASE  = AHBPERIPH_BASE + 0x00000044U,
-                        DMA1_Channel5_BASE  = AHBPERIPH_BASE + 0x00000058U,
-                        DMA1_Channel6_BASE  = AHBPERIPH_BASE + 0x0000006CU,
-                        DMA1_Channel7_BASE  = AHBPERIPH_BASE + 0x00000080U,
+                        DMA1_CHANNEL1_BASE  = AHBPERIPH_BASE + 0x00000008U,
+                        DMA1_CHANNEL2_BASE  = AHBPERIPH_BASE + 0x0000001CU,
+                        DMA1_CHANNEL3_BASE  = AHBPERIPH_BASE + 0x00000030U,
+                        DMA1_CHANNEL4_BASE  = AHBPERIPH_BASE + 0x00000044U,
+                        DMA1_CHANNEL5_BASE  = AHBPERIPH_BASE + 0x00000058U,
+                        DMA1_CHANNEL6_BASE  = AHBPERIPH_BASE + 0x0000006CU,
+                        DMA1_CHANNEL7_BASE  = AHBPERIPH_BASE + 0x00000080U,
                         RCC_BASE            = AHBPERIPH_BASE + 0x00001000U,
+                        FLASH_BASE          = AHBPERIPH_BASE + 0x00002000U,
                         CRC_BASE            = AHBPERIPH_BASE + 0x00003000U;
 
-static const uint32_t   ELEC_SIG_BASE       = 0x1FFFF7E0;
+static const uint32_t   ELEC_SIG_BASE       = 0x1FFFF7E0U;
 
 static const uint32_t   DBGMCU_BASE         = 0xE0042000U;
 
@@ -1897,30 +2808,122 @@ static const uint32_t   DBGMCU_BASE         = 0xE0042000U;
     static volatile TYPE* const                     \
     PERIPH = reinterpret_cast<volatile TYPE*>(BASE)
 
-STM32F103XB_PERIPH( Rcc,                rcc,            RCC_BASE        );
+STM32F103XB_PERIPH( Rcc,                rcc,            RCC_BASE          );
 
-STM32F103XB_PERIPH( Gpio,               gpioa,          GPIOA_BASE      );
-STM32F103XB_PERIPH( Gpio,               gpiob,          GPIOB_BASE      );
-STM32F103XB_PERIPH( Gpio,               gpioc,          GPIOC_BASE      );
-STM32F103XB_PERIPH( Gpio,               gpiod,          GPIOD_BASE      );
-STM32F103XB_PERIPH( Gpio,               gpioe,          GPIOE_BASE      );
+STM32F103XB_PERIPH( Gpio,               gpioa,          GPIOA_BASE        );
+STM32F103XB_PERIPH( Gpio,               gpiob,          GPIOB_BASE        );
+STM32F103XB_PERIPH( Gpio,               gpioc,          GPIOC_BASE        );
+STM32F103XB_PERIPH( Gpio,               gpiod,          GPIOD_BASE        );
+STM32F103XB_PERIPH( Gpio,               gpioe,          GPIOE_BASE        );
 
-STM32F103XB_PERIPH( Exti,               exti,           EXTI_BASE       );
+STM32F103XB_PERIPH( Exti,               exti,           EXTI_BASE         );
 
-STM32F103XB_PERIPH( AdvTim_1,           adv_tim_1,      TIM1_BASE       );
+STM32F103XB_PERIPH( Dma,                dma1,           DMA1_BASE         );
 
-STM32F103XB_PERIPH( GenTim_2_3_4,       gen_tim_2,      TIM2_BASE       );
-STM32F103XB_PERIPH( GenTim_2_3_4,       gen_tim_3,      TIM3_BASE       );
-STM32F103XB_PERIPH( GenTim_2_3_4,       gen_tim_4,      TIM3_BASE       );
+STM32F103XB_PERIPH( DmaChannel,         dma1_channel1,  DMA1_CHANNEL1_BASE);
+STM32F103XB_PERIPH( DmaChannel,         dma1_channel2,  DMA1_CHANNEL2_BASE);
+STM32F103XB_PERIPH( DmaChannel,         dma1_channel3,  DMA1_CHANNEL3_BASE);
+STM32F103XB_PERIPH( DmaChannel,         dma1_channel4,  DMA1_CHANNEL4_BASE);
+STM32F103XB_PERIPH( DmaChannel,         dma1_channel5,  DMA1_CHANNEL5_BASE);
+STM32F103XB_PERIPH( DmaChannel,         dma1_channel6,  DMA1_CHANNEL6_BASE);
+STM32F103XB_PERIPH( DmaChannel,         dma1_channel7,  DMA1_CHANNEL7_BASE);
 
-STM32F103XB_PERIPH( Spi,                spi1,           SPI1_BASE       );
+STM32F103XB_PERIPH( AdvTim_1,           adv_tim_1,      TIM1_BASE         );
 
-STM32F103XB_PERIPH( ElecSig,            elec_sig,       ELEC_SIG_BASE   );
+STM32F103XB_PERIPH( GenTim_2_3_4,       gen_tim_2,      TIM2_BASE         );
+STM32F103XB_PERIPH( GenTim_2_3_4,       gen_tim_3,      TIM3_BASE         );
+STM32F103XB_PERIPH( GenTim_2_3_4,       gen_tim_4,      TIM3_BASE         );
 
-STM32F103XB_PERIPH( DbgMcu,             dbg_mcu,        DBGMCU_BASE     );
+STM32F103XB_PERIPH( Usb,                usb,            USB_BASE          );
+
+STM32F103XB_PERIPH( Spi,                spi1,           SPI1_BASE         );
+STM32F103XB_PERIPH( Spi,                spi2,           SPI2_BASE         );
+
+STM32F103XB_PERIPH( ElecSig,            elec_sig,       ELEC_SIG_BASE     );
+
+STM32F103XB_PERIPH( Flash,              flash,          FLASH_BASE        );
+
+STM32F103XB_PERIPH( DbgMcu,             dbg_mcu,        DBGMCU_BASE       );
 
 #undef STM32F103XB_PERIPH
 
+
+template <unsigned NUM_ENDPOINTS, unsigned BTABLE_OFFSET> class UsbPmaDescs {
+  public:
+    REGBITS_ARRAY_RANGE("UsbPmaDescs",
+                        EPRN,
+                        eprn,
+                        UsbBufDesc,
+                        reinterpret_cast<UsbBufDesc* const>(  USB_PMAADDR
+                                                            + BTABLE_OFFSET),
+                        NUM_ENDPOINTS);
+    // GCC bug prevents statically initializing protected UsbBufDesc* const
+    // member for reuse (works if dynamically constructed on stack).
+    // Above works for both, optimally efficient object code.
+};
+
 }  // namespace stm32f103xb
+
+
+namespace arm {
+enum class NvicIrqn {
+    // Cortex-M3 Processor Exceptions Numbers
+    NonMaskableInt   = -14, // 2 Non Maskable Interrupt
+    HardFault        = -13, // 3 Cortex-M3 Hard Fault Interrupt
+    MemoryManagement = -12, // 4 Cortex-M3 Memory Management Interrupt
+    BusFault         = -11, // 5 Cortex-M3 Bus Fault Interrupt
+    UsageFault       = -10, // 6 Cortex-M3 Usage Fault Interrupt
+    SVCall           =  -5, // 11 Cortex-M3 SV Call Interrupt
+    DebugMonitor     =  -4, // 12 Cortex-M3 Debug Monitor Interrupt
+    PendSV           =  -2, // 14 Cortex-M3 Pend SV Interrupt
+    SysTick          =  -1, // 15 Cortex-M3 System Tick Interrupt
+
+    // STM32 specific Interrupt Numbers
+    WWDG             =  0,  // Window WatchDog Interrupt
+    PVD              =  1,  // PVD through EXTI Line detection Interrupt
+    TAMPER           =  2,  // Tamper Interrupt
+    RTC              =  3,  // RTC global Interrupt
+    FLASH            =  4,  // FLASH global Interrupt
+    RCC              =  5,  // RCC global Interrupt
+    EXTI0            =  6,  // EXTI Line0 Interrupt
+    EXTI1            =  7,  // EXTI Line1 Interrupt
+    EXTI2            =  8,  // EXTI Line2 Interrupt
+    EXTI3            =  9,  // EXTI Line3 Interrupt
+    EXTI4            = 10,  // EXTI Line4 Interrupt
+    DMA1_Channel1    = 11,  // DMA1 Channel 1 global Interrupt
+    DMA1_Channel2    = 12,  // DMA1 Channel 2 global Interrupt
+    DMA1_Channel3    = 13,  // DMA1 Channel 3 global Interrupt
+    DMA1_Channel4    = 14,  // DMA1 Channel 4 global Interrupt
+    DMA1_Channel5    = 15,  // DMA1 Channel 5 global Interrupt
+    DMA1_Channel6    = 16,  // DMA1 Channel 6 global Interrupt
+    DMA1_Channel7    = 17,  // DMA1 Channel 7 global Interrupt
+    ADC1_2           = 18,  // ADC1 and ADC2 global Interrupt
+    USB_HP_CAN1_TX   = 19,  // USB Device High Priority or CAN1 TX Interrupts
+    USB_LP_CAN1_RX0  = 20,  // USB Device Low Priority or CAN1 RX0 Interrupts
+    CAN1_RX1         = 21,  // CAN1 RX1 Interrupt
+    CAN1_SCE         = 22,  // CAN1 SCE Interrupt
+    EXTI9_5          = 23,  // External Line[9:5] Interrupts
+    TIM1_BRK         = 24,  // TIM1 Break Interrupt
+    TIM1_UP          = 25,  // TIM1 Update Interrupt
+    TIM1_TRG_COM     = 26,  // TIM1 Trigger and Commutation Interrupt
+    TIM1_CC          = 27,  // TIM1 Capture Compare Interrupt
+    TIM2             = 28,  // TIM2 global Interrupt
+    TIM3             = 29,  // TIM3 global Interrupt
+    TIM4             = 30,  // TIM4 global Interrupt
+    I2C1_EV          = 31,  // I2C1 Event Interrupt
+    I2C1_ER          = 32,  // I2C1 Error Interrupt
+    I2C2_EV          = 33,  // I2C2 Event Interrupt
+    I2C2_ER          = 34,  // I2C2 Error Interrupt
+    SPI1             = 35,  // SPI1 global Interrupt
+    SPI2             = 36,  // SPI2 global Interrupt
+    USART1           = 37,  // USART1 global Interrupt
+    USART2           = 38,  // USART2 global Interrupt
+    USART3           = 39,  // USART3 global Interrupt
+    EXTI15_10        = 40,  // External Line[15:10] Interrupts
+    RTC_Alarm        = 41,  // RTC Alarm through EXTI Line Interrupt
+    USBWakeUp        = 42,  // USB Device WakeUp from suspend through EXTI Line Interrupt
+}; // enum NvicIrqn
+}  // namespace arm
+
 
 #endif  // #ifndef STM32F103XB_HXX

@@ -1,0 +1,5 @@
+1.2.0	2019 Jan 19
+-------------------
+* stm32f103xb.hxx: Dma, Usb, NvicIrqn
+* stm32f767xx.hxx: Spi
+* Version numbering
