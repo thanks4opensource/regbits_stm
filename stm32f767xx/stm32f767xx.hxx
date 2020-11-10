@@ -5793,7 +5793,6 @@ struct Spi {
                      _high_byte;
         };
     };
-
     private:    uint16_t    _dr_high_bits;   public:
 
 
@@ -5882,7 +5881,7 @@ struct Spi {
           i2spr_t   i2spr;
 
 };  // struct Spi
-static_assert(sizeof(Spi) == 36, "sizeof(Spi) != 36");
+static_assert(sizeof(Spi) == 40, "sizeof(Spi) != 40");
 
 
 

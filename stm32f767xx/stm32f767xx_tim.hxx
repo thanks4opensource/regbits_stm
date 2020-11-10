@@ -20,8 +20,18 @@
 
 // included multiple times, only from stm32f767.hxx
 #ifndef STM32F767XX_TIM_HXX_INCLUDE
-#error -- private file, #include stm32f767xx_tim.hxx only from stm32f767.hxx
+#error -- private file, #include stm32f767xx_tim.hxx only from stm32f767xx.hxx
 #else
+
+
+#if STM32F767XX_MAJOR_VERSION == 1
+#if STM32F767XX_MINOR_VERSION  < 2
+#warning STM32F767XX_MINOR_VERSION < 2
+#endif
+#else
+#error STM32F767XX_MAJOR_VERSION != 1
+#endif
+
 
     volatile Tim*   tim() volatile {
         return reinterpret_cast<volatile Tim*>(this); }

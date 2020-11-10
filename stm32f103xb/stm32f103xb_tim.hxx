@@ -20,8 +20,17 @@
 
 // included multiple times, only from stm32f767.hxx
 #ifndef STM32F103XB_TIM_HXX_INCLUDE
-#error -- private file, #include stm32f767xx_tim.hxx only from stm32f767.hxx
+#error -- private file, #include stm32f103xb_tim.hxx only from stm32f103xb.hxx
 #else
+
+#if STM32F103XB_MAJOR_VERSION == 1
+#if STM32F103XB_MINOR_VERSION  < 3
+#warning STM32F103XB_MINOR_VERSION < 3
+#endif
+#else
+#error STM32F103XB_MAJOR_VERSION != 1
+#endif
+
 
     volatile Tim*   tim() volatile {
         return reinterpret_cast<volatile Tim*>(this); }
@@ -369,15 +378,15 @@
 
         static const uint32_t
         // output/compare mode
-               CC1S_MASK =       0x3U,
-               OC1M_MASK =    0x1007U,
-               CC2S_MASK =       0x3U,
-               OC2M_MASK =    0x1007U,
+               CC1S_MASK = 0x3,
+               OC1M_MASK = 0x7,
+               CC2S_MASK = 0x3,
+               OC2M_MASK = 0x7,
         // input/capture mode
-             IC1PSC_MASK =       0x3U,
-               IC1F_MASK =       0xFU,
-             IC2PSC_MASK =       0x3U,
-               IC2F_MASK =       0xFU;
+             IC1PSC_MASK = 0x3,
+               IC1F_MASK = 0xF,
+             IC2PSC_MASK = 0x3,
+               IC2F_MASK = 0xF;
 
         using              mskd_t = Mskd<uint32_t, Ccmr1>;
         static constexpr   mskd_t
@@ -386,30 +395,21 @@
         CC1S_IC1_TI1     = mskd_t(       CC1S_MASK,  0b01,         CC1S_POS),
         CC1S_IC1_TI2     = mskd_t(       CC1S_MASK,  0b10,         CC1S_POS),
         CC1S_IC1_TRC     = mskd_t(       CC1S_MASK,  0b11,         CC1S_POS),
+        // input/capture mode
+        IC1PSC_CAPTURE_1 = mskd_t(     IC1PSC_MASK,  0b00,           IC1PSC_POS),
+        IC1PSC_CAPTURE_2 = mskd_t(     IC1PSC_MASK,  0b01,           IC1PSC_POS),
+        IC1PSC_CAPTURE_4 = mskd_t(     IC1PSC_MASK,  0b10,           IC1PSC_POS),
+        IC1PSC_CAPTURE_8 = mskd_t(     IC1PSC_MASK,  0b11,           IC1PSC_POS),
         // output/compare mode
         OC1M_FROZEN      = mskd_t(       OC1M_MASK,  0x0000,          OC1M_POS),
-        OC1M_CH1_ACTV    = mskd_t(       OC1M_MASK,  0x0001,          OC1M_POS),
-        OC1M_CH1_INACT   = mskd_t(       OC1M_MASK,  0x0002,          OC1M_POS),
+        OC1M_CH_ACTV     = mskd_t(       OC1M_MASK,  0x0001,          OC1M_POS),
+        OC1M_CH_INACT    = mskd_t(       OC1M_MASK,  0x0002,          OC1M_POS),
         OC1M_TOGGLE      = mskd_t(       OC1M_MASK,  0x0003,          OC1M_POS),
         OC1M_FORCE_LOW   = mskd_t(       OC1M_MASK,  0x0004,          OC1M_POS),
-        OC1M_FORCE_HIGH  = mskd_t(       OC1M_MASK,  0x0006,          OC1M_POS),
+        OC1M_FORCE_HIGH  = mskd_t(       OC1M_MASK,  0x0005,          OC1M_POS),
+        OC1M_PWM_MODE_1  = mskd_t(       OC1M_MASK,  0x0006,          OC1M_POS),
         OC1M_PWM_MODE_2  = mskd_t(       OC1M_MASK,  0x0007,          OC1M_POS),
-        OC1M_RETRIG_1    = mskd_t(       OC1M_MASK,  0x1000,          OC1M_POS),
-        OC1M_RETRIG_2    = mskd_t(       OC1M_MASK,  0x1001,          OC1M_POS),
-        OC1M_COMB_PWM_1  = mskd_t(       OC1M_MASK,  0x1004,          OC1M_POS),
-        OC1M_COMB_PWM_2  = mskd_t(       OC1M_MASK,  0x1005,          OC1M_POS),
-        OC1M_ASYM_PWM_1  = mskd_t(       OC1M_MASK,  0x1006,          OC1M_POS),
-        OC1M_ASYM_PWM_2  = mskd_t(       OC1M_MASK,  0x1007,          OC1M_POS),
-        // both modes
-        CC2S_OUT         = mskd_t(       CC2S_MASK,  0b00,             CC2S_POS),
-        CC2S_IN_IC2_TI2  = mskd_t(       CC2S_MASK,  0b01,             CC2S_POS),
-        CC2S_IN_IC2_TI1  = mskd_t(       CC2S_MASK,  0b10,             CC2S_POS),
-        CC2S_IN_IC2_TRC  = mskd_t(       CC2S_MASK,  0b11,             CC2S_POS),
         // input/capture mode
-        IC1PSC_PRESCAL_1 = mskd_t(     IC1PSC_MASK,  0b00,           IC1PSC_POS),
-        IC1PSC_PRESCAL_2 = mskd_t(     IC1PSC_MASK,  0b01,           IC1PSC_POS),
-        IC1PSC_PRESCAL_4 = mskd_t(     IC1PSC_MASK,  0b10,           IC1PSC_POS),
-        IC1PSC_PRESCAL_8 = mskd_t(     IC1PSC_MASK,  0b11,           IC1PSC_POS),
         IC1F_NO_FILT     = mskd_t(       IC1F_MASK,  0b0000,           IC1F_POS),
         IC1F_CK_INT_N_2  = mskd_t(       IC1F_MASK,  0b0001,           IC1F_POS),
         IC1F_CK_INT_N_4  = mskd_t(       IC1F_MASK,  0b0010,           IC1F_POS),
@@ -426,10 +426,42 @@
         IC1F_DTS_32_N_5  = mskd_t(       IC1F_MASK,  0b1101,           IC1F_POS),
         IC1F_DTS_32_N_6  = mskd_t(       IC1F_MASK,  0b1110,           IC1F_POS),
         IC1F_DTS_32_N_8  = mskd_t(       IC1F_MASK,  0b1111,           IC1F_POS),
-        IC2PSC_PRESCAL_1 = mskd_t(     IC2PSC_MASK,  0b00,           IC2PSC_POS),
-        IC2PSC_PRESCAL_2 = mskd_t(     IC2PSC_MASK,  0b01,           IC2PSC_POS),
-        IC2PSC_PRESCAL_4 = mskd_t(     IC2PSC_MASK,  0b10,           IC2PSC_POS),
-        IC2PSC_PRESCAL_8 = mskd_t(     IC2PSC_MASK,  0b11,           IC2PSC_POS);
+        // both modes
+        CC2S_OUT         = mskd_t(       CC2S_MASK,  0b00,             CC2S_POS),
+        CC2S_IN_IC2_TI2  = mskd_t(       CC2S_MASK,  0b01,             CC2S_POS),
+        CC2S_IN_IC2_TI1  = mskd_t(       CC2S_MASK,  0b10,             CC2S_POS),
+        CC2S_IN_IC2_TRC  = mskd_t(       CC2S_MASK,  0b11,             CC2S_POS),
+        // input/capture mode
+        IC2PSC_CAPTURE_1 = mskd_t(     IC2PSC_MASK,  0b00,           IC2PSC_POS),
+        IC2PSC_CAPTURE_2 = mskd_t(     IC2PSC_MASK,  0b01,           IC2PSC_POS),
+        IC2PSC_CAPTURE_4 = mskd_t(     IC2PSC_MASK,  0b10,           IC2PSC_POS),
+        IC2PSC_CAPTURE_8 = mskd_t(     IC2PSC_MASK,  0b11,           IC2PSC_POS),
+        // output/compare mode
+        OC2M_FROZEN      = mskd_t(       OC2M_MASK,  0x0000,          OC2M_POS),
+        OC2M_CH_ACTV     = mskd_t(       OC2M_MASK,  0x0001,          OC2M_POS),
+        OC2M_CH_INACT    = mskd_t(       OC2M_MASK,  0x0002,          OC2M_POS),
+        OC2M_TOGGLE      = mskd_t(       OC2M_MASK,  0x0003,          OC2M_POS),
+        OC2M_FORCE_LOW   = mskd_t(       OC2M_MASK,  0x0004,          OC2M_POS),
+        OC2M_FORCE_HIGH  = mskd_t(       OC2M_MASK,  0x0005,          OC2M_POS),
+        OC2M_PWM_MODE_1  = mskd_t(       OC2M_MASK,  0x0006,          OC2M_POS),
+        OC2M_PWM_MODE_2  = mskd_t(       OC2M_MASK,  0x0007,          OC2M_POS),
+        // input/capture mode
+        IC2F_NO_FILT     = mskd_t(       IC2F_MASK,  0b0000,           IC2F_POS),
+        IC2F_CK_INT_N_2  = mskd_t(       IC2F_MASK,  0b0001,           IC2F_POS),
+        IC2F_CK_INT_N_4  = mskd_t(       IC2F_MASK,  0b0010,           IC2F_POS),
+        IC2F_CK_INT_N_8  = mskd_t(       IC2F_MASK,  0b0011,           IC2F_POS),
+        IC2F_DTS_2_N_6   = mskd_t(       IC2F_MASK,  0b0100,           IC2F_POS),
+        IC2F_DTS_2_N_8   = mskd_t(       IC2F_MASK,  0b0101,           IC2F_POS),
+        IC2F_DTS_4_N_6   = mskd_t(       IC2F_MASK,  0b0110,           IC2F_POS),
+        IC2F_DTS_4_N_8   = mskd_t(       IC2F_MASK,  0b0111,           IC2F_POS),
+        IC2F_DTS_8_N_6   = mskd_t(       IC2F_MASK,  0b1000,           IC2F_POS),
+        IC2F_DTS_8_N_8   = mskd_t(       IC2F_MASK,  0b1001,           IC2F_POS),
+        IC2F_DTS_16_N_5  = mskd_t(       IC2F_MASK,  0b1010,           IC2F_POS),
+        IC2F_DTS_16_N_6  = mskd_t(       IC2F_MASK,  0b1011,           IC2F_POS),
+        IC2F_DTS_16_N_8  = mskd_t(       IC2F_MASK,  0b1100,           IC2F_POS),
+        IC2F_DTS_32_N_5  = mskd_t(       IC2F_MASK,  0b1101,           IC2F_POS),
+        IC2F_DTS_32_N_6  = mskd_t(       IC2F_MASK,  0b1110,           IC2F_POS),
+        IC2F_DTS_32_N_8  = mskd_t(       IC2F_MASK,  0b1111,           IC2F_POS);
     };  // struct Ccmr1
     using ccmr1_t = Reg<uint32_t, Ccmr1>;
           ccmr1_t   ccmr1;
@@ -467,15 +499,15 @@
 
         static const uint32_t
         // output/compare mode
-               CC3S_MASK =       0x3U,
-               OC3M_MASK =    0x1007U,
-               CC4S_MASK =       0x3U,
-               OC4M_MASK =    0x1007U,
+               CC3S_MASK = 0x3,
+               OC3M_MASK = 0x7,
+               CC4S_MASK = 0x3,
+               OC4M_MASK = 0x7,
         // input/capture mode
-             IC3PSC_MASK =       0x3U,
-               IC3F_MASK =       0xFU,
-             IC4PSC_MASK =       0x3U,
-               IC4F_MASK =       0xFU;
+             IC3PSC_MASK = 0x3,
+               IC3F_MASK = 0xF,
+             IC4PSC_MASK = 0x3,
+               IC4F_MASK = 0xF;
 
         using              mskd_t = Mskd<uint32_t, Ccmr2>;
         static constexpr   mskd_t
@@ -484,30 +516,21 @@
         CC3S_IC3_TI1     = mskd_t(       CC3S_MASK,  0b01,         CC3S_POS),
         CC3S_IC3_TI2     = mskd_t(       CC3S_MASK,  0b10,         CC3S_POS),
         CC3S_IC3_TRC     = mskd_t(       CC3S_MASK,  0b11,         CC3S_POS),
+        // input/capture mode
+        IC3PSC_CAPTURE_1 = mskd_t(     IC3PSC_MASK,  0b00,           IC3PSC_POS),
+        IC3PSC_CAPTURE_2 = mskd_t(     IC3PSC_MASK,  0b01,           IC3PSC_POS),
+        IC3PSC_CAPTURE_4 = mskd_t(     IC3PSC_MASK,  0b10,           IC3PSC_POS),
+        IC3PSC_CAPTURE_8 = mskd_t(     IC3PSC_MASK,  0b11,           IC3PSC_POS),
         // output/compare mode
         OC3M_FROZEN      = mskd_t(       OC3M_MASK,  0x0000,          OC3M_POS),
-        OC3M_CH1_ACTV    = mskd_t(       OC3M_MASK,  0x0001,          OC3M_POS),
-        OC3M_CH1_INACT   = mskd_t(       OC3M_MASK,  0x0002,          OC3M_POS),
+        OC3M_CH_ACTV     = mskd_t(       OC3M_MASK,  0x0001,          OC3M_POS),
+        OC3M_CH_INACT    = mskd_t(       OC3M_MASK,  0x0002,          OC3M_POS),
         OC3M_TOGGLE      = mskd_t(       OC3M_MASK,  0x0003,          OC3M_POS),
         OC3M_FORCE_LOW   = mskd_t(       OC3M_MASK,  0x0004,          OC3M_POS),
-        OC3M_FORCE_HIGH  = mskd_t(       OC3M_MASK,  0x0006,          OC3M_POS),
+        OC3M_FORCE_HIGH  = mskd_t(       OC3M_MASK,  0x0005,          OC3M_POS),
+        OC3M_PWM_MODE_1  = mskd_t(       OC3M_MASK,  0x0006,          OC3M_POS),
         OC3M_PWM_MODE_2  = mskd_t(       OC3M_MASK,  0x0007,          OC3M_POS),
-        OC3M_RETRIG_1    = mskd_t(       OC3M_MASK,  0x1000,          OC3M_POS),
-        OC3M_RETRIG_2    = mskd_t(       OC3M_MASK,  0x1001,          OC3M_POS),
-        OC3M_COMB_PWM_1  = mskd_t(       OC3M_MASK,  0x1004,          OC3M_POS),
-        OC3M_COMB_PWM_2  = mskd_t(       OC3M_MASK,  0x1005,          OC3M_POS),
-        OC3M_ASYM_PWM_1  = mskd_t(       OC3M_MASK,  0x1006,          OC3M_POS),
-        OC3M_ASYM_PWM_2  = mskd_t(       OC3M_MASK,  0x1007,          OC3M_POS),
-        // both modes
-        CC4S_OUT         = mskd_t(       CC4S_MASK,  0b00,             CC4S_POS),
-        CC4S_IN_IC4_TI2  = mskd_t(       CC4S_MASK,  0b01,             CC4S_POS),
-        CC4S_IN_IC4_TI1  = mskd_t(       CC4S_MASK,  0b10,             CC4S_POS),
-        CC4S_IN_IC4_TRC  = mskd_t(       CC4S_MASK,  0b11,             CC4S_POS),
         // input/capture mode
-        IC3PSC_PRESCAL_1 = mskd_t(     IC3PSC_MASK,  0b00,           IC3PSC_POS),
-        IC3PSC_PRESCAL_2 = mskd_t(     IC3PSC_MASK,  0b01,           IC3PSC_POS),
-        IC3PSC_PRESCAL_4 = mskd_t(     IC3PSC_MASK,  0b10,           IC3PSC_POS),
-        IC3PSC_PRESCAL_8 = mskd_t(     IC3PSC_MASK,  0b11,           IC3PSC_POS),
         IC3F_NO_FILT     = mskd_t(       IC3F_MASK,  0b0000,           IC3F_POS),
         IC3F_CK_INT_N_2  = mskd_t(       IC3F_MASK,  0b0001,           IC3F_POS),
         IC3F_CK_INT_N_4  = mskd_t(       IC3F_MASK,  0b0010,           IC3F_POS),
@@ -524,10 +547,42 @@
         IC3F_DTS_32_N_5  = mskd_t(       IC3F_MASK,  0b1101,           IC3F_POS),
         IC3F_DTS_32_N_6  = mskd_t(       IC3F_MASK,  0b1110,           IC3F_POS),
         IC3F_DTS_32_N_8  = mskd_t(       IC3F_MASK,  0b1111,           IC3F_POS),
-        IC4PSC_PRESCAL_1 = mskd_t(     IC4PSC_MASK,  0b00,           IC4PSC_POS),
-        IC4PSC_PRESCAL_2 = mskd_t(     IC4PSC_MASK,  0b01,           IC4PSC_POS),
-        IC4PSC_PRESCAL_4 = mskd_t(     IC4PSC_MASK,  0b10,           IC4PSC_POS),
-        IC4PSC_PRESCAL_8 = mskd_t(     IC4PSC_MASK,  0b11,           IC4PSC_POS);
+        // both modes
+        CC4S_OUT         = mskd_t(       CC4S_MASK,  0b00,             CC4S_POS),
+        CC4S_IN_IC4_TI2  = mskd_t(       CC4S_MASK,  0b01,             CC4S_POS),
+        CC4S_IN_IC4_TI1  = mskd_t(       CC4S_MASK,  0b10,             CC4S_POS),
+        CC4S_IN_IC4_TRC  = mskd_t(       CC4S_MASK,  0b11,             CC4S_POS),
+        // input/capture mode
+        IC4PSC_CAPTURE_1 = mskd_t(     IC4PSC_MASK,  0b00,           IC4PSC_POS),
+        IC4PSC_CAPTURE_2 = mskd_t(     IC4PSC_MASK,  0b01,           IC4PSC_POS),
+        IC4PSC_CAPTURE_4 = mskd_t(     IC4PSC_MASK,  0b10,           IC4PSC_POS),
+        IC4PSC_CAPTURE_8 = mskd_t(     IC4PSC_MASK,  0b11,           IC4PSC_POS),
+        // output/compare mode
+        OC4M_FROZEN      = mskd_t(       OC4M_MASK,  0x0000,          OC4M_POS),
+        OC4M_CH_ACTV     = mskd_t(       OC4M_MASK,  0x0001,          OC4M_POS),
+        OC4M_CH_INACT    = mskd_t(       OC4M_MASK,  0x0002,          OC4M_POS),
+        OC4M_TOGGLE      = mskd_t(       OC4M_MASK,  0x0003,          OC4M_POS),
+        OC4M_FORCE_LOW   = mskd_t(       OC4M_MASK,  0x0004,          OC4M_POS),
+        OC4M_FORCE_HIGH  = mskd_t(       OC4M_MASK,  0x0005,          OC4M_POS),
+        OC4M_PWM_MODE_1  = mskd_t(       OC4M_MASK,  0x0006,          OC4M_POS),
+        OC4M_PWM_MODE_2  = mskd_t(       OC4M_MASK,  0x0007,          OC4M_POS),
+        // input/capture mode
+        IC4F_NO_FILT     = mskd_t(       IC4F_MASK,  0b0000,           IC4F_POS),
+        IC4F_CK_INT_N_2  = mskd_t(       IC4F_MASK,  0b0001,           IC4F_POS),
+        IC4F_CK_INT_N_4  = mskd_t(       IC4F_MASK,  0b0010,           IC4F_POS),
+        IC4F_CK_INT_N_8  = mskd_t(       IC4F_MASK,  0b0011,           IC4F_POS),
+        IC4F_DTS_2_N_6   = mskd_t(       IC4F_MASK,  0b0100,           IC4F_POS),
+        IC4F_DTS_2_N_8   = mskd_t(       IC4F_MASK,  0b0101,           IC4F_POS),
+        IC4F_DTS_4_N_6   = mskd_t(       IC4F_MASK,  0b0110,           IC4F_POS),
+        IC4F_DTS_4_N_8   = mskd_t(       IC4F_MASK,  0b0111,           IC4F_POS),
+        IC4F_DTS_8_N_6   = mskd_t(       IC4F_MASK,  0b1000,           IC4F_POS),
+        IC4F_DTS_8_N_8   = mskd_t(       IC4F_MASK,  0b1001,           IC4F_POS),
+        IC4F_DTS_16_N_5  = mskd_t(       IC4F_MASK,  0b1010,           IC4F_POS),
+        IC4F_DTS_16_N_6  = mskd_t(       IC4F_MASK,  0b1011,           IC4F_POS),
+        IC4F_DTS_16_N_8  = mskd_t(       IC4F_MASK,  0b1100,           IC4F_POS),
+        IC4F_DTS_32_N_5  = mskd_t(       IC4F_MASK,  0b1101,           IC4F_POS),
+        IC4F_DTS_32_N_6  = mskd_t(       IC4F_MASK,  0b1110,           IC4F_POS),
+        IC4F_DTS_32_N_8  = mskd_t(       IC4F_MASK,  0b1111,           IC4F_POS);
     };  // struct Ccmr2
     using ccmr2_t = Reg<uint32_t, Ccmr2>;
           ccmr2_t   ccmr2;
@@ -616,9 +671,9 @@
              uint8_t    rcr_rep;
     private:
              uint8_t    _unimplemented_rcr_high_byte ;
-             uint16_t   _unimplemented_rcr_high_short;
+             uint16_t   _unimplemented_rcr_high_short;      public:
 #else
-    private: uint32_t   _unimplemented_rcr; public:
+    private: uint32_t   _unimplemented_rcr;     public:
 #endif
 
 

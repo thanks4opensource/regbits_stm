@@ -26,16 +26,12 @@
 #include <regbits.hxx>
 
 
-#if REGBITS_MAJOR_VERSION == 1
-#if REGBITS_MINOR_VERSION  < 0
-#warning REGBITS_MINOR_VERSION >= 0 with required REGBITS_MAJOR_VERSION == 1
-#endif
-#else
+#if REGBITS_MAJOR_VERSION != 1
 #error REGBITS_MAJOR_VERSION != 1
 #endif
 
 #define STM32F103XB_MAJOR_VERSION   1
-#define STM32F103XB_MINOR_VERSION   2
+#define STM32F103XB_MINOR_VERSION   3
 #define STM32F103XB_MICRO_VERSION   0
 
 
@@ -106,20 +102,6 @@ struct Rcc {
               PLLSRC_POS = pos_t(16),
             PLLXTPRE_POS = pos_t(17),
              PLLMULL_POS = pos_t(18),
-            PLLMULL3_POS = pos_t(18),
-            PLLMULL4_POS = pos_t(19),
-            PLLMULL5_POS = pos_t(18),
-            PLLMULL6_POS = pos_t(20),
-            PLLMULL7_POS = pos_t(18),
-            PLLMULL8_POS = pos_t(19),
-            PLLMULL9_POS = pos_t(18),
-           PLLMULL10_POS = pos_t(21),
-           PLLMULL11_POS = pos_t(18),
-           PLLMULL12_POS = pos_t(19),
-           PLLMULL13_POS = pos_t(18),
-           PLLMULL14_POS = pos_t(20),
-           PLLMULL15_POS = pos_t(18),
-           PLLMULL16_POS = pos_t(19),
               USBPRE_POS = pos_t(22),
                  MCO_POS = pos_t(24);
 
@@ -127,31 +109,17 @@ struct Rcc {
         static constexpr   bits_t
         PLLSRC           = bits_t(1,       PLLSRC_POS),
         PLLXTPRE         = bits_t(1,     PLLXTPRE_POS),
-        PLLMULL3         = bits_t(1,     PLLMULL3_POS),
-        PLLMULL4         = bits_t(1,     PLLMULL4_POS),
-        PLLMULL6         = bits_t(1,     PLLMULL6_POS),
-        PLLMULL10        = bits_t(1,    PLLMULL10_POS),
         USBPRE           = bits_t(1,       USBPRE_POS);
 
         static const uint32_t
-                 SW_MASK =       0x3U,
-                SWS_MASK =       0x3U,
-               HPRE_MASK =       0xFU,
-              PPRE1_MASK =       0x7U,
-              PPRE2_MASK =       0x7U,
-             ADCPRE_MASK =       0x3U,
-            PLLMULL_MASK =       0xFU,
-           PLLMULL5_MASK =       0x3U,
-           PLLMULL7_MASK =       0x5U,
-           PLLMULL8_MASK =       0x3U,
-           PLLMULL9_MASK =       0x7U,
-          PLLMULL11_MASK =       0x9U,
-          PLLMULL12_MASK =       0x5U,
-          PLLMULL13_MASK =       0xBU,
-          PLLMULL14_MASK =       0x3U,
-          PLLMULL15_MASK =       0xDU,
-          PLLMULL16_MASK =       0x7U,
-                MCO_MASK =       0x7U;
+                 SW_MASK =       0x3,
+                SWS_MASK =       0x3,
+               HPRE_MASK =       0xF,
+              PPRE1_MASK =       0x7,
+              PPRE2_MASK =       0x7,
+             ADCPRE_MASK =       0x3,
+            PLLMULL_MASK =       0xF,
+                MCO_MASK =       0x7;
 
         using              mskd_t = Mskd<uint32_t, Cfgr>;
         static constexpr   mskd_t
@@ -190,21 +158,22 @@ struct Rcc {
         ADCPRE_DIV_6  = mskd_t(    ADCPRE_MASK,  0b10,       ADCPRE_POS),
         ADCPRE_DIV_8  = mskd_t(    ADCPRE_MASK,  0b11,       ADCPRE_POS),
 
-        PLLMULL_2     = mskd_t(   PLLMULL_MASK,   0,        PLLMULL_POS),
-        PLLMULL_3     = mskd_t(   PLLMULL_MASK,   1,        PLLMULL_POS),
-        PLLMULL_4     = mskd_t(   PLLMULL_MASK,   2,        PLLMULL_POS),
-        PLLMULL_5     = mskd_t(   PLLMULL_MASK,   3,        PLLMULL_POS),
-        PLLMULL_6     = mskd_t(   PLLMULL_MASK,   4,        PLLMULL_POS),
-        PLLMULL_7     = mskd_t(   PLLMULL_MASK,   5,        PLLMULL_POS),
-        PLLMULL_8     = mskd_t(   PLLMULL_MASK,   6,        PLLMULL_POS),
-        PLLMULL_9     = mskd_t(   PLLMULL_MASK,   7,        PLLMULL_POS),
-        PLLMULL_10    = mskd_t(   PLLMULL_MASK,   8,        PLLMULL_POS),
-        PLLMULL_11    = mskd_t(   PLLMULL_MASK,   9,        PLLMULL_POS),
-        PLLMULL_12    = mskd_t(   PLLMULL_MASK,  10,        PLLMULL_POS),
-        PLLMULL_13    = mskd_t(   PLLMULL_MASK,  11,        PLLMULL_POS),
-        PLLMULL_14    = mskd_t(   PLLMULL_MASK,  12,        PLLMULL_POS),
-        PLLMULL_15    = mskd_t(   PLLMULL_MASK,  13,        PLLMULL_POS),
-        PLLMULL_16    = mskd_t(   PLLMULL_MASK,  14,        PLLMULL_POS),
+        PLLMULL_2     = mskd_t(   PLLMULL_MASK,  0b0000,        PLLMULL_POS),
+        PLLMULL_3     = mskd_t(   PLLMULL_MASK,  0b0001,        PLLMULL_POS),
+        PLLMULL_4     = mskd_t(   PLLMULL_MASK,  0b0010,        PLLMULL_POS),
+        PLLMULL_5     = mskd_t(   PLLMULL_MASK,  0b0011,        PLLMULL_POS),
+        PLLMULL_6     = mskd_t(   PLLMULL_MASK,  0b0100,        PLLMULL_POS),
+        PLLMULL_7     = mskd_t(   PLLMULL_MASK,  0b0101,        PLLMULL_POS),
+        PLLMULL_8     = mskd_t(   PLLMULL_MASK,  0b0110,        PLLMULL_POS),
+        PLLMULL_9     = mskd_t(   PLLMULL_MASK,  0b0111,        PLLMULL_POS),
+        PLLMULL_10    = mskd_t(   PLLMULL_MASK,  0b1000,        PLLMULL_POS),
+        PLLMULL_11    = mskd_t(   PLLMULL_MASK,  0b1001,        PLLMULL_POS),
+        PLLMULL_12    = mskd_t(   PLLMULL_MASK,  0b1010,        PLLMULL_POS),
+        PLLMULL_13    = mskd_t(   PLLMULL_MASK,  0b1011,        PLLMULL_POS),
+        PLLMULL_14    = mskd_t(   PLLMULL_MASK,  0b1100,        PLLMULL_POS),
+        PLLMULL_15    = mskd_t(   PLLMULL_MASK,  0b1101,        PLLMULL_POS),
+        PLLMULL_16    = mskd_t(   PLLMULL_MASK,  0b1110,        PLLMULL_POS),
+        PLLMULL_16ALT = mskd_t(   PLLMULL_MASK,  0b1111,        PLLMULL_POS),
 
         MCO_NONE      = mskd_t(       MCO_MASK,  0b000,         MCO_POS),
         MCO_SYSCLK    = mskd_t(       MCO_MASK,  0b100,         MCO_POS),
@@ -1096,42 +1065,39 @@ struct Afio {
 
         static const uint32_t
         USART3_REMAP_MASK =       0x3U,
-         TIM1_REMAP_MASK =       0x3U,
-         TIM2_REMAP_MASK =       0x3U,
-         TIM3_REMAP_MASK =       0x3U,
-          CAN_REMAP_MASK =       0x3U,
-            SWJ_CFG_MASK =       0x7U;
+          TIM1_REMAP_MASK =      0x3U,
+          TIM2_REMAP_MASK =      0x3U,
+          TIM3_REMAP_MASK =      0x3U,
+           CAN_REMAP_MASK =      0x3U,
+             SWJ_CFG_MASK =      0x7U;
 
         using              mskd_t = Mskd<uint32_t, Mapr>;
         static constexpr   mskd_t
-        USART3_REMAP_NONE = mskd_t(USART3_REMAP_MASK,    0b00, USART3_REMAP_POS),
-        USART3_REMAP_PB   = mskd_t(USART3_REMAP_MASK,    0b00, USART3_REMAP_POS),
-        USART3_REMAP_PC   = mskd_t(USART3_REMAP_MASK,    0b01, USART3_REMAP_POS),
-        USART3_REMAP_PD   = mskd_t(USART3_REMAP_MASK,    0b11, USART3_REMAP_POS),
+        USART3_REMAP_NONE  = mskd_t(USART3_REMAP_MASK,   0b00, USART3_REMAP_POS),
+        USART3_REMAP_PB    = mskd_t(USART3_REMAP_MASK,   0b00, USART3_REMAP_POS),
+        USART3_REMAP_PC    = mskd_t(USART3_REMAP_MASK,   0b01, USART3_REMAP_POS),
+        USART3_REMAP_PD    = mskd_t(USART3_REMAP_MASK,   0b11, USART3_REMAP_POS),
 
-        TIM1_REMAP_NONE  = mskd_t( TIM1_REMAP_MASK,  0b00,   TIM1_REMAP_POS),
-        TIM1_REMAP_PA_B  = mskd_t( TIM1_REMAP_MASK,  0b01,   TIM1_REMAP_POS),
-        TIM1_REMAP_PE    = mskd_t( TIM1_REMAP_MASK,  0b11,   TIM1_REMAP_POS),
+        TIM1_REMAP_NONE    = mskd_t(  TIM1_REMAP_MASK,   0b00,   TIM1_REMAP_POS),
+        TIM1_REMAP_PARTIAL = mskd_t(  TIM1_REMAP_MASK,   0b01,   TIM1_REMAP_POS),
+        TIM1_REMAP_PE      = mskd_t(  TIM1_REMAP_MASK,   0b11,   TIM1_REMAP_POS),
 
-        TIM2_REMAP_NONE  = mskd_t( TIM2_REMAP_MASK,  0b00,   TIM2_REMAP_POS),
-        TIM2_REMAP_15_3  = mskd_t( TIM2_REMAP_MASK,  0b01,   TIM2_REMAP_POS),
-        TIM2_REMAP_0_11  = mskd_t( TIM2_REMAP_MASK,  0b10,   TIM2_REMAP_POS),
-        TIM2_REMAP_15_11 = mskd_t( TIM2_REMAP_MASK,  0b11,   TIM2_REMAP_POS),
+        TIM2_REMAP_NONE    = mskd_t(  TIM2_REMAP_MASK,   0b00,   TIM2_REMAP_POS),
+        TIM2_REMAP_PARTL_1 = mskd_t(  TIM2_REMAP_MASK,   0b01,   TIM2_REMAP_POS),
+        TIM2_REMAP_PARTL_2 = mskd_t(  TIM2_REMAP_MASK,   0b10,   TIM2_REMAP_POS),
+        TIM2_REMAP_FULL    = mskd_t(  TIM2_REMAP_MASK,   0b11,   TIM2_REMAP_POS),
 
-        TIM3_REMAP_NONE  = mskd_t( TIM3_REMAP_MASK,  0b00,   TIM3_REMAP_POS),
-        TIM3_REMAP_PA    = mskd_t( TIM3_REMAP_MASK,  0b00,   TIM3_REMAP_POS),
-        TIM3_REMAP_PB    = mskd_t( TIM3_REMAP_MASK,  0b10,   TIM3_REMAP_POS),
-        TIM3_REMAP_PC    = mskd_t( TIM3_REMAP_MASK,  0b11,   TIM3_REMAP_POS),
+        TIM3_REMAP_NONE    = mskd_t(  TIM3_REMAP_MASK,   0b00,   TIM3_REMAP_POS),
+        TIM3_REMAP_PARTIAL = mskd_t(  TIM3_REMAP_MASK,   0b10,   TIM3_REMAP_POS),
 
+        CAN_REMAP_PA       = mskd_t(   CAN_REMAP_MASK,   0b00,    CAN_REMAP_POS),
+        CAN_REMAP_PB       = mskd_t(   CAN_REMAP_MASK,   0b10,    CAN_REMAP_POS),
+        CAN_REMAP_PD       = mskd_t(   CAN_REMAP_MASK,   0b11,    CAN_REMAP_POS),
 
-        CAN_REMAP_PA     = mskd_t(  CAN_REMAP_MASK,  0b00,    CAN_REMAP_POS),
-        CAN_REMAP_PB     = mskd_t(  CAN_REMAP_MASK,  0b10,    CAN_REMAP_POS),
-        CAN_REMAP_PD     = mskd_t(  CAN_REMAP_MASK,  0b11,    CAN_REMAP_POS),
-
-        SWJ_CFG_FULL_SWJ  = mskd_t(   SWJ_CFG_MASK,  0b000,     SWJ_CFG_POS),
-        SWJ_CFG_NO_NJTRST = mskd_t(   SWJ_CFG_MASK,  0b001,     SWJ_CFG_POS),
-        SWJ_CFG_SW_DP     = mskd_t(   SWJ_CFG_MASK,  0b010,     SWJ_CFG_POS),
-        SWJ_CFG_DISABLED  = mskd_t(   SWJ_CFG_MASK,  0b100,     SWJ_CFG_POS);
+        SWJ_CFG_FULL_SWJ   = mskd_t(     SWJ_CFG_MASK,   0b000,     SWJ_CFG_POS),
+        SWJ_CFG_NO_NJTRST  = mskd_t(     SWJ_CFG_MASK,   0b001,     SWJ_CFG_POS),
+        SWJ_CFG_SW_DP      = mskd_t(     SWJ_CFG_MASK,   0b010,     SWJ_CFG_POS),
+        SWJ_CFG_DISABLED   = mskd_t(     SWJ_CFG_MASK,   0b100,     SWJ_CFG_POS);
     };  // struct Mapr
     using mapr_t = Reg<uint32_t, Mapr>;
           mapr_t   mapr;
@@ -1637,6 +1603,665 @@ struct Exti {
 
 };  // struct Exti
 static_assert(sizeof(Exti) == 24, "sizeof(Exti) != 24");
+
+
+
+struct Adc {
+    struct Sr {
+        using              pos_t = Pos<uint32_t, Sr>;
+        static constexpr   pos_t
+                 AWD_POS = pos_t( 0),
+                 EOC_POS = pos_t( 1),
+                JEOC_POS = pos_t( 2),
+               JSTRT_POS = pos_t( 3),
+                STRT_POS = pos_t( 4);
+
+        using              bits_t = Bits<uint32_t, Sr>;
+        static constexpr   bits_t
+        AWD              = bits_t(1,          AWD_POS),
+        EOC              = bits_t(1,          EOC_POS),
+        JEOC             = bits_t(1,         JEOC_POS),
+        JSTRT            = bits_t(1,        JSTRT_POS),
+        STRT             = bits_t(1,         STRT_POS);
+    };  // struct Sr
+    using sr_t = Reg<uint32_t, Sr>;
+          sr_t   sr;
+
+
+    struct Cr1 {
+        using              pos_t = Pos<uint32_t, Cr1>;
+        static constexpr   pos_t
+               AWDCH_POS = pos_t( 0),
+               EOCIE_POS = pos_t( 5),
+               AWDIE_POS = pos_t( 6),
+              JEOCIE_POS = pos_t( 7),
+                SCAN_POS = pos_t( 8),
+              AWDSGL_POS = pos_t( 9),
+               JAUTO_POS = pos_t(10),
+              DISCEN_POS = pos_t(11),
+             JDISCEN_POS = pos_t(12),
+             DISCNUM_POS = pos_t(13),
+             DUALMOD_POS = pos_t(16),
+              JAWDEN_POS = pos_t(22),
+               AWDEN_POS = pos_t(23);
+
+        using              bits_t = Bits<uint32_t, Cr1>;
+        static constexpr   bits_t
+        EOCIE            = bits_t(1,        EOCIE_POS),
+        AWDIE            = bits_t(1,        AWDIE_POS),
+        JEOCIE           = bits_t(1,       JEOCIE_POS),
+        SCAN             = bits_t(1,         SCAN_POS),
+        AWDSGL           = bits_t(1,       AWDSGL_POS),
+        JAUTO            = bits_t(1,        JAUTO_POS),
+        DISCEN           = bits_t(1,       DISCEN_POS),
+        JDISCEN          = bits_t(1,      JDISCEN_POS),
+        JAWDEN           = bits_t(1,       JAWDEN_POS),
+        AWDEN            = bits_t(1,        AWDEN_POS);
+
+        static const uint32_t
+              AWDCH_MASK =      0x1FU,
+            DISCNUM_MASK =       0x7U,
+            DUALMOD_MASK =       0xFU;
+
+        using              mskd_t = Mskd<uint32_t, Cr1>;
+        using              shft_t = Shft<uint32_t, Cr1>;
+
+        static constexpr   mskd_t
+        AWDCH_CHNL_0          = mskd_t( AWDCH_MASK,       0,     AWDCH_POS),
+        AWDCH_CHNL_1          = mskd_t( AWDCH_MASK,       1,     AWDCH_POS),
+        AWDCH_CHNL_2          = mskd_t( AWDCH_MASK,       2,     AWDCH_POS),
+        AWDCH_CHNL_3          = mskd_t( AWDCH_MASK,       3,     AWDCH_POS),
+        AWDCH_CHNL_4          = mskd_t( AWDCH_MASK,       4,     AWDCH_POS),
+        AWDCH_CHNL_5          = mskd_t( AWDCH_MASK,       5,     AWDCH_POS),
+        AWDCH_CHNL_6          = mskd_t( AWDCH_MASK,       6,     AWDCH_POS),
+        AWDCH_CHNL_7          = mskd_t( AWDCH_MASK,       7,     AWDCH_POS),
+        AWDCH_CHNL_8          = mskd_t( AWDCH_MASK,       8,     AWDCH_POS),
+        AWDCH_CHNL_9          = mskd_t( AWDCH_MASK,       9,     AWDCH_POS),
+        AWDCH_CHNL_10         = mskd_t( AWDCH_MASK,      10,     AWDCH_POS),
+        AWDCH_CHNL_11         = mskd_t( AWDCH_MASK,      11,     AWDCH_POS),
+        AWDCH_CHNL_12         = mskd_t( AWDCH_MASK,      12,     AWDCH_POS),
+        AWDCH_CHNL_13         = mskd_t( AWDCH_MASK,      13,     AWDCH_POS),
+        AWDCH_CHNL_14         = mskd_t( AWDCH_MASK,      14,     AWDCH_POS),
+        AWDCH_CHNL_15         = mskd_t( AWDCH_MASK,      15,     AWDCH_POS),
+        AWDCH_CHNL_16         = mskd_t( AWDCH_MASK,      16,     AWDCH_POS),
+        AWDCH_CHNL_17         = mskd_t( AWDCH_MASK,      17,     AWDCH_POS),
+#if 0
+        DISCNUM_1_CHNL        = mskd_t(DISCNUM_MASK,      0,   DISCNUM_POS),
+        DISCNUM_2_CHNLS       = mskd_t(DISCNUM_MASK,      1,   DISCNUM_POS),
+        DISCNUM_3_CHNLS       = mskd_t(DISCNUM_MASK,      2,   DISCNUM_POS),
+        DISCNUM_4_CHNLS       = mskd_t(DISCNUM_MASK,      3,   DISCNUM_POS),
+        DISCNUM_5_CHNLS       = mskd_t(DISCNUM_MASK,      4,   DISCNUM_POS),
+        DISCNUM_6_CHNLS       = mskd_t(DISCNUM_MASK,      5,   DISCNUM_POS),
+        DISCNUM_7_CHNLS       = mskd_t(DISCNUM_MASK,      6,   DISCNUM_POS),
+        DISCNUM_8_CHNLS       = mskd_t(DISCNUM_MASK,      7,   DISCNUM_POS),
+#endif
+        DUALMOD_INDEPEND      = mskd_t(DUALMOD_MASK, 0b0000,   DUALMOD_POS),
+        DUALMOD_SIMUL_INJECT  = mskd_t(DUALMOD_MASK, 0b0001,   DUALMOD_POS),
+        DUALMOD_SIMUL_ALTERN  = mskd_t(DUALMOD_MASK, 0b0010,   DUALMOD_POS),
+        DUALMOD_INJCT_FAST    = mskd_t(DUALMOD_MASK, 0b0011,   DUALMOD_POS),
+        DUALMOD_INJCT_SLOW    = mskd_t(DUALMOD_MASK, 0b0100,   DUALMOD_POS),
+        DUALMOD_INJECT_SIMUL  = mskd_t(DUALMOD_MASK, 0b0101,   DUALMOD_POS),
+        DUALMOD_REGULAR_SIMUL = mskd_t(DUALMOD_MASK, 0b0110,   DUALMOD_POS),
+        DUALMOD_FAST_INTRLV   = mskd_t(DUALMOD_MASK, 0b0111,   DUALMOD_POS),
+        DUALMOD_SLOW_INTLV    = mskd_t(DUALMOD_MASK, 0b1000,   DUALMOD_POS),
+        DUALMOD_ALTERN_TRIG   = mskd_t(DUALMOD_MASK, 0b1001,   DUALMOD_POS);
+
+        REGBITS_MSKD_RANGE("Adc::Cr1",
+                           DISCNUM,
+                           discnum,
+                           DISCNUM_MASK,
+                           DISCNUM_POS,
+                           DISCNUM_MASK);
+    };  // struct Cr1
+    using cr1_t = Reg<uint32_t, Cr1>;
+          cr1_t   cr1;
+
+
+    struct Cr2 {
+        using              pos_t = Pos<uint32_t, Cr2>;
+        static constexpr   pos_t
+                ADON_POS = pos_t( 0),
+                CONT_POS = pos_t( 1),
+                 CAL_POS = pos_t( 2),
+              RSTCAL_POS = pos_t( 3),
+                 DMA_POS = pos_t( 8),
+               ALIGN_POS = pos_t(11),
+             JEXTSEL_POS = pos_t(12),
+            JEXTTRIG_POS = pos_t(15),
+              EXTSEL_POS = pos_t(17),
+             EXTTRIG_POS = pos_t(20),
+            JSWSTART_POS = pos_t(21),
+             SWSTART_POS = pos_t(22),
+             TSVREFE_POS = pos_t(23);
+
+        using              bits_t = Bits<uint32_t, Cr2>;
+        static constexpr   bits_t
+        ADON             = bits_t(1,         ADON_POS),
+        CONT             = bits_t(1,         CONT_POS),
+        CAL              = bits_t(1,          CAL_POS),
+        RSTCAL           = bits_t(1,       RSTCAL_POS),
+        DMA              = bits_t(1,          DMA_POS),
+        ALIGN            = bits_t(1,        ALIGN_POS),
+        JEXTTRIG         = bits_t(1,     JEXTTRIG_POS),
+        EXTTRIG          = bits_t(1,      EXTTRIG_POS),
+        JSWSTART         = bits_t(1,     JSWSTART_POS),
+        SWSTART          = bits_t(1,      SWSTART_POS),
+        TSVREFE          = bits_t(1,      TSVREFE_POS);
+
+        static const uint32_t
+            JEXTSEL_MASK =       0x7U,
+             EXTSEL_MASK =       0x7U;
+
+        using              mskd_t = Mskd<uint32_t, Cr2>;
+        static constexpr   mskd_t
+
+        JEXTSEL_TRGO_1   = mskd_t(JEXTSEL_MASK,  0b000,     JEXTSEL_POS),
+        JEXTSEL_CC4_1    = mskd_t(JEXTSEL_MASK,  0b001,     JEXTSEL_POS),
+        JEXTSEL_TRGO_2   = mskd_t(JEXTSEL_MASK,  0b010,     JEXTSEL_POS),
+        JEXTSEL_CC3_4    = mskd_t(JEXTSEL_MASK,  0b010,     JEXTSEL_POS),
+        JEXTSEL_CC1_2    = mskd_t(JEXTSEL_MASK,  0b011,     JEXTSEL_POS),
+        JEXTSEL_CC2_8    = mskd_t(JEXTSEL_MASK,  0b011,     JEXTSEL_POS),
+        JEXTSEL_CC4_3    = mskd_t(JEXTSEL_MASK,  0b100,     JEXTSEL_POS),
+        JEXTSEL_CC4_8    = mskd_t(JEXTSEL_MASK,  0b100,     JEXTSEL_POS),
+        JEXTSEL_TRGO_4   = mskd_t(JEXTSEL_MASK,  0b101,     JEXTSEL_POS),
+        JEXTSEL_TRGO_5   = mskd_t(JEXTSEL_MASK,  0b101,     JEXTSEL_POS),
+        JEXTSEL_EXTI_15  = mskd_t(JEXTSEL_MASK,  0b110,     JEXTSEL_POS),
+        JEXTSEL_CC4_5    = mskd_t(JEXTSEL_MASK,  0b110,     JEXTSEL_POS),
+        JEXTSEL_JSWSTART = mskd_t(JEXTSEL_MASK,  0b111,     JEXTSEL_POS),
+        EXTSEL_TRGO_1    = mskd_t( EXTSEL_MASK,  0b000,      EXTSEL_POS),
+        EXTSEL_CC4_1     = mskd_t( EXTSEL_MASK,  0b001,      EXTSEL_POS),
+        EXTSEL_TRGO_2    = mskd_t( EXTSEL_MASK,  0b010,      EXTSEL_POS),
+        EXTSEL_CC3_4     = mskd_t( EXTSEL_MASK,  0b010,      EXTSEL_POS),
+        EXTSEL_CC1_2     = mskd_t( EXTSEL_MASK,  0b011,      EXTSEL_POS),
+        EXTSEL_CC2_8     = mskd_t( EXTSEL_MASK,  0b011,      EXTSEL_POS),
+        EXTSEL_CC4_3     = mskd_t( EXTSEL_MASK,  0b100,      EXTSEL_POS),
+        EXTSEL_CC4_8     = mskd_t( EXTSEL_MASK,  0b100,      EXTSEL_POS),
+        EXTSEL_TRGO_4    = mskd_t( EXTSEL_MASK,  0b101,      EXTSEL_POS),
+        EXTSEL_TRGO_5    = mskd_t( EXTSEL_MASK,  0b101,      EXTSEL_POS),
+        EXTSEL_EXTI_15   = mskd_t( EXTSEL_MASK,  0b110,      EXTSEL_POS),
+        EXTSEL_CC4_5     = mskd_t( EXTSEL_MASK,  0b110,      EXTSEL_POS),
+        EXTSEL_SWSTART   = mskd_t( EXTSEL_MASK,  0b111,      EXTSEL_POS);
+    };  // struct Cr2
+    using cr2_t = Reg<uint32_t, Cr2>;
+          cr2_t   cr2;
+
+
+    struct Smpr1 {
+        using              pos_t = Pos<uint32_t, Smpr1>;
+        static constexpr   pos_t
+               SMP10_POS = pos_t( 0),
+               SMP11_POS = pos_t( 3),
+               SMP12_POS = pos_t( 6),
+               SMP13_POS = pos_t( 9),
+               SMP14_POS = pos_t(12),
+               SMP15_POS = pos_t(15),
+               SMP16_POS = pos_t(18),
+               SMP17_POS = pos_t(21);
+
+        static const uint32_t
+              SMP10_MASK =       0x7U,
+              SMP11_MASK =       0x7U,
+              SMP12_MASK =       0x7U,
+              SMP13_MASK =       0x7U,
+              SMP14_MASK =       0x7U,
+              SMP15_MASK =       0x7U,
+              SMP16_MASK =       0x7U,
+              SMP17_MASK =       0x7U;
+
+        using              mskd_t = Mskd<uint32_t, Smpr1>;
+        static constexpr   mskd_t
+        SMP10_1P5        = mskd_t(      SMP10_MASK,  0b000,       SMP10_POS),
+        SMP10_7P5        = mskd_t(      SMP10_MASK,  0b001,       SMP10_POS),
+        SMP10_13P5       = mskd_t(      SMP10_MASK,  0b010,       SMP10_POS),
+        SMP10_28P5       = mskd_t(      SMP10_MASK,  0b011,       SMP10_POS),
+        SMP10_41P5       = mskd_t(      SMP10_MASK,  0b100,       SMP10_POS),
+        SMP10_55P5       = mskd_t(      SMP10_MASK,  0b101,       SMP10_POS),
+        SMP10_71P5       = mskd_t(      SMP10_MASK,  0b110,       SMP10_POS),
+        SMP10_239P5      = mskd_t(      SMP10_MASK,  0b111,       SMP10_POS),
+        SMP11_1P5        = mskd_t(      SMP11_MASK,  0b000,       SMP11_POS),
+        SMP11_7P5        = mskd_t(      SMP11_MASK,  0b001,       SMP11_POS),
+        SMP11_13P5       = mskd_t(      SMP11_MASK,  0b010,       SMP11_POS),
+        SMP11_28P5       = mskd_t(      SMP11_MASK,  0b011,       SMP11_POS),
+        SMP11_41P5       = mskd_t(      SMP11_MASK,  0b100,       SMP11_POS),
+        SMP11_55P5       = mskd_t(      SMP11_MASK,  0b101,       SMP11_POS),
+        SMP11_71P5       = mskd_t(      SMP11_MASK,  0b110,       SMP11_POS),
+        SMP11_239P5      = mskd_t(      SMP11_MASK,  0b111,       SMP11_POS),
+        SMP12_1P5        = mskd_t(      SMP12_MASK,  0b000,       SMP12_POS),
+        SMP12_7P5        = mskd_t(      SMP12_MASK,  0b001,       SMP12_POS),
+        SMP12_13P5       = mskd_t(      SMP12_MASK,  0b010,       SMP12_POS),
+        SMP12_28P5       = mskd_t(      SMP12_MASK,  0b011,       SMP12_POS),
+        SMP12_41P5       = mskd_t(      SMP12_MASK,  0b100,       SMP12_POS),
+        SMP12_55P5       = mskd_t(      SMP12_MASK,  0b101,       SMP12_POS),
+        SMP12_71P5       = mskd_t(      SMP12_MASK,  0b110,       SMP12_POS),
+        SMP12_239P5      = mskd_t(      SMP12_MASK,  0b111,       SMP12_POS),
+        SMP13_1P5        = mskd_t(      SMP13_MASK,  0b000,       SMP13_POS),
+        SMP13_7P5        = mskd_t(      SMP13_MASK,  0b001,       SMP13_POS),
+        SMP13_13P5       = mskd_t(      SMP13_MASK,  0b010,       SMP13_POS),
+        SMP13_28P5       = mskd_t(      SMP13_MASK,  0b011,       SMP13_POS),
+        SMP13_41P5       = mskd_t(      SMP13_MASK,  0b100,       SMP13_POS),
+        SMP13_55P5       = mskd_t(      SMP13_MASK,  0b101,       SMP13_POS),
+        SMP13_71P5       = mskd_t(      SMP13_MASK,  0b110,       SMP13_POS),
+        SMP13_239P5      = mskd_t(      SMP13_MASK,  0b111,       SMP13_POS),
+        SMP14_1P5        = mskd_t(      SMP14_MASK,  0b000,       SMP14_POS),
+        SMP14_7P5        = mskd_t(      SMP14_MASK,  0b001,       SMP14_POS),
+        SMP14_13P5       = mskd_t(      SMP14_MASK,  0b010,       SMP14_POS),
+        SMP14_28P5       = mskd_t(      SMP14_MASK,  0b011,       SMP14_POS),
+        SMP14_41P5       = mskd_t(      SMP14_MASK,  0b100,       SMP14_POS),
+        SMP14_55P5       = mskd_t(      SMP14_MASK,  0b101,       SMP14_POS),
+        SMP14_71P5       = mskd_t(      SMP14_MASK,  0b110,       SMP14_POS),
+        SMP14_239P5      = mskd_t(      SMP14_MASK,  0b111,       SMP14_POS),
+        SMP15_1P5        = mskd_t(      SMP15_MASK,  0b000,       SMP15_POS),
+        SMP15_7P5        = mskd_t(      SMP15_MASK,  0b001,       SMP15_POS),
+        SMP15_13P5       = mskd_t(      SMP15_MASK,  0b010,       SMP15_POS),
+        SMP15_28P5       = mskd_t(      SMP15_MASK,  0b011,       SMP15_POS),
+        SMP15_41P5       = mskd_t(      SMP15_MASK,  0b100,       SMP15_POS),
+        SMP15_55P5       = mskd_t(      SMP15_MASK,  0b101,       SMP15_POS),
+        SMP15_71P5       = mskd_t(      SMP15_MASK,  0b110,       SMP15_POS),
+        SMP15_239P5      = mskd_t(      SMP15_MASK,  0b111,       SMP15_POS),
+        SMP16_1P5        = mskd_t(      SMP16_MASK,  0b000,       SMP16_POS),
+        SMP16_7P5        = mskd_t(      SMP16_MASK,  0b001,       SMP16_POS),
+        SMP16_13P5       = mskd_t(      SMP16_MASK,  0b010,       SMP16_POS),
+        SMP16_28P5       = mskd_t(      SMP16_MASK,  0b011,       SMP16_POS),
+        SMP16_41P5       = mskd_t(      SMP16_MASK,  0b100,       SMP16_POS),
+        SMP16_55P5       = mskd_t(      SMP16_MASK,  0b101,       SMP16_POS),
+        SMP16_71P5       = mskd_t(      SMP16_MASK,  0b110,       SMP16_POS),
+        SMP16_239P5      = mskd_t(      SMP16_MASK,  0b111,       SMP16_POS),
+        SMP17_1P5        = mskd_t(      SMP17_MASK,  0b000,       SMP17_POS),
+        SMP17_7P5        = mskd_t(      SMP17_MASK,  0b001,       SMP17_POS),
+        SMP17_13P5       = mskd_t(      SMP17_MASK,  0b010,       SMP17_POS),
+        SMP17_28P5       = mskd_t(      SMP17_MASK,  0b011,       SMP17_POS),
+        SMP17_41P5       = mskd_t(      SMP17_MASK,  0b100,       SMP17_POS),
+        SMP17_55P5       = mskd_t(      SMP17_MASK,  0b101,       SMP17_POS),
+        SMP17_71P5       = mskd_t(      SMP17_MASK,  0b110,       SMP17_POS),
+        SMP17_239P5      = mskd_t(      SMP17_MASK,  0b111,       SMP17_POS);
+    };  // struct Smpr1
+    using smpr1_t = Reg<uint32_t, Smpr1>;
+          smpr1_t   smpr1;
+
+
+    struct Smpr2 {
+        using              pos_t = Pos<uint32_t, Smpr2>;
+        static constexpr   pos_t
+               SMP0_POS = pos_t( 0),
+               SMP1_POS = pos_t( 3),
+               SMP2_POS = pos_t( 6),
+               SMP3_POS = pos_t( 9),
+               SMP4_POS = pos_t(12),
+               SMP5_POS = pos_t(15),
+               SMP6_POS = pos_t(18),
+               SMP7_POS = pos_t(21),
+               SMP8_POS = pos_t(24),
+               SMP9_POS = pos_t(27);
+
+        static const uint32_t
+              SMP0_MASK = 0x7U,
+              SMP1_MASK = 0x7U,
+              SMP2_MASK = 0x7U,
+              SMP3_MASK = 0x7U,
+              SMP4_MASK = 0x7U,
+              SMP5_MASK = 0x7U,
+              SMP6_MASK = 0x7U,
+              SMP7_MASK = 0x7U,
+              SMP8_MASK = 0x7U,
+              SMP9_MASK = 0x7U;
+
+        using              mskd_t = Mskd<uint32_t, Smpr2>;
+        static constexpr   mskd_t
+        SMP0_1P5         = mskd_t(      SMP0_MASK,   0b000,       SMP0_POS),
+        SMP0_7P5         = mskd_t(      SMP0_MASK,   0b001,       SMP0_POS),
+        SMP0_13P5        = mskd_t(      SMP0_MASK,   0b010,       SMP0_POS),
+        SMP0_28P5        = mskd_t(      SMP0_MASK,   0b011,       SMP0_POS),
+        SMP0_41P5        = mskd_t(      SMP0_MASK,   0b100,       SMP0_POS),
+        SMP0_55P5        = mskd_t(      SMP0_MASK,   0b101,       SMP0_POS),
+        SMP0_71P5        = mskd_t(      SMP0_MASK,   0b110,       SMP0_POS),
+        SMP0_239P5       = mskd_t(      SMP0_MASK,   0b111,       SMP0_POS),
+        SMP1_1P5         = mskd_t(      SMP1_MASK,   0b000,       SMP1_POS),
+        SMP1_7P5         = mskd_t(      SMP1_MASK,   0b001,       SMP1_POS),
+        SMP1_13P5        = mskd_t(      SMP1_MASK,   0b010,       SMP1_POS),
+        SMP1_28P5        = mskd_t(      SMP1_MASK,   0b011,       SMP1_POS),
+        SMP1_41P5        = mskd_t(      SMP1_MASK,   0b100,       SMP1_POS),
+        SMP1_55P5        = mskd_t(      SMP1_MASK,   0b101,       SMP1_POS),
+        SMP1_71P5        = mskd_t(      SMP1_MASK,   0b110,       SMP1_POS),
+        SMP1_239P5       = mskd_t(      SMP1_MASK,   0b111,       SMP1_POS),
+        SMP2_1P5         = mskd_t(      SMP2_MASK,   0b000,       SMP2_POS),
+        SMP2_7P5         = mskd_t(      SMP2_MASK,   0b001,       SMP2_POS),
+        SMP2_13P5        = mskd_t(      SMP2_MASK,   0b010,       SMP2_POS),
+        SMP2_28P5        = mskd_t(      SMP2_MASK,   0b011,       SMP2_POS),
+        SMP2_41P5        = mskd_t(      SMP2_MASK,   0b100,       SMP2_POS),
+        SMP2_55P5        = mskd_t(      SMP2_MASK,   0b101,       SMP2_POS),
+        SMP2_71P5        = mskd_t(      SMP2_MASK,   0b110,       SMP2_POS),
+        SMP2_239P5       = mskd_t(      SMP2_MASK,   0b111,       SMP2_POS),
+        SMP3_1P5         = mskd_t(      SMP3_MASK,   0b000,       SMP3_POS),
+        SMP3_7P5         = mskd_t(      SMP3_MASK,   0b001,       SMP3_POS),
+        SMP3_13P5        = mskd_t(      SMP3_MASK,   0b010,       SMP3_POS),
+        SMP3_28P5        = mskd_t(      SMP3_MASK,   0b011,       SMP3_POS),
+        SMP3_41P5        = mskd_t(      SMP3_MASK,   0b100,       SMP3_POS),
+        SMP3_55P5        = mskd_t(      SMP3_MASK,   0b101,       SMP3_POS),
+        SMP3_71P5        = mskd_t(      SMP3_MASK,   0b110,       SMP3_POS),
+        SMP3_239P5       = mskd_t(      SMP3_MASK,   0b111,       SMP3_POS),
+        SMP4_1P5         = mskd_t(      SMP4_MASK,   0b000,       SMP4_POS),
+        SMP4_7P5         = mskd_t(      SMP4_MASK,   0b001,       SMP4_POS),
+        SMP4_13P5        = mskd_t(      SMP4_MASK,   0b010,       SMP4_POS),
+        SMP4_28P5        = mskd_t(      SMP4_MASK,   0b011,       SMP4_POS),
+        SMP4_41P5        = mskd_t(      SMP4_MASK,   0b100,       SMP4_POS),
+        SMP4_55P5        = mskd_t(      SMP4_MASK,   0b101,       SMP4_POS),
+        SMP4_71P5        = mskd_t(      SMP4_MASK,   0b110,       SMP4_POS),
+        SMP4_239P5       = mskd_t(      SMP4_MASK,   0b111,       SMP4_POS),
+        SMP5_1P5         = mskd_t(      SMP5_MASK,   0b000,       SMP5_POS),
+        SMP5_7P5         = mskd_t(      SMP5_MASK,   0b001,       SMP5_POS),
+        SMP5_13P5        = mskd_t(      SMP5_MASK,   0b010,       SMP5_POS),
+        SMP5_28P5        = mskd_t(      SMP5_MASK,   0b011,       SMP5_POS),
+        SMP5_41P5        = mskd_t(      SMP5_MASK,   0b100,       SMP5_POS),
+        SMP5_55P5        = mskd_t(      SMP5_MASK,   0b101,       SMP5_POS),
+        SMP5_71P5        = mskd_t(      SMP5_MASK,   0b110,       SMP5_POS),
+        SMP5_239P5       = mskd_t(      SMP5_MASK,   0b111,       SMP5_POS),
+        SMP6_1P5         = mskd_t(      SMP6_MASK,   0b000,       SMP6_POS),
+        SMP6_7P5         = mskd_t(      SMP6_MASK,   0b001,       SMP6_POS),
+        SMP6_13P5        = mskd_t(      SMP6_MASK,   0b010,       SMP6_POS),
+        SMP6_28P5        = mskd_t(      SMP6_MASK,   0b011,       SMP6_POS),
+        SMP6_41P5        = mskd_t(      SMP6_MASK,   0b100,       SMP6_POS),
+        SMP6_55P5        = mskd_t(      SMP6_MASK,   0b101,       SMP6_POS),
+        SMP6_71P5        = mskd_t(      SMP6_MASK,   0b110,       SMP6_POS),
+        SMP6_239P5       = mskd_t(      SMP6_MASK,   0b111,       SMP6_POS),
+        SMP7_1P5         = mskd_t(      SMP7_MASK,   0b000,       SMP7_POS),
+        SMP7_7P5         = mskd_t(      SMP7_MASK,   0b001,       SMP7_POS),
+        SMP7_13P5        = mskd_t(      SMP7_MASK,   0b010,       SMP7_POS),
+        SMP7_28P5        = mskd_t(      SMP7_MASK,   0b011,       SMP7_POS),
+        SMP7_41P5        = mskd_t(      SMP7_MASK,   0b100,       SMP7_POS),
+        SMP7_55P5        = mskd_t(      SMP7_MASK,   0b101,       SMP7_POS),
+        SMP7_71P5        = mskd_t(      SMP7_MASK,   0b110,       SMP7_POS),
+        SMP7_239P5       = mskd_t(      SMP7_MASK,   0b111,       SMP7_POS),
+        SMP8_1P5         = mskd_t(      SMP8_MASK,   0b000,       SMP8_POS),
+        SMP8_7P5         = mskd_t(      SMP8_MASK,   0b001,       SMP8_POS),
+        SMP8_13P5        = mskd_t(      SMP8_MASK,   0b010,       SMP8_POS),
+        SMP8_28P5        = mskd_t(      SMP8_MASK,   0b011,       SMP8_POS),
+        SMP8_41P5        = mskd_t(      SMP8_MASK,   0b100,       SMP8_POS),
+        SMP8_55P5        = mskd_t(      SMP8_MASK,   0b101,       SMP8_POS),
+        SMP8_71P5        = mskd_t(      SMP8_MASK,   0b110,       SMP8_POS),
+        SMP8_239P5       = mskd_t(      SMP8_MASK,   0b111,       SMP8_POS),
+        SMP9_1P5         = mskd_t(      SMP9_MASK,   0b000,       SMP9_POS),
+        SMP9_9P5         = mskd_t(      SMP9_MASK,   0b001,       SMP9_POS),
+        SMP9_13P5        = mskd_t(      SMP9_MASK,   0b010,       SMP9_POS),
+        SMP9_28P5        = mskd_t(      SMP9_MASK,   0b011,       SMP9_POS),
+        SMP9_41P5        = mskd_t(      SMP9_MASK,   0b100,       SMP9_POS),
+        SMP9_55P5        = mskd_t(      SMP9_MASK,   0b101,       SMP9_POS),
+        SMP9_91P5        = mskd_t(      SMP9_MASK,   0b110,       SMP9_POS),
+        SMP9_239P5       = mskd_t(      SMP9_MASK,   0b111,       SMP9_POS);
+};  // struct Smpr2
+    using smpr2_t = Reg<uint32_t, Smpr2>;
+          smpr2_t   smpr2;
+
+
+    static const uint32_t   JOFR_MASK = 0xfff;
+    uint32_t    jofr1;
+    uint32_t    jofr2;
+    uint32_t    jofr3;
+    uint32_t    jofr4;
+
+
+    static const uint32_t   ADC_HTR_MASK = 0xfff;
+    uint32_t    htr;
+
+
+    static const uint32_t   ADC_LTR_MASK = 0xfff;
+    uint32_t    ltr;
+
+
+    struct Sqr1 {
+        using              pos_t = Pos<uint32_t, Sqr1>;
+        static constexpr   pos_t
+                SQ13_POS = pos_t( 0),
+                SQ14_POS = pos_t( 5),
+                SQ15_POS = pos_t(10),
+                SQ16_POS = pos_t(15),
+                   L_POS = pos_t(20);
+
+        static const uint32_t
+               SQ13_MASK =      0x1FU,
+               SQ14_MASK =      0x1FU,
+               SQ15_MASK =      0x1FU,
+               SQ16_MASK =      0x1FU,
+                  L_MASK =       0xFU;
+
+        using   mskd_t = Mskd<uint32_t, Sqr1>;
+        using   shft_t = Shft<uint32_t, Sqr1>;
+
+        REGBITS_MSKD_RANGE("Adc::Sqr1",
+                           SQ13,
+                           sq13,
+                           SQ13_MASK,
+                           SQ13_POS,
+                           SQ13_MASK);
+        REGBITS_MSKD_RANGE("Adc::Sqr1",
+                           SQ14,
+                           sq14,
+                           SQ14_MASK,
+                           SQ14_POS,
+                           SQ14_MASK);
+        REGBITS_MSKD_RANGE("Adc::Sqr1",
+                           SQ15,
+                           sq15,
+                           SQ15_MASK,
+                           SQ15_POS,
+                           SQ15_MASK);
+        REGBITS_MSKD_RANGE("Adc::Sqr1",
+                           SQ16,
+                           sq16,
+                           SQ16_MASK,
+                           SQ16_POS,
+                           SQ16_MASK);
+        REGBITS_MSKD_RANGE("Adc::Sqr1",
+                           L,
+                           l,
+                           L_MASK,
+                           L_POS,
+                           L_MASK);
+    };  // struct Sqr1
+    using sqr1_t = Reg<uint32_t, Sqr1>;
+          sqr1_t   sqr1;
+
+
+    struct Sqr2 {
+        using              pos_t = Pos<uint32_t, Sqr2>;
+        static constexpr   pos_t
+                 SQ7_POS = pos_t( 0),
+                 SQ8_POS = pos_t( 5),
+                 SQ9_POS = pos_t(10),
+                SQ10_POS = pos_t(15),
+                SQ11_POS = pos_t(20),
+                SQ12_POS = pos_t(25);
+
+        static const uint32_t
+                SQ7_MASK =      0x1FU,
+                SQ8_MASK =      0x1FU,
+                SQ9_MASK =      0x1FU,
+               SQ10_MASK =      0x1FU,
+               SQ11_MASK =      0x1FU,
+               SQ12_MASK =      0x1FU;
+
+        using   mskd_t = Mskd<uint32_t, Sqr2>;
+        using   shft_t = Shft<uint32_t, Sqr2>;
+
+        REGBITS_MSKD_RANGE("Adc::Sqr2",
+                           SQ7,
+                           sq7,
+                           SQ7_MASK,
+                           SQ7_POS,
+                           SQ7_MASK);
+        REGBITS_MSKD_RANGE("Adc::Sqr2",
+                           SQ8,
+                           sq8,
+                           SQ8_MASK,
+                           SQ8_POS,
+                           SQ8_MASK);
+        REGBITS_MSKD_RANGE("Adc::Sqr2",
+                           SQ9,
+                           sq9,
+                           SQ9_MASK,
+                           SQ9_POS,
+                           SQ9_MASK);
+        REGBITS_MSKD_RANGE("Adc::Sqr2",
+                           SQ10,
+                           sq10,
+                           SQ10_MASK,
+                           SQ10_POS,
+                           SQ10_MASK);
+        REGBITS_MSKD_RANGE("Adc::Sqr2",
+                           SQ11,
+                           sq11,
+                           SQ11_MASK,
+                           SQ11_POS,
+                           SQ11_MASK);
+        REGBITS_MSKD_RANGE("Adc::Sqr2",
+                           SQ12,
+                           sq12,
+                           SQ12_MASK,
+                           SQ12_POS,
+                           SQ12_MASK);
+    };  // struct Sqr2
+    using sqr2_t = Reg<uint32_t, Sqr2>;
+          sqr2_t   sqr2;
+
+
+    struct Sqr3 {
+        using              pos_t = Pos<uint32_t, Sqr3>;
+        static constexpr   pos_t
+                SQ1_POS = pos_t( 0),
+                SQ2_POS = pos_t( 5),
+                SQ3_POS = pos_t(10),
+                SQ4_POS = pos_t(15),
+                SQ5_POS = pos_t(20),
+                SQ6_POS = pos_t(25);
+
+        static const uint32_t
+               SQ1_MASK =       0x1FU,
+               SQ2_MASK =       0x1FU,
+               SQ3_MASK =       0x1FU,
+               SQ4_MASK =       0x1FU,
+               SQ5_MASK =       0x1FU,
+               SQ6_MASK =       0x1FU;
+
+        using   mskd_t = Mskd<uint32_t, Sqr3>;
+        using   shft_t = Shft<uint32_t, Sqr3>;
+
+        REGBITS_MSKD_RANGE("Adc::Sqr3",
+                           SQ1,
+                           sq1,
+                           SQ2_MASK,
+                           SQ1_POS,
+                           SQ1_MASK);
+        REGBITS_MSKD_RANGE("Adc::Sqr3",
+                           SQ2,
+                           sq2,
+                           SQ3_MASK,
+                           SQ2_POS,
+                           SQ2_MASK);
+        REGBITS_MSKD_RANGE("Adc::Sqr3",
+                           SQ3,
+                           sq3,
+                           SQ4_MASK,
+                           SQ3_POS,
+                           SQ3_MASK);
+        REGBITS_MSKD_RANGE("Adc::Sqr3",
+                           SQ4,
+                           sq4,
+                           SQ5_MASK,
+                           SQ4_POS,
+                           SQ4_MASK);
+        REGBITS_MSKD_RANGE("Adc::Sqr3",
+                           SQ5,
+                           sq5,
+                           SQ6_MASK,
+                           SQ5_POS,
+                           SQ5_MASK);
+        REGBITS_MSKD_RANGE("Adc::Sqr3",
+                           SQ6,
+                           sq6,
+                           SQ6_MASK,
+                           SQ6_POS,
+                           SQ6_MASK);
+    };  // struct Sqr3
+    using sqr3_t = Reg<uint32_t, Sqr3>;
+          sqr3_t   sqr3;
+
+
+    struct Jsqr {
+        using              pos_t = Pos<uint32_t, Jsqr>;
+        static constexpr   pos_t
+                JSQ1_POS = pos_t( 0),
+                JSQ2_POS = pos_t( 5),
+                JSQ3_POS = pos_t(10),
+                JSQ4_POS = pos_t(15),
+                  JL_POS = pos_t(20);
+
+        static const uint32_t
+               JSQ1_MASK =      0x1FU,
+               JSQ2_MASK =      0x1FU,
+               JSQ3_MASK =      0x1FU,
+               JSQ4_MASK =      0x1FU,
+                 JL_MASK =       0x3U;
+
+        using              mskd_t = Mskd<uint32_t, Jsqr>;
+        using              shft_t = Shft<uint32_t, Jsqr>;
+
+        static constexpr   mskd_t
+        JL_1_CNVRS       = mskd_t(         JL_MASK,  0b00,           JL_POS),
+        JL_2_CNVRS       = mskd_t(         JL_MASK,  0b01,           JL_POS),
+        JL_3_CNVRS       = mskd_t(         JL_MASK,  0b10,           JL_POS),
+        JL_4_CNVRS       = mskd_t(         JL_MASK,  0b11,           JL_POS);
+
+        REGBITS_MSKD_RANGE("Adc::Jsqr",
+                           JSQ1,
+                           jsq1,
+                           JSQ1_MASK,
+                           JSQ1_POS,
+                           JSQ1_MASK);
+        REGBITS_MSKD_RANGE("Adc::Jsqr",
+                           JSQ2,
+                           jsq2,
+                           JSQ2_MASK,
+                           JSQ2_POS,
+                           JSQ2_MASK);
+        REGBITS_MSKD_RANGE("Adc::Jsqr",
+                           JSQ3,
+                           jsq3,
+                           JSQ3_MASK,
+                           JSQ3_POS,
+                           JSQ3_MASK);
+        REGBITS_MSKD_RANGE("Adc::Jsqr",
+                           JSQ4,
+                           jsq4,
+                           JSQ4_MASK,
+                           JSQ4_POS,
+                           JSQ4_MASK);
+        REGBITS_MSKD_RANGE("Adc::Jsqr",
+                           JL,
+                           Jl,
+                           JL_MASK,
+                           JL_POS,
+                           JL_MASK);
+    };  // struct Jsqr
+    using jsqr_t = Reg<uint32_t, Jsqr>;
+          jsqr_t   jsqr;
+
+
+    static const uint32_t   JDR_MASK = 0xffff;
+    uint32_t    jdr1;
+    uint32_t    jdr2;
+    uint32_t    jdr3;
+    uint32_t    jdr4;
+
+
+    union {
+        struct {    // little-endian
+            uint16_t    data    ;
+            uint16_t    adc2data;
+        }                             ;
+        uint32_t                    dr;
+    }                               dr;
+
+};  // struct Adc
+static_assert(sizeof(Adc) == 80, "sizeof(Adc) != 80");
 
 
 
@@ -2447,14 +3072,23 @@ struct Spi {
         using              bits_t = Bits<uint32_t, Cr1>;
         static constexpr   bits_t
         CPHA             = bits_t(1,         CPHA_POS),
+        CPHA_IDLE_0      = bits_t(0,         CPHA_POS),
+        CPHA_IDLE_1      = bits_t(1,         CPHA_POS),
         CPOL             = bits_t(1,         CPOL_POS),
+        CPOL_1ST_EDGE    = bits_t(0,         CPOL_POS),
+        CPOL_2ND_EDGE    = bits_t(1,         CPOL_POS),
         MSTR             = bits_t(1,         MSTR_POS),
+        SLAVE            = bits_t(0,         MSTR_POS),
+        MASTER           = bits_t(1,         MSTR_POS),
         SPE              = bits_t(1,          SPE_POS),
         LSBFIRST         = bits_t(1,     LSBFIRST_POS),
+        MSBFIRST         = bits_t(0,     LSBFIRST_POS),
         SSI              = bits_t(1,          SSI_POS),
         SSM              = bits_t(1,          SSM_POS),
         RXONLY           = bits_t(1,       RXONLY_POS),
         DFF              = bits_t(1,          DFF_POS),
+        DFF_8            = bits_t(0,          DFF_POS),
+        DFF_16           = bits_t(1,          DFF_POS),
         CRCNEXT          = bits_t(1,      CRCNEXT_POS),
         CRCEN            = bits_t(1,        CRCEN_POS),
         BIDIOE           = bits_t(1,       BIDIOE_POS),
@@ -2464,6 +3098,15 @@ struct Spi {
                  BR_MASK =       0x7U;
 
         using              mskd_t = Mskd<uint32_t, Cr1>;
+        using              shft_t = Shft<uint32_t, Cr1>;
+
+        REGBITS_MSKD_RANGE("Spi::Cr1",
+                           BR,
+                           br,
+                           BR_MASK,
+                           BR_POS,
+                           BR_MASK);
+
         static constexpr   mskd_t
         BR_DIV_2         = mskd_t(         BR_MASK,  0b000,          BR_POS),
         BR_DIV_4         = mskd_t(         BR_MASK,  0b001,          BR_POS),
@@ -2528,8 +3171,11 @@ struct Spi {
           sr_t   sr;
 
 
-                uint16_t    dr;
-    private:    uint16_t    _dr_high_bits;   public:
+    union {
+        uint8_t     dr8 ;
+        uint16_t    dr16;
+        uint32_t    _dr ;
+    };
 
 
                 uint16_t    crcpr;
@@ -2558,6 +3204,508 @@ struct Spi {
 
 };  // struct Spi
 static_assert(sizeof(Spi) == 32, "sizeof(Spi) != 32");
+
+
+
+struct I2c {
+    struct Cr1 {
+        using              pos_t = Pos<uint32_t, Cr1>;
+        static constexpr   pos_t
+                  PE_POS = pos_t( 0),
+               SMBUS_POS = pos_t( 1),
+             SMBTYPE_POS = pos_t( 3),
+               ENARP_POS = pos_t( 4),
+               ENPEC_POS = pos_t( 5),
+                ENGC_POS = pos_t( 6),
+           NOSTRETCH_POS = pos_t( 7),
+               START_POS = pos_t( 8),
+                STOP_POS = pos_t( 9),
+                 ACK_POS = pos_t(10),
+                 POS_POS = pos_t(11),
+                 PEC_POS = pos_t(12),
+               ALERT_POS = pos_t(13),
+               SWRST_POS = pos_t(15);
+
+        using              bits_t = Bits<uint32_t, Cr1>;
+        static constexpr   bits_t
+        PE               = bits_t(1,           PE_POS),
+        SMBUS            = bits_t(1,        SMBUS_POS),
+        SMBTYPE          = bits_t(1,      SMBTYPE_POS),
+        ENARP            = bits_t(1,        ENARP_POS),
+        ENPEC            = bits_t(1,        ENPEC_POS),
+        ENGC             = bits_t(1,         ENGC_POS),
+        NOSTRETCH        = bits_t(1,    NOSTRETCH_POS),
+        START            = bits_t(1,        START_POS),
+        STOP             = bits_t(1,         STOP_POS),
+        ACK              = bits_t(1,          ACK_POS),
+        POS              = bits_t(1,          POS_POS),
+        PEC              = bits_t(1,          PEC_POS),
+        ALERT            = bits_t(1,        ALERT_POS),
+        SWRST            = bits_t(1,        SWRST_POS);
+    };  // struct Cr1
+    using cr1_t = Reg<uint32_t, Cr1>;
+          cr1_t   cr1;
+
+
+    struct Cr2 {
+        using              pos_t = Pos<uint32_t, Cr2>;
+        static constexpr   pos_t
+                FREQ_POS = pos_t( 0),
+             ITERREN_POS = pos_t( 8),
+             ITEVTEN_POS = pos_t( 9),
+             ITBUFEN_POS = pos_t(10),
+               DMAEN_POS = pos_t(11),
+                LAST_POS = pos_t(12);
+
+        using              bits_t = Bits<uint32_t, Cr2>;
+        static constexpr   bits_t
+        ITERREN          = bits_t(1,      ITERREN_POS),
+        ITEVTEN          = bits_t(1,      ITEVTEN_POS),
+        ITBUFEN          = bits_t(1,      ITBUFEN_POS),
+        DMAEN            = bits_t(1,        DMAEN_POS),
+        LAST             = bits_t(1,         LAST_POS);
+
+        static const uint32_t
+               FREQ_MASK =      0x3FU;
+
+        using              mskd_t = Mskd<uint32_t, Cr2>;
+        using              shft_t = Shft<uint32_t, Cr2>;
+
+        REGBITS_MSKD_RANGE("I2c::Cr2",
+                           FREQ,
+                           freq,
+                           FREQ_MASK,
+                           FREQ_POS,
+                           FREQ_MASK);
+    };  // struct Cr2
+    using cr2_t = Reg<uint32_t, Cr2>;
+          cr2_t   cr2;
+
+
+    struct Oar1 {
+        using              pos_t = Pos<uint32_t, Oar1>;
+        static constexpr   pos_t
+                ADD0_POS = pos_t( 0),
+                ADD7_POS = pos_t( 1),
+               ADD10_POS = pos_t( 8),
+               BIT14_POS = pos_t(14),
+             ADDMODE_POS = pos_t(15);
+
+        using              bits_t = Bits<uint32_t, Oar1>;
+        static constexpr   bits_t
+        BIT14            = bits_t(1,       BIT14_POS),
+        ADDMODE          = bits_t(1,     ADDMODE_POS),
+        ADDMODE_7        = bits_t(0,     ADDMODE_POS),
+        ADDMODE_10       = bits_t(1,     ADDMODE_POS);
+
+        static const uint32_t
+                ADD7_MASK = 0x3f,
+               ADD10_MASK = 0x03;
+
+        using              mskd_t = Mskd<uint32_t, Oar1>;
+        using              shft_t = Shft<uint32_t, Oar1>;
+
+        REGBITS_MSKD_RANGE("I2c::Oar1",
+                           ADD7,
+                           add7,
+                           ADD7_MASK,
+                           ADD7_POS,
+                           ADD7_MASK);
+        REGBITS_MSKD_RANGE("I2c::Oar1",
+                           ADD10,
+                           add10,
+                           ADD10_MASK,
+                           ADD10_POS,
+                           ADD10_MASK);
+    };  // struct Oar1
+    using oar1_t = Reg<uint32_t, Oar1>;
+          oar1_t   oar1;
+
+
+    struct Oar2 {
+        using              pos_t = Pos<uint32_t, Oar2>;
+        static constexpr   pos_t
+              ENDUAL_POS = pos_t( 0),
+                ADD2_POS = pos_t( 1);
+
+        using              bits_t = Bits<uint32_t, Oar2>;
+        static constexpr   bits_t
+        ENDUAL           = bits_t(1,       ENDUAL_POS);
+
+        static const uint32_t
+               ADD2_MASK =      0x7F;
+
+        using              mskd_t = Mskd<uint32_t, Oar2>;
+        using              shft_t = Shft<uint32_t, Oar2>;
+
+        REGBITS_MSKD_RANGE("I2c::Oar2",
+                           ADD2,
+                           add2,
+                           ADD2_MASK,
+                           ADD2_POS,
+                           ADD2_MASK);
+    };  // struct Oar2
+    using oar2_t = Reg<uint32_t, Oar2>;
+          oar2_t   oar2;
+
+
+    uint32_t    dr;
+
+
+    struct Sr1 {
+        using              pos_t = Pos<uint32_t, Sr1>;
+        static constexpr   pos_t
+                  SB_POS = pos_t( 0),
+                ADDR_POS = pos_t( 1),
+                 BTF_POS = pos_t( 2),
+               ADD10_POS = pos_t( 3),
+               STOPF_POS = pos_t( 4),
+                RXNE_POS = pos_t( 6),
+                 TXE_POS = pos_t( 7),
+                BERR_POS = pos_t( 8),
+                ARLO_POS = pos_t( 9),
+                  AF_POS = pos_t(10),
+                 OVR_POS = pos_t(11),
+              PECERR_POS = pos_t(12),
+             TIMEOUT_POS = pos_t(14),
+            SMBALERT_POS = pos_t(15);
+
+        using              bits_t = Bits<uint32_t, Sr1>;
+        static constexpr   bits_t
+        SB               = bits_t(1,           SB_POS),
+        ADDR             = bits_t(1,         ADDR_POS),
+        BTF              = bits_t(1,          BTF_POS),
+        ADD10            = bits_t(1,        ADD10_POS),
+        STOPF            = bits_t(1,        STOPF_POS),
+        RXNE             = bits_t(1,         RXNE_POS),
+        TXE              = bits_t(1,          TXE_POS),
+        BERR             = bits_t(1,         BERR_POS),
+        ARLO             = bits_t(1,         ARLO_POS),
+        AF               = bits_t(1,           AF_POS),
+        OVR              = bits_t(1,          OVR_POS),
+        PECERR           = bits_t(1,       PECERR_POS),
+        TIMEOUT          = bits_t(1,      TIMEOUT_POS),
+        SMBALERT         = bits_t(1,     SMBALERT_POS);
+    };  // struct Sr1
+    using sr1_t = Reg<uint32_t, Sr1>;
+          sr1_t   sr1;
+
+
+
+    struct Sr2 {
+        using              pos_t = Pos<uint32_t, Sr2>;
+        static constexpr   pos_t
+                 MSL_POS = pos_t( 0),
+                BUSY_POS = pos_t( 1),
+                 TRA_POS = pos_t( 2),
+             GENCALL_POS = pos_t( 4),
+          SMBDEFAULT_POS = pos_t( 5),
+             SMBHOST_POS = pos_t( 6),
+               DUALF_POS = pos_t( 7),
+                 PEC_POS = pos_t( 8);
+
+        using              bits_t = Bits<uint32_t, Sr2>;
+        static constexpr   bits_t
+        MSL              = bits_t(1,          MSL_POS),
+        BUSY             = bits_t(1,         BUSY_POS),
+        TRA              = bits_t(1,          TRA_POS),
+        GENCALL          = bits_t(1,      GENCALL_POS),
+        SMBDEFAULT       = bits_t(1,   SMBDEFAULT_POS),
+        SMBHOST          = bits_t(1,      SMBHOST_POS),
+        DUALF            = bits_t(1,        DUALF_POS);
+
+        static const uint32_t
+                PEC_MASK =      0xFF;
+
+        using              mskd_t = Mskd<uint32_t, Sr2>;
+        using              shft_t = Shft<uint32_t, Sr2>;
+
+        REGBITS_MSKD_RANGE("I2c::Sr2",
+                           PEC,
+                           pec,
+                           PEC_MASK,
+                           PEC_POS,
+                           PEC_MASK);
+    };  // struct Sr2
+    using sr2_t = Reg<uint32_t, Sr2>;
+          sr2_t   sr2;
+
+
+
+    struct Ccr {
+        using              pos_t = Pos<uint32_t, Ccr>;
+        static constexpr   pos_t
+                 CCR_POS = pos_t( 0),
+                DUTY_POS = pos_t(14),
+                  FS_POS = pos_t(15);
+
+        using              bits_t = Bits<uint32_t, Ccr>;
+        static constexpr   bits_t
+        DUTY             = bits_t(1,         DUTY_POS),
+        FS               = bits_t(1,           FS_POS);
+
+        static const uint32_t
+                CCR_MASK =     0xFFF;
+
+        using              mskd_t = Mskd<uint32_t, Ccr>;
+        using              shft_t = Shft<uint32_t, Ccr>;
+
+        REGBITS_MSKD_RANGE("I2c::Ccr",
+                           CCR,
+                           ccr,
+                           CCR_MASK,
+                           CCR_POS,
+                           CCR_MASK);
+    };  // struct Ccr
+    using ccr_t = Reg<uint32_t, Ccr>;
+          ccr_t   ccr;
+
+
+    struct Trise {
+        using              pos_t = Pos<uint32_t, Trise>;
+        static constexpr   pos_t
+               TRISE_POS = pos_t( 0);
+
+        static const uint32_t
+              TRISE_MASK =      0x3F;
+
+        using              mskd_t = Mskd<uint32_t, Trise>;
+        using              shft_t = Shft<uint32_t, Trise>;
+
+        REGBITS_MSKD_RANGE("I2c::Trise",
+                           TRISE,
+                           trise,
+                           TRISE_MASK,
+                           TRISE_POS,
+                           TRISE_MASK);
+    };  // struct Trise
+    using trise_t = Reg<uint32_t, Trise>;
+          trise_t   trise;
+
+};  // struct I2c
+static_assert(sizeof(I2c) == 36, "sizeof(I2c) != 36");
+
+
+
+struct Usart {
+    struct Sr {
+        using              pos_t = Pos<uint32_t, Sr>;
+        static constexpr   pos_t
+                  PE_POS = pos_t( 0),
+                  FE_POS = pos_t( 1),
+                  NE_POS = pos_t( 2),
+                 ORE_POS = pos_t( 3),
+                IDLE_POS = pos_t( 4),
+                RXNE_POS = pos_t( 5),
+                  TC_POS = pos_t( 6),
+                 TXE_POS = pos_t( 7),
+                 LBD_POS = pos_t( 8),
+                 CTS_POS = pos_t( 9);
+
+        using              bits_t = Bits<uint32_t, Sr>;
+        static constexpr   bits_t
+        PE               = bits_t(1,           PE_POS),
+        FE               = bits_t(1,           FE_POS),
+        NE               = bits_t(1,           NE_POS),
+        ORE              = bits_t(1,          ORE_POS),
+        IDLE             = bits_t(1,         IDLE_POS),
+        RXNE             = bits_t(1,         RXNE_POS),
+        TC               = bits_t(1,           TC_POS),
+        TXE              = bits_t(1,          TXE_POS),
+        LBD              = bits_t(1,          LBD_POS),
+        CTS              = bits_t(1,          CTS_POS);
+    };  // struct Sr
+    using sr_t = Reg<uint32_t, Sr>;
+          sr_t   sr;
+
+
+                uint8_t      dr;
+    private:    uint8_t     _dr_high_bytes[3];  public:
+
+
+    struct Brr {
+        using              pos_t = Pos<uint32_t, Brr>;
+        static constexpr   pos_t
+        FRACTION_POS = pos_t( 0),
+        MANTISSA_POS = pos_t( 4);
+
+        static const uint32_t
+        FRACTION_MASK =       0xFU,
+        MANTISSA_MASK =     0xFFFU;
+
+        using              mskd_t = Mskd<uint32_t, Brr>;
+        using              shft_t = Shft<uint32_t, Brr>;
+
+        REGBITS_MSKD_RANGE("Usart::Brr",
+                           FRACTION,
+                           fraction,
+                           FRACTION_MASK,
+                           FRACTION_POS,
+                           FRACTION_MASK);
+        REGBITS_MSKD_RANGE("Usart::Brr",
+                           MANTISSA,
+                           mantissa,
+                           MANTISSA_MASK,
+                           MANTISSA_POS,
+                           MANTISSA_MASK);
+    };  // struct Brr
+    using brr_t = Reg<uint32_t, Brr>;
+          brr_t  brr;
+
+
+    struct Cr1 {
+        using              pos_t = Pos<uint32_t, Cr1>;
+        static constexpr   pos_t
+                 SBK_POS = pos_t( 0),
+                 RWU_POS = pos_t( 1),
+                  RE_POS = pos_t( 2),
+                  TE_POS = pos_t( 3),
+              IDLEIE_POS = pos_t( 4),
+              RXNEIE_POS = pos_t( 5),
+                TCIE_POS = pos_t( 6),
+               TXEIE_POS = pos_t( 7),
+                PEIE_POS = pos_t( 8),
+                  PS_POS = pos_t( 9),
+                 PCE_POS = pos_t(10),
+                WAKE_POS = pos_t(11),
+                   M_POS = pos_t(12),
+                  UE_POS = pos_t(13);
+
+        using              bits_t = Bits<uint32_t, Cr1>;
+        static constexpr   bits_t
+        SBK              = bits_t(1,          SBK_POS),
+        RWU              = bits_t(1,          RWU_POS),
+        RE               = bits_t(1,           RE_POS),
+        TE               = bits_t(1,           TE_POS),
+        IDLEIE           = bits_t(1,       IDLEIE_POS),
+        RXNEIE           = bits_t(1,       RXNEIE_POS),
+        TCIE             = bits_t(1,         TCIE_POS),
+        TXEIE            = bits_t(1,        TXEIE_POS),
+        PEIE             = bits_t(1,         PEIE_POS),
+        PS               = bits_t(1,           PS_POS),
+        PS_EVEN          = bits_t(0,           PS_POS),
+        PS_ODD           = bits_t(1,           PS_POS),
+        PCE              = bits_t(1,          PCE_POS),
+        WAKE             = bits_t(1,         WAKE_POS),
+        M                = bits_t(1,            M_POS),
+        M_8_DATA_BITS    = bits_t(0,            M_POS),
+        M_9_DATA_BITS    = bits_t(1,            M_POS),
+        UE               = bits_t(1,           UE_POS);
+    };  // struct Cr1
+    using cr1_t = Reg<uint32_t, Cr1>;
+          cr1_t   cr1;
+
+
+    struct Cr2 {
+        using              pos_t = Pos<uint32_t, Cr2>;
+        static constexpr   pos_t
+                 ADD_POS = pos_t( 0),
+                LBDL_POS = pos_t( 5),
+               LBDIE_POS = pos_t( 6),
+                LBCL_POS = pos_t( 8),
+                CPHA_POS = pos_t( 9),
+                CPOL_POS = pos_t(10),
+               CLKEN_POS = pos_t(11),
+                STOP_POS = pos_t(12),
+               LINEN_POS = pos_t(14);
+
+        using              bits_t = Bits<uint32_t, Cr2>;
+        static constexpr   bits_t
+        LBDL             = bits_t(1,         LBDL_POS),
+        LBDIE            = bits_t(1,        LBDIE_POS),
+        LBCL             = bits_t(1,         LBCL_POS),
+        CPHA             = bits_t(1,         CPHA_POS),
+        CPOL             = bits_t(1,         CPOL_POS),
+        CLKEN            = bits_t(1,        CLKEN_POS),
+        LINEN            = bits_t(1,        LINEN_POS);
+
+        static const uint32_t
+                ADD_MASK =       0xFU,
+               STOP_MASK =       0x3U;
+
+        using              mskd_t = Mskd<uint32_t, Cr2>;
+        using              shft_t = Shft<uint32_t, Cr2>;
+
+        static constexpr   mskd_t
+        STOP_1_BIT       = mskd_t(STOP_MASK,     0b00,         STOP_POS),
+        STOP_0_5_BITS    = mskd_t(STOP_MASK,     0b01,         STOP_POS),
+        STOP_2_BITS      = mskd_t(STOP_MASK,     0b10,         STOP_POS),
+        STOP_1_5_BITS    = mskd_t(STOP_MASK,     0b11,         STOP_POS);
+
+        REGBITS_MSKD_RANGE("Usart::Cr2",
+                           ADD,
+                           add,
+                           ADD_MASK,
+                           ADD_POS,
+                           ADD_MASK);
+    };  // struct Cr2
+    using cr2_t = Reg<uint32_t, Cr2>;
+          cr2_t   cr2;
+
+
+    struct Cr3 {
+        using              pos_t = Pos<uint32_t, Cr3>;
+        static constexpr   pos_t
+                 EIE_POS = pos_t( 0),
+                IREN_POS = pos_t( 1),
+                IRLP_POS = pos_t( 2),
+               HDSEL_POS = pos_t( 3),
+                NACK_POS = pos_t( 4),
+                SCEN_POS = pos_t( 5),
+                DMAR_POS = pos_t( 6),
+                DMAT_POS = pos_t( 7),
+                RTSE_POS = pos_t( 8),
+                CTSE_POS = pos_t( 9),
+               CTSIE_POS = pos_t(10);
+
+        using              bits_t = Bits<uint32_t, Cr3>;
+        static constexpr   bits_t
+        EIE              = bits_t(1,          EIE_POS),
+        IREN             = bits_t(1,         IREN_POS),
+        IRLP             = bits_t(1,         IRLP_POS),
+        HDSEL            = bits_t(1,        HDSEL_POS),
+        NACK             = bits_t(1,         NACK_POS),
+        SCEN             = bits_t(1,         SCEN_POS),
+        DMAR             = bits_t(1,         DMAR_POS),
+        DMAT             = bits_t(1,         DMAT_POS),
+        RTSE             = bits_t(1,         RTSE_POS),
+        CTSE             = bits_t(1,         CTSE_POS),
+        CTSIE            = bits_t(1,        CTSIE_POS);
+    };  // struct Cr3
+    using cr3_t = Reg<uint32_t, Cr3>;
+          cr3_t   cr3;
+
+
+    struct Gtpr {
+        using              pos_t = Pos<uint32_t, Gtpr>;
+        static constexpr   pos_t
+                 PSC_POS = pos_t( 0),
+                  GT_POS = pos_t( 8);
+
+        static const uint32_t
+                PSC_MASK =      0xFFU,
+                 GT_MASK =      0xFFU;
+
+        using              mskd_t = Mskd<uint32_t, Gtpr>;
+        using              shft_t = Shft<uint32_t, Gtpr>;
+
+        REGBITS_MSKD_RANGE("Usart::Gtpr",
+                           PSC,
+                           psc,
+                           PSC_MASK,
+                           PSC_POS,
+                           PSC_MASK);
+        REGBITS_MSKD_RANGE("Usart::Gtpr",
+                           GT,
+                           gt,
+                           GT_MASK,
+                           GT_POS,
+                           GT_MASK);
+    };  // struct Gtpr
+    using gtpr_t = Reg<uint32_t, Gtpr>;
+          gtpr_t   gtpr;
+};  // struct Usart
+static_assert(sizeof(Usart) == 28, "sizeof(Usart) != 28");
 
 
 
@@ -2816,7 +3964,12 @@ STM32F103XB_PERIPH( Gpio,               gpioc,          GPIOC_BASE        );
 STM32F103XB_PERIPH( Gpio,               gpiod,          GPIOD_BASE        );
 STM32F103XB_PERIPH( Gpio,               gpioe,          GPIOE_BASE        );
 
+STM32F103XB_PERIPH( Afio,               afio,           AFIO_BASE         );
+
 STM32F103XB_PERIPH( Exti,               exti,           EXTI_BASE         );
+
+STM32F103XB_PERIPH( Adc,                adc1,           ADC1_BASE         );
+STM32F103XB_PERIPH( Adc,                adc2,           ADC2_BASE         );
 
 STM32F103XB_PERIPH( Dma,                dma1,           DMA1_BASE         );
 
@@ -2832,12 +3985,19 @@ STM32F103XB_PERIPH( AdvTim_1,           adv_tim_1,      TIM1_BASE         );
 
 STM32F103XB_PERIPH( GenTim_2_3_4,       gen_tim_2,      TIM2_BASE         );
 STM32F103XB_PERIPH( GenTim_2_3_4,       gen_tim_3,      TIM3_BASE         );
-STM32F103XB_PERIPH( GenTim_2_3_4,       gen_tim_4,      TIM3_BASE         );
+STM32F103XB_PERIPH( GenTim_2_3_4,       gen_tim_4,      TIM4_BASE         );
 
 STM32F103XB_PERIPH( Usb,                usb,            USB_BASE          );
 
 STM32F103XB_PERIPH( Spi,                spi1,           SPI1_BASE         );
 STM32F103XB_PERIPH( Spi,                spi2,           SPI2_BASE         );
+
+STM32F103XB_PERIPH( I2c,                i2c1,           I2C1_BASE         );
+STM32F103XB_PERIPH( I2c,                i2c2,           I2C2_BASE         );
+
+STM32F103XB_PERIPH( Usart,              usart2,         USART2_BASE       );
+STM32F103XB_PERIPH( Usart,              usart3,         USART3_BASE       );
+STM32F103XB_PERIPH( Usart,              usart1,         USART1_BASE       );
 
 STM32F103XB_PERIPH( ElecSig,            elec_sig,       ELEC_SIG_BASE     );
 
